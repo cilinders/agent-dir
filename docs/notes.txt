@@ -1,0 +1,17 @@
+Dockerfile build:
+https://stackoverflow.com/questions/64985913/failed-to-solve-with-frontend-dockerfile
+uppercase D lower case f.
+
+docker build:
+build depricated now it's buildx build???
+
+docker install en misc:
+https://gist.github.com/dehsilvadeveloper/c3bdf0f4cdcc5c177e2fe9be671820c7
+
+docker alpine:
+https://www.alpinelinux.org/downloads/
+lightweight linux distro
+
+Is docker running:
+https://stackoverflow.com/questions/43721513/how-to-check-if-the-docker-engine-and-a-docker-container-are-running
+`docker info > /dev/null 2>&1;`

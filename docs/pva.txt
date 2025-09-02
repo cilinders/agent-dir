@@ -1,0 +1,21 @@
+0. gitlab werken?
+
+1. VM container
+	- Docker: iffy build
+		* Docker engine bash script
+			` usage: scriptDocker.sh
+				^ start: starts docker engine
+				^ stop: stops docker engine
+				^ build: builds image
+				^ destroy: destroys container
+				^ destroyclean: destroys image and container
+				^ run: runs docker container
+		* Docker image: alpine
+			` -v 3.22.1
+		* Dockerfile:
+			` wkdir /agent-dir
+			` logs
+				^ buildtime build<time>.log
+		* Apparmor, & rootless mode
+			` docker run --security-opt apparmor=docker-default
+			` https://docs.docker.com/engine/security/apparmor/
