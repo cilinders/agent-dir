@@ -13,7 +13,8 @@ then
     git switch -c LAZY$EOD_TIME
     git add --all
     git commit -m "lazy commit $EOD_TIME"
-    /bin/bash ./sshScript.sh -g
+    sh ./sshScript.sh -g
     git push -u origin LAZY$EOD_TIME
+    echo "lazydog"
   fi
 fi
