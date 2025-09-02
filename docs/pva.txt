@@ -1,4 +1,7 @@
-0. gitlab werken?
+0. git
+	- git project: branch development
+		* .gitignore
+	- GitHub remote
 
 1. VM container
 	- Docker: iffy build

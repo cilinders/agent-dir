@@ -13,4 +13,5 @@ docker copy files from container
 docker run with name:
 `docker run --name <name_for_container> <image_name>`
 
-$(date +%Y-%m-%d--%H-%M-%S)
+Bash time:
+`$(date +%Y-%m-%d--%H-%M-%S)`
