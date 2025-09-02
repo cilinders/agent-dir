@@ -12,4 +12,5 @@ then
   ssh-add ~/.ssh/id_ed25519-02-09-2025
   echo "Testing key."
   ssh -T git@github.com
+  bash -i
 fi
