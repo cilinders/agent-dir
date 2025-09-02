@@ -15,3 +15,7 @@ lightweight linux distro
 Is docker running:
 https://stackoverflow.com/questions/43721513/how-to-check-if-the-docker-engine-and-a-docker-container-are-running
 `docker info > /dev/null 2>&1;`
+
+Bash interactive:
+running `bash -i` in script pushes the context from the script to the terminal.
+if called from a ./script.sh, something about interactive, git gud, man read bash man bash.
