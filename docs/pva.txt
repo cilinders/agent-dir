@@ -2,7 +2,12 @@
 	- git project: branch development
 		* .gitignore
 	- GitHub remote
-
+	- ssh-agent script
+		* usage: sshScript.sh
+			^ git: starts ssh-agent en add ssh pub > allows pushing to remote repo
+	- git-script
+		* usage: gitScript.sh
+			^ todo: todo
 1. VM container
 	- Docker: iffy build
 		* Docker engine bash script
