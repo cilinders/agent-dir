@@ -8,7 +8,7 @@ ubuntu execute sh:
 `./yourscript.sh`
 
 docker copy files from container
-`docker cp <container_name>:/path/to/copy/from.file`
+`docker cp <container_name>:/path/to/copy/from.file .`
 
 docker run with name:
 `docker run --name <name_for_container> <image_name>`

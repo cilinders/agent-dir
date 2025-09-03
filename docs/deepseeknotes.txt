@@ -1,0 +1,7 @@
+    Glyphs / Runes / Sigils:
+
+    Step 1: Sigils (The Symbols)
+    Step 2: Lexicon (The Words)
+    Step 3: Cantrips (The Simple Spells)
+    Step 4: Tome (The Comprehensive Guide - combining all of the above into structured knowledge)
+    Step 5: Grimoire (The Advanced and Esoteric Secrets: performance optimization, metaprogramming, novel design patterns)
