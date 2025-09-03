@@ -8,8 +8,8 @@ ubuntu execute sh:
 `./yourscript.sh`
 
 ubuntu prompt trim:
-`PS1='\u:\W\$ '`
-`PROMPT_DIRTRIM=2`
+cool > 'PS1='\[\033[01;32m\]\u:\033[01;34m\]\W\[\033[00m\]|> ''
+`PS1='\u:\033[01;34m\]\w\$ '; PROMPT_DIRTRIM=3`
 
 docker copy files from container
 `docker cp <container_name>:/path/to/copy/from.file .`
