@@ -7,6 +7,10 @@ ubuntu sh execute permission:
 ubuntu execute sh:
 `./yourscript.sh`
 
+ubuntu prompt trim:
+`PS1='\u:\W\$ '`
+`PROMPT_DIRTRIM=2`
+
 docker copy files from container
 `docker cp <container_name>:/path/to/copy/from.file .`
 
