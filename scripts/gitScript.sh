@@ -13,6 +13,8 @@ then
     git switch -c LAZY$EOD_TIME
     git add --all
     git commit -m "lazy commit $EOD_TIME"
+    # sets the ssh-agent with the pub key.
+    # todo: does wierd stuff because script inside script with `bash -i` nested
     sh ./sshScript.sh -g
     git push -u origin LAZY$EOD_TIME
     echo "lazydog"

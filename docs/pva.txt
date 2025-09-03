@@ -5,9 +5,11 @@
 	- ssh-agent script
 		* usage: sshScript.sh
 			^ git: starts ssh-agent en add ssh pub > allows pushing to remote repo
+		* conf:
+			^ 
 	- git-script
 		* usage: gitScript.sh
-			^ todo: todo
+			^ lazy: commits and pushes changes lazyly for eod
 1. VM container
 	- Docker: iffy build
 		* Docker engine bash script
@@ -18,6 +20,12 @@
 				^ destroy: destroys container
 				^ destroyclean: destroys image and container
 				^ run: runs docker container
+				^ log: dumps logfile from container
+			` conf:
+				^ project docker path
+				^ project script path
+				^ docker image name
+				^ docker container name
 		* Docker image: alpine
 			` -v 3.22.1
 		* Dockerfile:

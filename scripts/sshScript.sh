@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source conf/sshConfig.conf
+
 if [ $# == 0 ] || [ $1 == "-h" ]
 then
   echo "Usage: "
@@ -8,8 +10,8 @@ elif [ $1 == "-git" ] || [ $1 == "-g" ]
 then
   echo "Starting ssh-agent."
   eval $(ssh-agent -s)
-  echo "Adding pub key."
-  ssh-add ~/.ssh/id_ed25519-02-09-2025
+  echo "Adding key. $SSH_PATH"
+  ssh-add $SSH_PATH
   echo "Testing key."
   ssh -T git@github.com
   bash -i
