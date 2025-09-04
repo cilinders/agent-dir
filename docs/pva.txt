@@ -35,3 +35,21 @@
 		* Apparmor, & rootless mode
 			` docker run --security-opt apparmor=docker-default
 			` https://docs.docker.com/engine/security/apparmor/
+2. llm local
+	- model
+		* deepseek
+	- local agency
+		* command line excess
+		* action steps
+			` action path
+			` action set
+		* safeguards
+			` stay inside container*** ***breakout to internet oke
+			` protect local container
+			` guard earlier quarentined output
+		* context memory
+		* agent ruleset
+			` taskset
+			` config rules
+	- allow searching web
+
