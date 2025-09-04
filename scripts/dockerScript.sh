@@ -3,7 +3,7 @@
 #config file
 source conf/dockerConfig.conf
 
-#todo use config file for env, container name, image to use, Paths 
+#todo use config file for env, container name, image to use, Paths
 if [ $# == 0 ] || [ $1 == "-help" ] || [ $1 == "-h" ]
 then
   echo "Usage: "
@@ -13,6 +13,7 @@ then
   echo "  dockerScript -destroy|-d : Destroys Docker container."
   echo "  dockerScript -clean|-c   : Clean destroys container and image."
   echo "  dockerScript -run|-r     : Runs Docker container."
+  echo "  dockerScript -login|-L   : Login to running Docker container."
   echo "  dockerScript -log|-l     : Dumps logfile from container."
 elif [ $1 == "-test" ] || [ $1 == "-t" ]
 then
@@ -57,6 +58,8 @@ elif [ $1 == "-destroy" ] || [ $1 == "-d" ]
 then
   echo "Dumping log file."
   docker cp $DOCKER_CONTAINER_NAME:/agent-dir/logs/. ../$DOCKER_PATH/logs/.
+  echo "Stopping docker container."
+  docker stop $DOCKER_CONTAINER_NAME
   echo "Destroying docker container."
   docker rm $DOCKER_CONTAINER_NAME
   echo "Container destroyed."
@@ -64,6 +67,8 @@ elif [ $1 == "-clean" ] || [ $1 == "-c" ]
 then
   echo "Dumping log file."
   docker cp $DOCKER_CONTAINER_NAME:/agent-dir/logs/. ../$DOCKER_PATH/logs/.
+  echo "Stopping docker container."
+  docker stop $DOCKER_CONTAINER_NAME
   echo "Destroying docker container."
   docker rm $DOCKER_CONTAINER_NAME
   echo "Destroying docker image."
@@ -72,8 +77,15 @@ then
 elif [ $1 == "-run" ] || [ $1 == "-r" ]
 then
   echo "Run docker container."
-  docker run --security-opt apparmor=docker-default --name $DOCKER_CONTAINER_NAME $DOCKER_IMAGE_NAME &
+  #docker run -i --security-opt apparmor=docker-default --name $DOCKER_CONTAINER_NAME $DOCKER_IMAGE_NAME /bin/bash -c &
+  docker run -it -d --security-opt apparmor=docker-default --name $DOCKER_CONTAINER_NAME $DOCKER_IMAGE_NAME
   echo "Container is running in the background."
+elif [ $1 == "-login" ] || [ $1 == "-L" ]
+then
+  echo "Logging into container."
+  echo "ctrl+p & ctrl+q to exit."
+  docker exec -it $DOCKER_CONTAINER_NAME /bin/bash
+  echo "Logged in."
 elif [ $1 == "-log" ] || [ $1 == "-l" ]
 then
   echo "Copying logfile from container."

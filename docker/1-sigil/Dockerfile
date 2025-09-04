@@ -1,6 +1,9 @@
 # Base image alpine latest(current 3.22.1)
 FROM alpine:3.22.1
 
+# dependencies
+RUN apk add --no-cache bash
+
 # workdir
 WORKDIR /agent-dir
 
@@ -15,5 +18,6 @@ ENV BUILD_TIME="$BUILD_TIME"
 RUN mkdir logs && touch logs/${BUILD_TIME}.log
 RUN echo $BUILD_TIME > logs/${BUILD_TIME}.log
 
-#CMD cat logs/*.log
-ENTRYPOINT ls; chmod 775 dummyChatScript.sh; sh dummyChatScript.sh lorem.txt
+# start *chatting
+ENTRYPOINT tail -f /dev/null
+#CMD ./dummyChatScript.sh lorem.txt

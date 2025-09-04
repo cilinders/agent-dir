@@ -25,3 +25,10 @@ git push to remote:
 
 git add remote:
 `git remote add origin <git@github.com>:<cilinders>/<agent-dir>.git`
+
+Alpine image install bash(inside Dockerfile):
+`RUN apk add --no-cache bash`
+
+Docker interact with container bash:
+`docker exec -it <container_name> /bin/bash`
+`CTRL+p & CTRL+q` <= to exit
