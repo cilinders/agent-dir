@@ -32,3 +32,9 @@ Alpine image install bash(inside Dockerfile):
 Docker interact with container bash:
 `docker exec -it <container_name> /bin/bash`
 `CTRL+p & CTRL+q` <= to exit
+
+Bash output to file:
+`exec 3>&1 4>&2` # save file descriptors for restore later
+`trap 'exec 2>&4 1>&3' 0 1 2 3` # restore file descriptors
+`exec 1><file_to_log_to.log> 2>>&1` # redirect stdout to file then redirects stderr to stdout. use `2>&1` to not append.
+  `echo "text" >&3` # redirects to where stdout was orignal redirected from

@@ -19,3 +19,9 @@ https://stackoverflow.com/questions/43721513/how-to-check-if-the-docker-engine-a
 Bash interactive:
 running `bash -i` in script pushes the context from the script to the terminal.
 if called from a ./script.sh, something about interactive, git gud, man read bash man bash.
+
+bash logging function expl:
+https://www.cubicrace.com/2016/03/efficient-logging-mechnism-in-shell.html
+
+bash writing stdout&stderr&file:
+https://stackoverflow.com/questions/18460186/writing-outputs-to-log-file-and-console
