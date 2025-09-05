@@ -9,7 +9,9 @@ WORKDIR /agent-dir
 
 COPY dummyChatScript.sh /agent-dir
 COPY data/lorem.txt /agent-dir
+COPY logScript.sh /agent-dir
 RUN chmod +x dummyChatScript.sh
+RUN chmod +x logScript.sh
 
 # set build time
 ARG BUILD_TIME
