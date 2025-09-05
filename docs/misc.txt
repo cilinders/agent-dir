@@ -1,5 +1,6 @@
 ubuntu cd quick:
 `cd /mnt/c/Users/stef1/Desktop/werkmap/2025-2026/stage/agent`
+`cd /mnt/c/Users/stef1/Desktop/werkmap/2025-2026/stage/agent/scripts`
 
 ubuntu sh execute permission:
 `chmod +x /path/to/yourscript.sh`

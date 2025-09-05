@@ -3,10 +3,10 @@
 if [ $# == 1 ]
 then
   LOGFILE="logs/$(ls logs)"
-  echo "$LOGFILE"
+  #echo "$LOGFILE"
   if [ -f $LOGFILE ]
   then
-    echo "file found"
+    #echo "file found"
     $1 | tee -a $LOGFILE
   else
     echo "file not found"

@@ -8,8 +8,8 @@ then
     while IFS= read -r -u3 LINE
     do
       read -e -p "prompt: " PROMPT
-      echo "$PROMPT"
-      echo "$LINE"
+#      printf "$PROMPT"
+      printf "$LINE"
     done 3< $DATA_SOURCE
   else
     echo "No dummy data given/file does not exist."
