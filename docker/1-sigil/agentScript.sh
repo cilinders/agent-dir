@@ -9,13 +9,19 @@ then
 else
   if [ -f $1 ]
   then
-    source $1
-    while true
-    do
-      ./respnd $?
-      ./$CHATSCRIPT $CHATPARAMS $?
-      sleep 1
-    done
+  LOGFILE="logs/$(ls logs)"
+    if [ -f $LOGFILE ]
+    then
+      source $1
+      while true
+      do
+        ./respnd $? | tee -a $LOGFILE
+        ./$CHATSCRIPT $CHATPARAMS $? | tee -a $LOGFILE
+        sleep 1
+      done
+    else
+      echo "Log file not found"
+    fi
   else
     echo "Config file not found"
   fi
