@@ -39,3 +39,6 @@ Bash output to file:
 `trap 'exec 2>&4 1>&3' 0 1 2 3` # restore file descriptors
 `exec 1><file_to_log_to.log> 2>>&1` # redirect stdout to file then redirects stderr to stdout. use `2>&1` to not append.
   `echo "text" >&3` # redirects to where stdout was orignal redirected from
+
+Clang compile commandline:
+`gcc file_to_compile.c -o file_to_compile_to`: file to compile to doesn't have a filetype

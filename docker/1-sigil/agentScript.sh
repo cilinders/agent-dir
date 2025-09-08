@@ -10,10 +10,12 @@ else
   if [ -f $1 ]
   then
     source $1
-    OUTPUT=$(./$CHATSCRIPT $CHATPARAMS | tail -n 1)
-    printf "$OUTPUT"
-    ./respnd "$OUTPUT"
-    printf "$?\n"
+    while true
+    do
+      ./respnd $?
+      ./$CHATSCRIPT $CHATPARAMS $?
+      sleep 1
+    done
   else
     echo "Config file not found"
   fi
