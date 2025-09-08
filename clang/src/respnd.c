@@ -7,6 +7,7 @@ int respond(char message[]) {
   srand(time(NULL));
   int N = 13;
   int random = rand() % N;
+  printf("%d\n", random);
   return random;
 }
 
