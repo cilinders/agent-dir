@@ -13,6 +13,7 @@ then
   then
     if [ -f $2 ]
     then
+      #TODO: fix special chars
       source $2
       RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","PROMPT":"'"$3"'"}' \
                    -X POST http://localhost:11434/api/generate | jq -r '.response')
