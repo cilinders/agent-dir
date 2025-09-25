@@ -42,3 +42,16 @@ Bash output to file:
 
 Clang compile commandline:
 `gcc file_to_compile.c -o file_to_compile_to`: file to compile to doesn't have a filetype
+
+ollama curl:
+`curl -d '{"model":"llama3.1:latest","prompt":"Say: Hello!"}' -X POST http://localhost:11434/api/generate`
+model=llama3.1:latest
+prompt=Say: Hello!
+
+ollama start and stop:
+`sudo systemctl start ollama.service`
+`sudo systemctl stop ollama.service`
+or
+```pgrep ollama
+   >123
+   sudo kill 123```

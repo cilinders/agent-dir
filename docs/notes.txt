@@ -28,3 +28,13 @@ https://stackoverflow.com/questions/18460186/writing-outputs-to-log-file-and-con
 
 openrouter:
 https://openrouter.ai/deepseek/deepseek-chat-v3.1:free/api
+
+5gb llm ollama:
+https://ollama.com/library/llama3.1
+
+ollama gpt-oss:
+https://ollama.com/library/gpt-oss
+agentic task model
+
+ollama (local) api docs:
+https://docs.ollama.com/api#generate-a-completion

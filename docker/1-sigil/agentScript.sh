@@ -13,10 +13,14 @@ else
     if [ -f $LOGFILE ]
     then
       source $1
+      MESSAGE="hello"
+      printf "$MESSAGE\n"
       while true
       do
-        ./respnd $? | tee -a $LOGFILE
-        ./$CHATSCRIPT $CHATPARAMS $? | tee -a $LOGFILE
+        MESSAGE=$(./$RESPONSESCRIPT $MESSAGE | tee -a $LOGFILE)
+        printf "$MESSAGE\n"
+        MESSAGE=$(./$CHATSCRIPT $CHATPARAMS $MESSAGE | tee -a $LOGFILE)
+        printf "$MESSAGE\n"
         sleep 1
       done
     else

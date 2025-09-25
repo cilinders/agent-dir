@@ -20,7 +20,7 @@ else
                   {"role": "user", "content": "'"$2"'"}
                 ],
                 "stream": false
-            }' | jq -r '.choices[0].message.content')
+            }') #| jq -r '.choices[0].message.content')
       printf "$RESPONSE\n"
     else
       printf "Key file not found.\n"
