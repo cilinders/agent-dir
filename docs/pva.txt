@@ -37,7 +37,7 @@
 			` https://docs.docker.com/engine/security/apparmor/
 2. llm local
 	- model
-		* deepseek
+		* XdeepseekX V ollama3.1 ? 
 	- local agency
 		* command line excess
 		* action steps

@@ -11,6 +11,7 @@ ubuntu execute sh:
 ubuntu prompt trim:
 cool > 'PS1='\[\033[01;32m\]\u:\[\033[01;34m\]\W\[\033[00m\]|> ''
 `PS1='\u:\033[01;34m\]\w\$ '; PROMPT_DIRTRIM=3`
+`cd /mnt/c/Users/stef1/Desktop/werkmap/2025-2026/stage/agent/scripts; PS1='\[\033[01;32m\]\u:\[\033[01;34m\]\W\[\033[00m\]|> '`
 
 docker copy files from container
 `docker cp <container_name>:/path/to/copy/from.file .`
