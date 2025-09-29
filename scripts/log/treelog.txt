@@ -1,0 +1,42 @@
+.
+├── actionScript.sh
+├── conf
+│   ├── deepseekConfig.conf
+│   ├── deepseek_openConfig.conf
+│   ├── dockerConfig.conf
+│   ├── ollamaConfig.conf
+│   └── sshConfig.conf
+├── data
+│   ├── actionDummyData1.txt
+│   └── lorem.txt
+├── deepseekScript.sh
+├── dockerScript.sh
+├── gitScript.sh
+├── log
+│   └── treelog.txt
+├── logScript.sh
+├── ollamaScript.sh
+└── sshScript.sh
+
+.{ actionScript.sh                : file -> touch -  path="./"
+   conf{                          : dir  -> mkdir -> path="./conf/"
+         deepseekConfig.conf      : file -> touch -  path="./conf/" 
+         deepseek_openConfig.conf : file -> touch -  path="./conf/"
+         dockerConfig.conf        : file -> touch -  path="./conf/"
+         ollamaConfig.conf        : file -> touch -  path="./conf/"
+         sshConfig.conf           : file -> touch -  path="./conf/"
+       }                          : end of dir    <- path="./"
+   data{                          : dir  -> mkdir -> path="./data/"
+         actionDummyData1.txt     : file -> touch -  path="./data/"
+         lorem.txt                : file -> touch -  path="./data/"
+       }                          : end of dir    <- path="./"
+   deepseekScript.sh              : file -> touch -  path="./"
+   dockerScript.sh                : file -> touch -  path="./"
+   gitScript.sh                   : file -> touch -  path="./"
+   log{                           : dir  -> mkdir -> path="./log/"
+        treelog.txt               : file -> touch -  path="./log/"
+      }                           : end of dir    <- path="./"
+   logScript.sh                   : file -> touch -  path="./"
+   ollamaScript.sh                : file -> touch -  path="./"
+   sshScript.sh                   : file -> touch -  path="./"
+ }                                : end of dir    <- path="" path is empty end of file done :)
