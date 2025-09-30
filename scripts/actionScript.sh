@@ -6,10 +6,30 @@
 
 CREATE_STRUCTURE() {
   IFS=' ' read -d '' -ra COMPONENTS <<< "$DATA"
-  for ((j = 0; j < ${#COMPONENTS[@]}; ++j))
+  declare -a STRUCTURE_PATH=()
+  NESTED=0
+  for ((j = 1; j < ${#COMPONENTS[@]}; ++j))
   do
-    #TODO: if dir -> mkdir (use right structure(create right logic))
-    printf "$j %s\n" "${COMPONENTS[$j]}"
+    printf "$j %s" "${COMPONENTS[$j]}"
+    if [[ "${COMPONENTS[$j]}" == "{" ]]
+    then
+      ((NESTED++))
+      LAST_INDEX=$j
+      ((LAST_INDEX--))
+      STRUCTURE_PATH+=("${COMPONENTS[$LAST_INDEX]}")
+    elif [[ "${COMPONENTS[$j]}" == "}" ]]
+    then
+      ((NESTED--))
+      unset STRUCTURE_PATH[-1]
+    elif [[ "${COMPONENTS[$j]}" =~ "." ]]
+    then
+      printf " -> touch %s/" "${STRUCTURE_PATH[*]}"
+      printf "%s " "${COMPONENTS[$j]}"
+    else
+      printf " -> mkdir %s/" "${STRUCTURE_PATH[*]}"
+      printf "%s " "${COMPONENTS[$j]}"
+    fi
+    printf "\n"
   done
 }
 
@@ -18,6 +38,9 @@ CREATE_DIRECTORY() {
 }
 
 CREATE_FILE() {
+  #TODO: does fill exist?
+  #TODO: where to create
+  #TODO: content
   printf "create file"
 }
 
@@ -25,12 +48,12 @@ STEP_CREATE() {
   if [[ $TARGET == "structure" ]]; then
     #TODO:
     CREATE_STRUCTURE "$DATA"
-  elif [[ $1 == "directory" ]]; then
+  elif [[ $TARGET == "directory" ]]; then
     #TODO:
-    CREATE_DIRECTORY $2
-  elif [[ $1 == "file" ]]; then
+    CREATE_DIRECTORY "$DATA"
+  elif [[ $TARGET == "file" ]]; then
     #TODO:
-    CREATE_FILE $2
+    CREATE_FILE "$DATA"
   fi
 }
 
@@ -78,7 +101,7 @@ then
     #TODO: devide action into steps
     #STEP_ACTION "${ACTIONS[$i]}"
   #done
-  STEP_ACTION "${ACTIONS[2]}"
+  STEP_ACTION "${ACTIONS[3]}"
 else
   printf "Action file not found\n"
 fi
