@@ -5,6 +5,7 @@ then
   printf "Usage: \n"
   printf "  ollamaScript -prompt|-p <configFile.conf>: Writes a given message to llm using the configFile.\n"
   printf "  ollamaScript -start|-s:                    Starts ollama service.\n"
+  printf "  ollamaScript -serve|-se:                   Starts ollama service with info in current shell.\n"
   printf "  ollamaScript -stop|-st:                    Stops ollama service.\n"
 elif [ $1 == "-prompt" ] || [ $1 == "-p" ]
 then
@@ -31,6 +32,9 @@ elif [ $1 == "-start" ] || [ $1 == "-s" ]
 then
   ollama serve &>/dev/null &
   printf "Started\n"
+elif [ $1 == "-serve" ] || [ $1 == "-se" ]
+then
+  ollama serve
 elif [ $1 == "-stop" ] || [ $1 == "-st" ]
 then
   sudo kill $(pgrep ollama)
