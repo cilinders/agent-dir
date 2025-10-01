@@ -23,11 +23,19 @@ CREATE_STRUCTURE() {
       unset STRUCTURE_PATH[-1]
     elif [[ "${COMPONENTS[$j]}" =~ "." ]]
     then
-      printf " -> touch %s/" "${STRUCTURE_PATH[*]}"
+      CURRENT_PATH=""
+      for p in "${STRUCTURE_PATH[@]}"
+      do
+        CURRENT_PATH+="$p/"
+      done
+      printf " -> touch %s" "$CURRENT_PATH"
       printf "%s " "${COMPONENTS[$j]}"
     else
-      printf " -> mkdir %s/" "${STRUCTURE_PATH[*]}"
-      printf "%s " "${COMPONENTS[$j]}"
+      if ! [[ "${COMPONENTS[$j]}" =~ "}" ]]
+      then
+        printf " -> mkdir %s" "$CURRENT_PATH"
+        printf "%s " "${COMPONENTS[$j]}"
+      fi
     fi
     printf "\n"
   done
@@ -101,7 +109,7 @@ then
     #TODO: devide action into steps
     #STEP_ACTION "${ACTIONS[$i]}"
   #done
-  STEP_ACTION "${ACTIONS[3]}"
+  STEP_ACTION "${ACTIONS[2]}"
 else
   printf "Action file not found\n"
 fi

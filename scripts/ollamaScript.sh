@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if [ $# == 0 ] || [ $# -gt 2 ] || [ $1 == "-h" ] || [ $1 == "-help" ]
+if [ $# == 0 ] || [ $# -gt 3 ] || [ $1 == "-h" ] || [ $1 == "-help" ]
 then
   printf "Usage: \n"
-  printf "  ollamaScript -prompt|-p <configFile.conf>: Writes a given message to llm using the configFile.\n"
-  printf "  ollamaScript -start|-s:                    Starts ollama service.\n"
-  printf "  ollamaScript -serve|-se:                   Starts ollama service with info in current shell.\n"
-  printf "  ollamaScript -stop|-st:                    Stops ollama service.\n"
+  printf "  ollamaScript -prompt|-p <configFile.conf>:      Writes a given message to llm using the configFile.\n"
+  printf "  ollamaScript -promptName|-pn <configFile.conf>: Writes a given message to given llm using the configFile.\n"
+  printf "  ollamaScript -start|-s:                         Starts ollama service.\n"
+  printf "  ollamaScript -serve|-se:                        Starts ollama service with info in current shell.\n"
+  printf "  ollamaScript -stop|-st:                         Stops ollama service.\n"
 elif [ $1 == "-prompt" ] || [ $1 == "-p" ]
 then
   RUNNING=$(pgrep ollama)
@@ -18,8 +19,31 @@ then
       read -rp "Prompt: " PROMPT
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
+      SYSTEM=${SYSTEM//\\/\\\\}
+      SYSYEM=${SYSTEM//'"'/'\"'}
       printf 'sending %s\n' "${PROMPT@Q}"
-      RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","PROMPT":"'"$PROMPT"'"}' \
+      RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
+                    -X POST http://localhost:11434/api/generate | jq -r '.response')
+      printf '%s\n' "$RESPONSE"
+    else
+      printf "ConfigFile not found."
+    fi
+  else
+    printf "Ollama service is not running.\n Use -s to start service.\n"
+  fi
+elif [ $1 == "-promptName" ] || [ $1 == "-pn" ]
+then
+  RUNNING=$(pgrep ollama)
+  if [[ $RUNNING != "" ]]
+  then
+    if [ -f $3 ]
+    then
+      source $3
+      read -rp "Prompt: " PROMPT
+      PROMPT=${PROMPT//\\/\\\\}
+      PROMPT=${PROMPT//'"'/'\"'}
+      printf 'sending %s\n' "${PROMPT@Q}"
+      RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$2'","PROMPT":"'"$PROMPT"'"}' \
                     -X POST http://localhost:11434/api/generate | jq -r '.response')
       printf '%s\n' "$RESPONSE"
     else
