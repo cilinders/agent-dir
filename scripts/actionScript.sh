@@ -4,6 +4,7 @@
 
 #AFTER: GOAL REACHED?
 
+#TODO: something goes wrong in the pipeline when getting here.
 CREATE_STRUCTURE() {
   IFS=' ' read -d '' -ra COMPONENTS <<< "$DATA"
   declare -a STRUCTURE_PATH=()
@@ -21,10 +22,12 @@ CREATE_STRUCTURE() {
     then
       ((NESTED--))
       unset STRUCTURE_PATH[-1]
+      #printf " %s " "${STRUCTURE_PATH[*]}"
     elif [[ "${COMPONENTS[$j]}" =~ "." ]]
     then
       CURRENT_PATH=""
       for p in "${STRUCTURE_PATH[@]}"
+      #for ((k = 0; k < $NESTED; ++k))
       do
         CURRENT_PATH+="$p/"
       done
@@ -33,10 +36,16 @@ CREATE_STRUCTURE() {
     else
       if ! [[ "${COMPONENTS[$j]}" =~ "}" ]]
       then
+        CURRENT_PATH=""
+        for p in "${STRUCTURE_PATH[@]}"
+        do
+          CURRENT_PATH+="$p/"
+        done
         printf " -> mkdir %s" "$CURRENT_PATH"
         printf "%s " "${COMPONENTS[$j]}"
       fi
     fi
+    printf " %s " "$NESTED"
     printf "\n"
   done
 }
@@ -109,7 +118,7 @@ then
     #TODO: devide action into steps
     #STEP_ACTION "${ACTIONS[$i]}"
   #done
-  STEP_ACTION "${ACTIONS[2]}"
+  STEP_ACTION "${ACTIONS[1]}"
 else
   printf "Action file not found\n"
 fi
