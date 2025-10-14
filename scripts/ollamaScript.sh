@@ -6,9 +6,12 @@ then
   printf "  ollamaScript -prompt|-p <configFile.conf> <modelConfig.conf>:      Writes a given message to llm using the configFile.\n"
   printf "  ollamaScript -promptFile|-pf <configFile.conf> <modelConfig.conf>\n"
   printf "                                       <promptFile.file>:            Writes a given message from file to llm using the configFile.\n"
+  printf "  ollamaScript -promptVar|-pv <configFile.conf> <modelConfig>\n"
+  printf "                              <prompt>                               Writes a given var message to llm using the configFile.\n"
   printf "  ollamaScript -promptName|-pn <configFile.conf>:                    Writes a given message to given llm using the configFile.\n"
   printf "  ollamaScript -start|-s:                                            Starts ollama service.\n"
   printf "  ollamaScript -serve|-se:                                           Starts ollama service with info in current shell.\n"
+  printf "  ollamaScript -serveVerbose|-seb:                                   Starts ollama servive with verbose info in current shell.\n"
   printf "  ollamaScript -stop|-st:                                            Stops ollama service.\n"
 elif [ $1 == "-promptFile" ] || [ $1 == "-pf" ]
 then
@@ -25,11 +28,14 @@ then
         PROMPT+="$line\n"
       done < "$4"
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
+      PROMPT=$(echo "$PROMPT" | tr -d '\t')
+#      printf "%s\n" "$PROMPT"
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
+#      printf "%s\n" "$PROMPT"
       SYSTEM=${SYSTEM//\\/\\\\}
       SYSYEM=${SYSTEM//'"'/'\"'}
-#      printf "sending %s\n" "$PROMPT"
+#      printf "sending %s\n" "${PROMPT@Q}"
       RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
                     -X POST http://localhost:11434/api/generate | jq -r '.response')
       printf '%s\n' "$RESPONSE"
@@ -39,7 +45,22 @@ then
   else
     printf "Ollama service is not running.\n Use -s to start service.\n"
   fi
-elif [ $1 == "-prompt" ] || [ $1 == "-p" ]
+elif [[ $1 == "-promptVar" ]] || [[ $1 == "-pv" ]]
+then
+  if [[ -f $2 ]] || [[ -f $3 ]]
+  then
+    source $2
+    source $3
+    PROMPT="$4"
+    PROMPT=${PROMPT//\\/\\\\}
+    PROMPT=${PROMPT//'"'/'\"'}
+    RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
+                  -X POST http://localhost:11434/api/generate | jq -r '.response')
+    printf "%s\n" "$RESPONSE"
+  else
+    printf "ConfigFile or modelConfigFile not found.\n"
+  fi
+elif [[ $1 == "-prompt" ]] || [[ $1 == "-p" ]]
 then
   RUNNING=$(pgrep ollama)
   if [[ $RUNNING != "" ]]
@@ -63,6 +84,39 @@ then
   else
     printf "Ollama service is not running.\n Use -s to start service.\n"
   fi
+elif [[ $1 == "-promptFileJson" ]] || [[ $1 == "-pfj" ]]
+then
+  RUNNING=$(pgrep ollama)
+  if [[ $RUNNING != "" ]]
+  then
+    if [[ -f $3 ]]
+    then
+      source $2
+      source $3
+      PROMPT=""
+      while IFS='' read -e -r line; do
+        PROMPT+="$line\n"
+      done < "$4"
+      PROMPT=$(echo "$PROMPT" | tr -d '\r')
+      PROMPT=$(echo "$PROMPT" | tr -d '\t')
+      PROMPT=${PROMPT//\\/\\\\}
+      PROMPT=${PROMPT//'"'/'\"'}
+      SYSTEM=${SYSTEM//\\/\\\\}
+      SYSTEM=${SYSTEM//'"'/'\"'}
+      RESPONSE=$(curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d '{' \
+        '"model":"'$OLLAMA_MODEL'",' \
+        '"stream":false,' \
+        '"temperature":"'"$TEMPERATURE"'",' \
+        '"system:"'"$SYSTEM"'",' \
+        '"prompt":"'"$PROMPT"'"' \
+        '"format": "json" }' | jq -r '.response')
+      printf '%s\n' "$RESPONSE"
+    else
+      printf "ConfigFile not found.\n"
+    fi
+  else
+    printf "Ollama service is not running.\n Use -s to start service.\n"
+  fi
 elif [ $1 == "-promptName" ] || [ $1 == "-pn" ]
 then
   RUNNING=$(pgrep ollama)
@@ -79,19 +133,22 @@ then
                     -X POST http://localhost:11434/api/generate | jq -r '.response')
       printf '%s\n' "$RESPONSE"
     else
-      printf "ConfigFile not found."
+      printf "ConfigFile not found.\n"
     fi
   else
     printf "Ollama service is not running.\n Use -s to start service.\n"
   fi
-elif [ $1 == "-start" ] || [ $1 == "-s" ]
+elif [[ $1 == "-start" ]] || [[ $1 == "-s" ]]
 then
   ollama serve &>/dev/null &
   printf "Started\n"
-elif [ $1 == "-serve" ] || [ $1 == "-se" ]
+elif [[ $1 == "-serve" ]] || [[ $1 == "-se" ]]
 then
   ollama serve
-elif [ $1 == "-stop" ] || [ $1 == "-st" ]
+elif [[ $1 == "-serveVerbose" ]] || [[ $1 == "-seb" ]]
+then
+  OLLAMA_DEBUG=1 ollama serve
+elif [[ $1 == "-stop" ]] || [[ $1 == "-st" ]]
 then
   sudo kill $(pgrep ollama)
 fi

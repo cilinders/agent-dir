@@ -1,0 +1,101 @@
+Find the codeblock for the following file: ./app/controllers/AuthController.php
+
+```
+#1
+Implemented email and password authentication for user registration.
+tree 1e5f9d6
+├── app/
+│   ├── controllers/
+│   │   └── AuthController.php
+│   ├── models/
+│   │   └── User.php
+│   ├── repositories/
+│   │   └── UserRepository.php
+│   ├── services/
+│   │   └── AuthService.php
+│   └── utils/
+│       └── PasswordHasher.php
+// AuthController.php
+namespace App\Controllers;
+use Illuminate\Http\Request;
+use App\Services\AuthService;
+class AuthController extends Controller
+{
+    public function register(Request $request)
+    {
+        $userService = new AuthService();
+        try {
+            $user = $userService->createUser($request->all());
+            return response()->json(['message' => 'User created successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+}
+// test/RegisterUserTest.php
+namespace Tests\Unit\Auth;
+use TestCase;
+use Illuminate\Http\Request;
+use App\Services\AuthService;
+use Mockery\MockInterface;
+class RegisterUserTest extends TestCase
+{
+    public function testRegisterUser()
+    {
+        // Arrange
+        $request = new Request();
+        $request->merge(['email' => 'user@example.com', 'password' => 'password']);
+        
+        $userService = new AuthService();
+        
+        // Act
+        $result = $userService->createUser($request->all());
+        
+        // Assert
+        $this->assertNotNull($result);
+    }
+}
+// commit message:
+"Implemented email and password authentication for user registration"
+```
+
+```php
+namespace App\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\AuthService;
+
+class AuthController extends Controller
+{
+    public function register(Request $request)
+    {
+        $userService = new AuthService();
+        try {
+            $user = $userService->createUser($request->all());
+            return response()->json(['message' => 'User created successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+}
+```
+```php
+namespace App\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\AuthService;
+
+class AuthController extends Controller
+{
+    public function register(Request $request)
+    {
+        $userService = new AuthService();
+        try {
+            $user = $userService->createUser($request->all());
+            return response()->json(['message' => 'User created successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+}
+```

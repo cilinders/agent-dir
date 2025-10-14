@@ -10,11 +10,13 @@ elif [[ $1 == "-g" ]]
 then
   if [[ -f $2 ]] || [[ -f $3 ]]
   then
-    #TODO: source llmscript; tag, llmconfig, modelconfig
+    #TODO: HANDLE designfile being read!!
+    #TODO: splitting into 1 line does not work
+    #TODO: removing \r doesnt work
     source $2
     $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3 > $RAW_ISSUE_FILE
   else
-    printf "ConfigFile or designFile not found."
+    printf "ConfigFile or designFile not found.\n"
   fi
 elif [[ $1 == "-fo" ]]
 then

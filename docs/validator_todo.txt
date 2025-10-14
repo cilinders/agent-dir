@@ -1,0 +1,13 @@
+validate -> 
+						variance output:|	strict output:|	done:| |
+1. design document		|	X			|				  |	x|	 | |
+2. issues				|	x			|				  | x|   | |
+3. commit				|	x			|	x			  |	x|	 |
+	3.1 structure tree	|	x			|	X			  |	x|	 |
+        |
+        V
+4. formatted			|				|	X			  |		|
+	4.1 file structs	|				|	X			  |     |
+    3.2 ?file paths?	|	X			|	x			  |		|
+	3.3 codeblocks		|				|	X			  |		|
+improve after validation ->

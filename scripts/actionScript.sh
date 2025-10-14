@@ -118,7 +118,7 @@ then
     #TODO: devide action into steps
     #STEP_ACTION "${ACTIONS[$i]}"
   #done
-  STEP_ACTION "${ACTIONS[1]}"
+  STEP_ACTION "${ACTIONS[0]}"
 else
   printf "Action file not found\n"
 fi
