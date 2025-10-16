@@ -7,7 +7,8 @@ then
   printf "  validateScript -vi <configFile.conf> <issueFile.txt>       : validates issuefiles using llm.\n"
   printf "  validateScript -vc <configFile.conf> <commitFile.txt>      : validates commitfiles using llm.\n"
   printf "  validateScript -vct <configFile.conf> <commitFile.txt>     : validates trees from commitfiles using llm.\n"
-  printf "  validateScript -vfs\n"
+  printf "  validateScript -vfs <formatFile.txt>                       : validates file structure string.\n"
+  printf "  validateScript -vfp <formatFile.txt>                       : validates file paths in structure string.\n"
 elif [[ $1 == "-vdd" ]]
 then
   if [[ -f $2 ]]
@@ -99,5 +100,123 @@ then
     fi
   else
     printf "ConfigFile not found.\n"
+  fi
+elif [[ $1 == "-vfs" ]]
+then
+  if [[ -f $2 ]]
+  then
+    # TDOD: clean printf
+    # create,structure,. {... TODO: -> . { ...
+    IFS=$'\n' read -d '' -r LINE < $2
+    #printf "%s\n" "${LINE[0]}"
+    IFS=' ' read -r PRETEXT STR_STRING <<< ${LINE[0]}
+    #printf "%s\n" "$PRETEXT"
+    # .] {...
+    #printf "%s\n" "$STR_STRING"
+    IFS=' ' read -r -a STR_ARR <<< "$STR_STRING"
+    #TODO: validate rules ->etc. after 'x.x' no '{' etc
+    N_OPEN=0
+    N_CLOSE=0
+    E_LAST=""
+    VALID="true"
+    for s in ${STR_STRING[@]}; do
+      #printf "%s\n" "$s"
+      if [[ $s == "{" ]]
+      then
+        ((N_OPEN++))
+        if [[ "$E_LAST" =~ "." ]]
+        then
+          VALID="false"
+          break
+        fi
+      fi
+      if [[ $s == "}" ]]
+      then
+        ((N_CLOSE++))
+      fi
+      E_LAST="$s"
+    done
+    #printf "open: %s\nclose: %s\n" "$N_OPEN" "$N_CLOSE"
+    if [[ "$VALID" == "true" ]] && ! [[ "$N_OPEN" == "$N_CLOSE" ]]
+    then
+      VALID="false"
+    fi
+    printf "%s\n" "$VALID"
+  else
+    printf "Structure file not found.\n"
+  fi
+elif [[ $1 == "-vfp" ]]
+then
+  if [[ -f $2 ]]
+  then
+    # create,structure,. {...
+    IFS=$'\n' read -d '' -r LINE < $2
+    printf "%s\n" "${LINE[0]}"
+    IFS=' ' read -r PRETEXT STR_STRING <<< ${LINE[0]}
+    printf "%s\n" "$PRETEXT"
+    # .] {...
+    printf "%s\n" "$STR_STRING"
+    IFS=' ' read -r -a COMPONENTS <<< "$STR_STRING"
+    #TODO: validate paths -> ./file/to/path
+    declare -a STRUCTURE_PATH=()
+    #TODO: . is split from the path and manually added here
+    STRUCTURE_PATH+="."
+    #TODO: i0 is ignored which should be "{"
+    NESTED=0
+    for ((i = 1; i < ${#COMPONENTS[@]}; ++i))
+    do
+      #printf "$i %s" "${COMPONENTS[$i]}"
+      if [[ "${COMPONENTS[$i]}" == "{" ]]
+      then
+        ((NESTED++))
+        LAST_INDEX=$i
+        ((LAST_INDEX--))
+        STRUCTURE_PATH+=("${COMPONENTS[$LAST_INDEX]}")
+      elif [[ "${COMPONENTS[$i]}" == "}" ]]
+      then
+        ((NESTED--))
+        unset STRUCTURE_PATH[-1]
+      elif [[ "${COMPONENTS[$i]}" =~ "." ]]
+      then
+        CURRENT_PATH=""
+        for p in "${STRUCTURE_PATH[@]}"
+        do
+          CURRENT_PATH+="$p/"
+        done
+        printf " -> touch %s" "$CURRENT_PATH"
+        #TODO: validate path
+        printf "%s " "${COMPONENTS[$i]}"
+      else
+        if ! [[ "${COMPONENTS[$i]}" =~ "}" ]]
+        then
+          CURRENT_PATH=""
+          for p in "${STRUCTURE_PATH[@]}"
+          do
+            CURRENT_PATH+="$p/"
+          done
+          printf " -> mkdir %s" "$CURRENT_PATH"
+          printf "%s " "${COMPONENTS[$i]}"
+          #TODO: validate path
+          # ./dir[/sub]^*
+          if ! [[ "${CURRENT_PATH:0:2}" == "./" ]]
+          then
+            printf "./ false"
+          fi
+          if [[ "$CURRENT_PATH" =~ "//" ]]
+          then
+            printf "// false"
+          fi
+          #TODO: '-' only if its first after ^
+          if [[ "${CURRENT_PATH:2}" =~ [^-a-zA-Z0-9_/] ]] || [[ "${COMPONENTS[$i]}" =~ [^-a-zA-Z0-9_/] ]]
+          then
+            printf "special false"
+          fi
+        fi
+      fi
+      printf " %s " "$NESTED"
+      printf "\n"
+    done
+  else
+    printf "Structure file not found.\n"
   fi
 fi
