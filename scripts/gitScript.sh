@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ $# == 0 ]
+if [[ $# == 0 ]]
 then
   echo "Usage: "
-  echo "  gitScript -lazy|-lz  : commits and pushes all changes for lazy eod"
-elif [ $1 == "-lazy" ] || [ $1 == "-lz" ]
+  echo "  gitScript -lazy|-lz  : commits and pushes all changes for lazy eod\n"
+elif [[ $1 == "-lazy" ]] || [[ $1 == "-lz" ]]
 then
-  if [ $# == 1 ]
+  if [[ $# == 1 ]]
   then
     EOD_TIME="$(date +%Y-%m-%d--%H-%M-%S)"
     echo "commit and pushing to LAZY$EOD_TIME"
@@ -19,4 +19,16 @@ then
     git push -u origin LAZY$EOD_TIME
     echo "lazydog"
   fi
+elif [[ $1 == "-rpush" ]]
+then
+  printf "TODO: make pushscript for ez remote desktop work.\n"
+  git switch -c REMOTE_EZ
+  git add --all
+  git commit -m "REMOTE_EZ push"
+  sh ./sshScript.sh -g
+  git push -u origin REMOTE_EZ
+  printf "REMOTE_EZ push\n"
+elif [[ $1 == "-rpull" ]]
+then
+  git pull https://github.com/cilinders/agent-dir.git REMOTE_EZ
 fi
