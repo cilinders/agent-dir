@@ -236,7 +236,36 @@ then
   if [[ -f $2 ]]
   then
     # create,file, ???
-    printf "TODO:\n"
+    # Xfile_nameX\n???
+    IFS=$'\n' read -d '' -ra LINES < $2
+    touch TEMP_codeblock.txt
+    declare -a CODE_LINES=()
+    START_BLOCK=false
+    for ((i = 1; i < ${#LINES[@]}; ++i))
+    do
+      if $START_BLOCK
+      then
+        if [[ "${LINES[$i]}" =~ "\`\`\`" ]]
+        then
+          break
+        else
+          printf "%s\n" "${LINES[$i]}"
+        fi
+      fi
+      if ! $START_BLOCK
+      then
+        if [[ "${LINES[$i]}" =~ "\`\`\`" ]]
+        then
+          START_BLOCK=true
+          #printf "start\n"
+        else
+          #printf "skip\n"
+        fi
+      fi
+    done
+    #TODO: this currently takes a bad formatted block from llm
+    cp TEMP_codeblock.txt $2
   fi
+  else
   printf "Codeblock file not found.\n"
 fi
