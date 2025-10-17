@@ -90,8 +90,13 @@ then
           CURRENT_PATH+="$p/"
         done
         #TODO: FILE GOES HERE
-        printf "%s%s\n" "$CURRENT_PATH" "${STR_ARR[$i]}"
+        #printf "%s%s\n" "$CURRENT_PATH" "${STR_ARR[$i]}"
+        FILES+=("$CURRENT_PATH${STR_ARR[$i]}")
       fi
+    done
+    for f in "${FILES[@]}"
+    do
+      printf "%s\n" "$f"
     done
   else
     printf "Config file not found.\n"
