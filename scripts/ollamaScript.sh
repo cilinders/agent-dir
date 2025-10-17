@@ -24,7 +24,7 @@ then
       source $3
       PROMPT=""
       while IFS='' read -e -r line; do
-#        printf "%s\n" "$line"
+        printf "%s\n" "$line"
         PROMPT+="$line\n"
       done < "$4"
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
