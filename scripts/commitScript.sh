@@ -65,7 +65,7 @@ then
     #FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
     # should have made temp_structure.txt=$TEMP_FORMAT_FILE
     IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
-    printf "%s\n" "$STRUCTURE"
+    #printf "%s\n" "$STRUCTURE"
     declare -a FILES=()
     IFS=' ' read -r -a STR_ARR <<< $STRUCTURE
     declare -a STRUCTURE_PATH=()
