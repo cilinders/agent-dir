@@ -62,7 +62,11 @@ then
   then
     source $2
     #TODO: get all file_paths from somewhere
-    FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
-    printf "%s\n" "$FILE_PATHS"
+    #FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
+    # should have made temp_structure.txt=$TEMP_FORMAT_FILE
+    IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
+    printf "%s\n" "$STRUCTURE"
+  else
+    printf "Config file not found.\n"
   fi
 fi
