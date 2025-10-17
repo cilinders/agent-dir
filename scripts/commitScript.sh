@@ -66,6 +66,33 @@ then
     # should have made temp_structure.txt=$TEMP_FORMAT_FILE
     IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
     printf "%s\n" "$STRUCTURE"
+    declare -a FILES=()
+    IFS=' ' read -r -a STR_ARR <<< $STRUCTURE
+    declare -a STRUCTURE_PATH=()
+    NESTED=0
+    for ((i = 0; i < ${#STR_ARR[@]}; ++i))
+    do
+      if [[ "${STR_ARR[$i]}" == "{" ]]
+      then
+        ((NESTED++))
+        LAST_INDEX=$i
+        ((LAST_INDEX--))
+        STRUCTURE_PATH+=("${STR_ARR[$LAST_INDEX]}")
+      elif [[ "${STR_ARR[$i]}" == "}" ]]
+      then
+        ((NESTED--))
+        unset STRUCTURE_PATH[-1]
+      elif [[ "${STR_ARR[$i]}" =~ "." ]]
+      then
+        CURRENT_PATH=""
+        for p in "${STRUCTURE_PATH[@]}"
+        do
+          CURRENT_PATH+="$p/"
+        done
+        #TODO: FILE GOES HERE
+        printf "%s%s\n" "$CURRENT_PATH" "${STR_ARR[$i]}"
+      fi
+    done
   else
     printf "Config file not found.\n"
   fi
