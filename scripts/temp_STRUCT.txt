@@ -1,101 +1,102 @@
-Find the codeblock for the following file: ./app/controllers/AuthController.php
+Find the codeblock for the following file: ./app/controllers/profiles_controller.rb
 
+Issue Title: User Profile Management
+Solution Description: To implement user profile management, we will create a new directory named `user_profiles` in the root of our project. This directory will contain all the necessary files and data for managing user profiles. We will also create a new file called `profile.rb` in this directory to handle the logic for creating, updating, and deleting user profiles.
+Files Involved:
 ```
-#1
-Implemented email and password authentication for user registration.
-tree 1e5f9d6
-├── app/
-│   ├── controllers/
-│   │   └── AuthController.php
-│   ├── models/
-│   │   └── User.php
-│   ├── repositories/
-│   │   └── UserRepository.php
-│   ├── services/
-│   │   └── AuthService.php
-│   └── utils/
-│       └── PasswordHasher.php
-// AuthController.php
-namespace App\Controllers;
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-class AuthController extends Controller
-{
-    public function register(Request $request)
-    {
-        $userService = new AuthService();
-        try {
-            $user = $userService->createUser($request->all());
-            return response()->json(['message' => 'User created successfully'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
-    }
-}
-// test/RegisterUserTest.php
-namespace Tests\Unit\Auth;
-use TestCase;
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-use Mockery\MockInterface;
-class RegisterUserTest extends TestCase
-{
-    public function testRegisterUser()
-    {
-        // Arrange
-        $request = new Request();
-        $request->merge(['email' => 'user@example.com', 'password' => 'password']);
-        
-        $userService = new AuthService();
-        
-        // Act
-        $result = $userService->createUser($request->all());
-        
-        // Assert
-        $this->assertNotNull($result);
-    }
-}
-// commit message:
-"Implemented email and password authentication for user registration"
+├── app
+│   ├── controllers
+│   │   └── profiles_controller.rb
+│   ├── models
+│   │   └── profile.rb
+├───┼── views
+                 └── profiles
+│   │ └── index.html.erb
+└── user_profiles
+    └── profile.rb
 ```
-
-```php
-namespace App\Controllers;
-
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-
-class AuthController extends Controller
-{
-    public function register(Request $request)
-    {
-        $userService = new AuthService();
-        try {
-            $user = $userService->createUser($request->all());
-            return response()->json(['message' => 'User created successfully'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
-    }
-}
+Code:
+```ruby
+# app/controllers/profiles_controller.rb
+class ProfilesController < ApplicationController
+  def show
+    @profile = Profile.find(params[:id])
+  end
+  def create
+    @profile = Profile.new(profile_params)
+    if @profile.save
+      redirect_to @profile, notice: "Profile was successfully created."
+    else
+      render :new
+    end
+  end
+  def update
+    @profile = Profile.find(params[:id])
+    if @profile.update(profile_params)
+      redirect_to @profile, notice: "Profile was successfully updated."
+    else
+      render :edit
+    end
+  end
+  def destroy
+    @profile = Profile.find(params[:id])
+    @profile.destroy
+    redirect_to profiles_path, notice: "Profile was successfully destroyed."
+  end
+  private
+  def profile_params
+    params.require(:profile).permit(:name, :age, :gender)
+  end
+end
 ```
-```php
-namespace App\Controllers;
-
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-
-class AuthController extends Controller
-{
-    public function register(Request $request)
-    {
-        $userService = new AuthService();
-        try {
-            $user = $userService->createUser($request->all());
-            return response()->json(['message' => 'User created successfully'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
-    }
-}
+```ruby
+# app/models/profile.rb
+class Profile < ApplicationRecord
+  validates :name, presence: true
+  validates :age, numericality: { only_integer: true }
+  validates :gender, inclusion: { in: %w[male female] }
+end
 ```
+Test Case:
+```ruby
+# test/controllers/profiles_controller_test.rb
+require 'test_helper'
+class ProfilesControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @profile = profiles(:one)
+  end
+  test "should get index" do
+    get profiles_url
+    assert_response :success
+  end
+  test "should get new" do
+    get new_profile_url
+    assert_response :success
+  end
+  test "should create profile" do
+    assert_difference('Profile.count') do
+      post profiles_url, params: { profile: { name: @profile.name, age: @profile.age, gender: @profile.gender } }
+    end
+    assert_redirected_to profile_path(Profile.last)
+  end
+  test "should show profile" do
+    get profile_url(@profile)
+    assert_response :success
+  end
+  test "should get edit" do
+    get edit_profile_url(@profile)
+    assert_response :success
+  end
+  test "should update profile" do
+    patch profile_url(@profile), params: { profile: { name: @profile.name, age: @profile.age, gender: @profile.gender } }
+    assert_redirected_to profile_path(@profile)
+  end
+  test "should destroy profile" do
+    assert_difference('Profile.count', -1) do
+      delete profile_url(@profile)
+    end
+    assert_redirected_to profiles_path
+  end
+end
+```
+Commit Message: Added user profile management functionality to the app.

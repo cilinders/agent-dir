@@ -9,6 +9,7 @@ then
   printf "  validateScript -vct <configFile.conf> <commitFile.txt>     : validates trees from commitfiles using llm.\n"
   printf "  validateScript -vfs <formatFile.txt>                       : validates file structure string.\n"
   printf "  validateScript -vfp <formatFile.txt>                       : validates file paths in structure string.\n"
+  printf "  validateScript -vfc <formatFile.txt>                       : validates codeblocks in create string.\n"
 elif [[ $1 == "-vdd" ]]
 then
   if [[ -f $2 ]]
@@ -184,8 +185,20 @@ then
           CURRENT_PATH+="$p/"
         done
         printf " -> touch %s" "$CURRENT_PATH"
-        #TODO: validate path
         printf "%s " "${COMPONENTS[$i]}"
+        # TODO: just checks contains not placement or count eg file.. possible
+        if ! [[ "${CURRENT_PATH:0:2}" == "./" ]]
+        then
+          printf "./ false"
+        fi
+        if [[ "$CURRENT_PATH" =~ "//" ]]
+        then
+          printf "// false"
+        fi
+        if [[ "${CURRENT_PATH:2}" =~ [^-a-zA-Z0-9_/] ]] || [[ "${COMPONENTS[$i]}" =~ [^-a-zA-Z0-9_.] ]]
+        then
+          printf "special false"
+        fi
       else
         if ! [[ "${COMPONENTS[$i]}" =~ "}" ]]
         then
@@ -196,7 +209,6 @@ then
           done
           printf " -> mkdir %s" "$CURRENT_PATH"
           printf "%s " "${COMPONENTS[$i]}"
-          #TODO: validate path
           # ./dir[/sub]^*
           if ! [[ "${CURRENT_PATH:0:2}" == "./" ]]
           then
@@ -219,4 +231,12 @@ then
   else
     printf "Structure file not found.\n"
   fi
+elif [[ $1 == "-vfc" ]]
+then
+  if [[ -f $2 ]]
+  then
+    # create,file, ???
+    printf "TODO:\n"
+  fi
+  printf "Codeblock file not found.\n"
 fi

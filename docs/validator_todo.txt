@@ -7,7 +7,7 @@ validate ->
         |
         V
 4. formatted			|				|	X			  |	|x 	 |
-	4.1 file structs	|				|	X			  |     |
-    3.2 ?file paths?	|	X			|	x			  |		|
-	3.3 codeblocks		|				|	X			  |		|
+	4.1 file structs	|				|	X			  | |x   |
+    3.2 ?file paths?	|	X			|	x			  |	|x 	 | todo
+	3.3 codeblocks		|				|	X			  |	|	 |
 improve after validation ->
