@@ -30,5 +30,6 @@ then
   printf "REMOTE_EZ push\n"
 elif [[ $1 == "-rpull" ]]
 then
+  git stash
   git pull https://github.com/cilinders/agent-dir.git REMOTE_EZ
 fi
