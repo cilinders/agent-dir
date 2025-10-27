@@ -103,7 +103,7 @@ then
       if ! [[ $f == "." ]]
       then
         FORMATTED_CODE=$(./commitScript.sh -fp $FS_CONF $f)
-        printf "%s -> %s\n" "$f" "$FORMATTED_CODE"
+        printf "%s -> %s\n" "$f" "$FORMATTED_CODE" > $TEMP_CODE_FORMATTED
       fi
     done
   else
