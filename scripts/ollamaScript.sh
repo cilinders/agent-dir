@@ -36,7 +36,7 @@ then
       SYSTEM=${SYSTEM//\\/\\\\}
       SYSYEM=${SYSTEM//'"'/'\"'}
 #      printf "sending %s\n" "${PROMPT@Q}"
-      RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
+      RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
                     -X POST http://localhost:11434/api/generate | jq -r '.response')
       printf '%s\n' "$RESPONSE"
     else
