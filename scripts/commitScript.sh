@@ -98,10 +98,12 @@ then
     printf "" > $TEMP_CODE_FORMATTED
     for f in "${FILES[@]}"
     do
-      #TODO: find blocks for files in files
       printf "%s\n" "$f"
       if ! [[ $f == "." ]]
       then
+        #TODO validate commit contains codeblocks for given file
+        
+        if [[  ]]
         FORMATTED_CODE=$(./commitScript.sh -fp $FS_CONF $f)
         printf "%s\n" "$FORMATTED_CODE"
         printf "%s -> %s\n" "$f" "$FORMATTED_CODE" >> $TEMP_CODE_FORMATTED

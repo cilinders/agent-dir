@@ -10,6 +10,7 @@ then
   printf "  validateScript -vfs <formatFile.txt>                       : validates file structure string.\n"
   printf "  validateScript -vfp <formatFile.txt>                       : validates file paths in structure string.\n"
   printf "  validateScript -vfc <formatFile.txt>                       : validates codeblocks in create string.\n"
+  printf "  validateScript -vfic <commitFile.txt> <filepath>           : validates files codeblock exists in commit.\n"
 elif [[ $1 == "-vdd" ]]
 then
   if [[ -f $2 ]]
@@ -267,5 +268,24 @@ then
     cp TEMP_codeblock.txt $2
   fi
   else
-  printf "Codeblock file not found.\n"
+    printf "Codeblock file not found.\n"
+elif [[ $1 == "-vfic" ]]
+then
+  if [[ -f $2 ]] || [[ -f $3 ]]
+  then
+    source $2
+    touch TEMP_prompt.txt
+    printf "Does the following text contain the codeblock for %s:\n" "$4" > TEMP_prompt.txt
+    IFS=$'\n' read -d '' -r -a LINES < $3
+    for LINE in "${LINES[@]}"; do
+      printf "%s\n" "$LINE" >> TEMP_prompt.txt
+    done
+    #./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/validateCommitFileSrc.conf TEMP_prompt.txt
+    RESPONSE=$($G_VALIDATE_SCRIPT $G_TAGS $G_VALIDATE_CONF $G_MODEL_CONF TEMP_prompt.txt)
+    printf "%s\n" "$RESPONSE"
+    rm TEMP_prompt.txt
+    printf ""
+  else
+    printf "Config or commit file not found.\n"
+  fi
 fi
