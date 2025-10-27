@@ -95,10 +95,16 @@ then
         FILES+=("$CURRENT_PATH${STR_ARR[$i]}")
       fi
     done
+    printf "" > $TEMP_CODE_FORMATTED
     for f in "${FILES[@]}"
     do
       #TODO: find blocks for files in files
       printf "%s\n" "$f"
+      if ! [[ $f == "." ]]
+      then
+        FORMATTED_CODE=$(./commitScript.sh -fp $FS_CONF $f)
+        printf "%s -> %s\n" "$f" "$FORMATTED_CODE"
+      fi
     done
   else
     printf "Config file not found.\n"
