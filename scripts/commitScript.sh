@@ -62,9 +62,10 @@ then
   then
     source $2
     #TODO: get all file_paths from somewhere
-    #FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
+    FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
     # should have made temp_structure.txt=$TEMP_FORMAT_FILE
-    IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
+    #IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
+    IFS='' read -d '' -r STRUCTURE < $FILE_PATHS
     #printf "%s\n" "$STRUCTURE"
     declare -a FILES=()
     IFS=' ' read -r -a STR_ARR <<< $STRUCTURE
@@ -89,13 +90,13 @@ then
         do
           CURRENT_PATH+="$p/"
         done
-        #TODO: FILE GOES HERE
         #printf "%s%s\n" "$CURRENT_PATH" "${STR_ARR[$i]}"
         FILES+=("$CURRENT_PATH${STR_ARR[$i]}")
       fi
     done
     for f in "${FILES[@]}"
     do
+      #TODO: find blocks for files in files
       printf "%s\n" "$f"
     done
   else
