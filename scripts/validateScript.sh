@@ -275,7 +275,7 @@ then
   then
     source $2
     touch TEMP_prompt.txt
-    printf "Does the following text contain the code changes for \`%s\`:\n" "$4" > TEMP_prompt.txt
+    printf "Does the following text contain the code changes for %s:\n" "$4" > TEMP_prompt.txt
     IFS=$'\n' read -d '' -r -a LINES < $3
     for LINE in "${LINES[@]}"; do
       printf "%s\n" "$LINE" >> TEMP_prompt.txt

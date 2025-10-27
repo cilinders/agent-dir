@@ -103,7 +103,7 @@ then
       then
         #TODO validate commit contains codeblocks for given file
         
-        if [[  ]]
+        #if [[  ]]
         FORMATTED_CODE=$(./commitScript.sh -fp $FS_CONF $f)
         printf "%s\n" "$FORMATTED_CODE"
         printf "%s -> %s\n" "$f" "$FORMATTED_CODE" >> $TEMP_CODE_FORMATTED
