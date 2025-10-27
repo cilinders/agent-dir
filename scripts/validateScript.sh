@@ -266,9 +266,9 @@ then
     done
     #TODO: this currently takes a bad formatted block from llm
     cp TEMP_codeblock.txt $2
-  fi
   else
     printf "Codeblock file not found.\n"
+  fi
 elif [[ $1 == "-vfic" ]]
 then
   if [[ -f $2 ]] || [[ -f $3 ]]
@@ -284,7 +284,6 @@ then
     RESPONSE=$($G_VALIDATE_SCRIPT $G_TAGS $G_VALIDATE_CONF $G_MODEL_CONF TEMP_prompt.txt)
     printf "%s\n" "$RESPONSE"
     rm TEMP_prompt.txt
-    printf ""
   else
     printf "Config or commit file not found.\n"
   fi
