@@ -8,8 +8,11 @@ validate ->
         V
 4. formatted			|				|	X			  |	|x 	 |
 	4.1 file structs	|				|	X			  | |x   |
-    3.2 ?file paths?	|	X			|	x			  |	|x 	 | todo
-	3.3 codeblocks		|				|	X			  |	|	 |
+    3.2 ?file paths?	|	X			|	x			  |	|x 	 |
+	3.3 codeblocks		|	x			|	X			  |	|	 |
 ?BEFORE or AFTER improve after validation ->
 action ->
->>>>>>>commitScript -fpa <<<<<<<<<<<<<<<<<<<<
+
+TODO:
+rewrite commitGen -> now it has more "Affected files" than states in tree -> commitScript.sh
+rewrite codeblock validator -> validateScript.sh <- is needed after rewrite?
