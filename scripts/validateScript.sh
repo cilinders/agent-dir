@@ -259,14 +259,13 @@ then
         then
           START_BLOCK=true
           #printf "start\n"
-        else
+        #else
           #printf "skip\n"
         fi
       fi
     done
     #TODO: this currently takes a bad formatted block from llm
     cp TEMP_codeblock.txt $2
-  fi
   else
     printf "Codeblock file not found.\n"
   fi
