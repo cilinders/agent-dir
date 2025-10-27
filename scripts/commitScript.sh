@@ -31,7 +31,8 @@ then
       STRUCTURE=$(echo "$STRUCTURE" | tr -d '\t')
       STRUCTURE=$(echo "$STRUCTURE" | tr -d '\n')
 #      printf "create,structure,%s\n" "$STRUCTURE"
-      printf "create,structure,%s\n" "$STRUCTURE" > $TEMP_FORMAT_FILE
+#      printf "create,structure,%s\n" "$STRUCTURE" > $TEMP_FORMAT_FILE
+      printf "%s\n" "$STRUCTURE" > $TEMP_FORMAT_FILE
     else
       printf "tempCommitFile or tempFormatFile not found.\n"
     fi
@@ -62,10 +63,10 @@ then
   then
     source $2
     #TODO: get all file_paths from somewhere
-    FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
+    #FILE_PATHS=$(./commitScript.sh -fs $FS_CONF)
     # should have made temp_structure.txt=$TEMP_FORMAT_FILE
-    #IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
-    IFS='' read -d '' -r STRUCTURE < $FILE_PATHS
+    IFS='' read -d '' -r STRUCTURE < $TEMP_FORMAT_FILE
+    #IFS='' read -d '' -r STRUCTURE < $FILE_PATHS
     #printf "%s\n" "$STRUCTURE"
     declare -a FILES=()
     IFS=' ' read -r -a STR_ARR <<< $STRUCTURE
