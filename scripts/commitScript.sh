@@ -6,7 +6,7 @@ then
   printf "  commitScript -gi <configFile.conf> <issueFile.txt>   :  Generates commit from issuefile using llm.\n"
   printf "  commitScript -fs <configFile.conf>                   :  Formats structure for use with actionScript from commitFile.\n"
   printf "  commitScript -fp <configFile.txt> <file_path>        :  Returns files codeblock from commit using llm.\n"
-  printf "  commitScript -fpa <configFile.txt> <validated_struct>:  Formats all codeblocks from commit for use actionScript.\n"
+  printf "  commitScript -fpa <configFile.txt>                   :  Formats all codeblocks from commit for use actionScript.\n"
 elif [[ $1 == "-gi" ]]
 then
   if [[ -f $2 ]] || [[ -f $3 ]]
