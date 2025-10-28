@@ -34,7 +34,7 @@ then
     if [[ -f $PLAN_FILE ]]
     then
       PROMPT="Create a implementation using the following plan:\n"
-      while IFS='' read -e -r LINE; do
+      while IFS=$'\n' read -e -r LINE; do
         PROMPT+="$LINE\n"
       done < $PLAN_FILE
       printf "%s\n" "$PROMPT"
