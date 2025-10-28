@@ -26,12 +26,12 @@ then
     printf "" > TEMP_file.txt
     IFS=$'\n' read -d '' -r -a LINES < $ISSUE_FILE
     for LINE in "${LINES[@]}"; do
-      printf "%s\n" >> TEMP_file.txt
+      printf "%s\n" "$LINE" >> TEMP_file.txt
     done
     printf "\n" >> TEMP_file.txt
     IFS=$'\n' read -d '' -r -a LINES < $RESOLVED_TAKS
     for LINE in "${LINES[@]}"; do
-      printf "%s\n" >> TEMP_file.txt
+      printf "%s\n" "$LINE" >> TEMP_file.txt
     done
     $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_file.txt > $TEMP_COMMIT_FILE
   else
