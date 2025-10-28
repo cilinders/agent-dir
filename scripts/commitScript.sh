@@ -4,6 +4,7 @@ if [[ $# == 0 ]] || [[ $# -gt 4 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]
 then
   printf "Usage: \n"
   printf "  commitScript -gi <configFile.conf> <issueFile.txt>   :  Generates commit from issuefile using llm.\n"
+  printf "  commitScript -gic <configFile.conf>                  :  Generates commit from issuefile and codeblocks using llm.\n"
   printf "  commitScript -fs <configFile.conf>                   :  Formats structure for use with actionScript from commitFile.\n"
   printf "  commitScript -fp <configFile.txt> <file_path>        :  Returns files codeblock from commit using llm.\n"
   printf "  commitScript -fpa <configFile.txt>                   :  Formats all codeblocks from commit for use actionScript.\n"
@@ -15,6 +16,26 @@ then
     $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3 > $TEMP_COMMIT_FILE
   else
     printf "ConfigFile or issueFile not found.\n"
+  fi
+elif [[ $1 == "-gic" ]]
+then
+  if [[ -f $2 ]]
+  then
+    source $2
+    touch TEMP_file.txt
+    printf "" > TEMP_file.txt
+    IFS=$'\n' read -d '' -r -a LINES < $ISSUE_FILE
+    for LINE in "${LINES[@]}"; do
+      printf "%s\n" >> TEMP_file.txt
+    done
+    printf "\n" >> TEMP_file.txt
+    IFS=$'\n' read -d '' -r -a LINES < $RESOLVED_TAKS
+    for LINE in "${LINES[@]}"; do
+      printf "%s\n" >> TEMP_file.txt
+    done
+    $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_file.txt > $TEMP_COMMIT_FILE
+  else
+    printf "Config file not found.\n"
   fi
 elif [[ $1 == "-fs" ]]
 then
