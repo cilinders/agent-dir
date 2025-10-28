@@ -33,13 +33,15 @@ then
     source $2
     if [[ -f $PLAN_FILE ]]
     then
-      PROMPT="Create a implementation using the following plan:\n"
-      while IFS=$'\n' read -e -r LINE; do
-        PROMPT+="$LINE\n"
-      done < $PLAN_FILE
-      printf "%s\n" "$PROMPT"
-      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "'""$PROMPT""'")
+      touch TEMP_prompt.txt
+      printf "Create a implementation using the following plan:\n" > TEMP_prompt.txt
+      IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
+      for LINE in "${LINES[@]}"; do
+        printf "%s\n" "$LINE" >> TEMP_prompt.txt
+      done
+      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_prompt.txt)
       printf "%s\n" "$RESPONSE" > $TEMP_RESOLVED_FILE
+      rm TEMP_prompt.txt
     else
       printf "Plan file not found.\n"
     fi
