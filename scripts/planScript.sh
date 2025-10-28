@@ -42,7 +42,7 @@ then
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_prompt.txt)
       printf "%s\n" "$RESPONSE"
       printf "%s\n" "$RESPONSE" > $TEMP_RESOLVED_FILE
-      rm TEMP_prompt.txt
+      #rm TEMP_prompt.txt
     else
       printf "Plan file not found.\n"
     fi
