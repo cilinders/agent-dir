@@ -14,5 +14,11 @@ validate ->
 action ->
 
 TODO:
-rewrite commitGen -> now it has more "Affected files" than states in tree -> commitScript.sh
+rewrite commitGen -> commitScript.sh 
+	-> now it has more "Affected files" than states in tree
+	-> doesnt generate the stated affected file tree eg. 
+		Tree command:\n ```\n tree\n ```\n Code:\n
+	->  
 rewrite codeblock validator -> validateScript.sh <- is needed after rewrite?
+
+.. plan.md .. what will the ai do

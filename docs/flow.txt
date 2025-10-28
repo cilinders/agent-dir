@@ -1,0 +1,24 @@
+1. Generate design file from a given product idee promptfile 
+	./designScript.sh -f conf/designConfig.conf ../../output/1-recipe_program/docs/idee.txt
+		designConfig.conf
+			G_SCRIPT="./ollamaScript.sh"
+			G_SCRIPT_TAG="-pv"
+			G_LLM_CONF="conf/ollamaConfig_ollama3-1.conf"
+			G_MODEL_CONF="model/conf/designFormat.conf"
+			DESIGN_FILE="../../output/1-recipe_program/docs/design_doocument_raw_temp.txt"
+2. Generate issues from design file.
+	./issueScript.sh -g conf/issueConfig.conf ../../output/1-recipe_program/docs/design_doocument_raw_temp.txt
+		issueConfig.conf
+			G_SCRIPT="./ollamaScript.sh"
+			G_SCRIPT_TAG="-pf"
+			G_LLM_CONF="conf/ollamaConfig_ollama3-1.conf"
+			G_MODEL_CONF="model/conf/issueFormat.conf"
+			RAW_ISSUE_FILE="../../output/1-recipe_program/docs/raw_issues.txt"
+			ISSUE_FILE="../../output/1-recipe_program/docs/issues.txt"
+			TEMP_COMMIT_FILE="../../output/1-recipe_program/docs/temp_commit.txt"
+3. Format raw issue file into useable listed issue file
+	./issueScript.sh -fi conf/issueConfig.conf ../../output/1-recipe_program/docs/raw_issues.txt
+		issueConfig.conf
+			...
+4. Open 1 issue, popping it from the issue file into the open issue file
+	./issueScript.sh -fo conf/issueConfig.conf ../../output/1-recipe_program/docs/issues_open.txt
