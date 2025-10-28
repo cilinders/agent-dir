@@ -19,7 +19,7 @@ then
       done < $ISSUE_FILE
       printf "%s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
-      printf "%s\n" "$RESPONSE"
+      printf "%s\n" "$RESPONSE" > $PLAN_FILE
     else
       printf "Issue file not found.\n"
     fi
