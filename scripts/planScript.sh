@@ -38,7 +38,7 @@ then
       printf "" > $TEMP_RESOLVED_FILE
       IFS='' read -d '' -r -a LINES < $PLAN_FILE
       for LINE in "${LINES[@]}"; do
-        printf "%s\n" "$LINE"
+        printf "<%s\n>" "$LINE"
       done
     else
       printf "Plan file not found.\n"
