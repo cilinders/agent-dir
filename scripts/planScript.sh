@@ -34,7 +34,7 @@ then
     if [[ -f $PLAN_FILE ]]
     then
       touch TEMP_prompt.txt
-      printf "Create a implementation using the following plan:\n" > TEMP_prompt.txt
+      printf "Program the implementation using the following plan:\n" > TEMP_prompt.txt
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
       for LINE in "${LINES[@]}"; do
         printf "%s\n" "$LINE" >> TEMP_prompt.txt
