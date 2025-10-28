@@ -13,7 +13,7 @@ then
     source $2
     if [[ -f $ISSUE_FILE ]]
     then
-      PROMPT="Create a step-by-step plan for implementing a solution for the following issue: \n"
+      PROMPT=""
       while IFS='' read -e -r LINE; do
         PROMPT+="$LINE\n"
       done < $ISSUE_FILE
@@ -31,6 +31,8 @@ then
   if [[ -f $2 ]]
   then
     source $2
+    #TODO: before: divide into smaller problems to solve
+    #TODO: instead: feed into commit script....
     if [[ -f $PLAN_FILE ]]
     then
       printf "" > $TEMP_RESOLVED_FILE
