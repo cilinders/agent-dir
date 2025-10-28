@@ -40,6 +40,7 @@ then
         printf "%s\n" "$LINE" >> TEMP_prompt.txt
       done
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_prompt.txt)
+      printf "%s\n" "$RESPONSE"
       printf "%s\n" "$RESPONSE" > $TEMP_RESOLVED_FILE
       rm TEMP_prompt.txt
     else
