@@ -38,6 +38,7 @@ then
       printf "" > $TEMP_RESOLVED_FILE
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
       for LINE in "${LINES[@]}"; do
+        printf "%s\n" "$LINE"
         RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$LINE")
         printf "%s\n" "$RESPONSE" >> $TEMP_RESOLVED_FILE
       done
