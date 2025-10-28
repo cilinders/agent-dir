@@ -33,16 +33,19 @@ then
     source $2
     if [[ -f $PLAN_FILE ]]
     then
-      touch TEMP_prompt.txt
-      printf "Write code for the following:\n" > TEMP_prompt.txt
+      printf "" > $TEMP_RESOLVED_FILE
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
-      for LINE in "${LINES[@]}"; do
-        printf "%s\n" "$LINE" >> TEMP_prompt.txt
+      for ((i = 1; i < 8; ++i)); do
+        touch TEMP_prompt.txt
+        printf "Solve step %s:\n" "$i" > TEMP_prompt.txt
+        for LINE in "${LINES[@]}"; do
+          printf "%s\n" "$LINE" >> TEMP_prompt.txt
+        done
+        RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_prompt.txt)
+        printf "%s\n" "$RESPONSE"
+        printf "%s\n" "$RESPONSE" >> $TEMP_RESOLVED_FILE
+        rm TEMP_prompt.txt
       done
-      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_prompt.txt)
-      printf "%s\n" "$RESPONSE"
-      printf "%s\n" "$RESPONSE" > $TEMP_RESOLVED_FILE
-      #rm TEMP_prompt.txt
     else
       printf "Plan file not found.\n"
     fi
