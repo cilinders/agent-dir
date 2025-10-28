@@ -37,6 +37,7 @@ then
       while IFS='' read -e -r LINE; do
         PROMPT+="$LINE\n"
       done < $PLAN_FILE
+      printf "%s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
       printf "%s\n" "$RESPONSE" > $TEMP_RESOLVED_FILE
     else
