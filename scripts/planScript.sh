@@ -36,8 +36,8 @@ then
     if [[ -f $PLAN_FILE ]]
     then
       printf "" > $TEMP_RESOLVED_FILE
-      IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
-      for LINE in ${LINES[@]}; do
+      IFS='' read -d '' -r -a LINES < $PLAN_FILE
+      for LINE in "${LINES[@]}"; do
         printf "%s\n" "$LINE"
       done
     else
