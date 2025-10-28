@@ -38,7 +38,7 @@ then
         PROMPT+="$LINE\n"
       done < $PLAN_FILE
       printf "%s\n" "$PROMPT"
-      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
+      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "'""$PROMPT""'")
       printf "%s\n" "$RESPONSE" > $TEMP_RESOLVED_FILE
     else
       printf "Plan file not found.\n"
