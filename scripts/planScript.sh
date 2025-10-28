@@ -37,17 +37,8 @@ then
     then
       printf "" > $TEMP_RESOLVED_FILE
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
-      for ((i = 1; i < 8; ++i)); do
-        printf "%s\n" "$i"
-        touch TEMP_prompt.txt
-        printf "Solve step %s:\n" "$i" > TEMP_prompt.txt
-        for LINE in "${LINES[@]}"; do
-          printf "%s\n" "$LINE" >> TEMP_prompt.txt
-        done
-        RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_prompt.txt)
-        #printf "%s\n" "$RESPONSE"
-        printf "%s\n" "$RESPONSE" >> $TEMP_RESOLVED_FILE
-        rm TEMP_prompt.txt
+      for LINE in ${LINES[@]}; do
+        printf "%s\n" "$LINE"
       done
     else
       printf "Plan file not found.\n"
