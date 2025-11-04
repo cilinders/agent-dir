@@ -132,14 +132,15 @@ then
         fi
       fi
     done
-    printf ',{"role":"user","content":"Explain what we made and create a design doc for it."}]' >> data/temp_test.txt
+    printf ',{"role":"user","content":"Respond with the issue name."}]' >> data/temp_test.txt
     #printf "#!/bin/bash\n\n" > data/temp_test.txt
     #STRING_WITH="DATA_INSIDE_TEST='"
     #STRING_WITH+="$HISTORY_FORMATTED_STRING"
     #STRING_WITH+="'"
     #printf "%s\n" "$HISTORY_FORMATTED_STRING" > data/temp_test.txt
     #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
-    #TODO: make the HISTORY_FORMATTED_STRING go into the -pvc
+
+    #HISTORY_FORMATTED_STRING goes into the -pvc
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made"
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
