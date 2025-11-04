@@ -57,7 +57,7 @@ then
       #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
       printf "%s\n" "$(cat data/temp_test.txt | jq -sR .)"
       printf "ollo\n"
-      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made"
+      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made and create a design doc for it."
     else
       printf "History file not found.\n"
     fi
