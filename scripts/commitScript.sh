@@ -29,7 +29,7 @@ then
       #HISTORY_FORMATTED_STRING=""
       printf "[" > data/temp_test.txt
       for ((i = 1; i < ${#LINE_ARRAY[@]}; i+=2)); do
-        printf "%s\n" "$i"
+        #printf "%s\n" "$i"
         CONTENT_USER=$(printf "%s" "${LINE_ARRAY[$(($i-1))]}" | jq -sR .)
         CONTENT_USER=${CONTENT_USER//\\/\\\\}
         CONTENT_USER=${CONTENT_USER//'"'/'\"'}
@@ -95,6 +95,7 @@ then
       HISTORY_ARR+=( "${s%%"$delimiter"*}" );
       s=${s#*"$delimiter"}
     done;
+    printf "[" > data/temp_test.txt
     for ((i = 0; i < ${#HISTORY_ARR[@]}; ++i)); do
     #for LINE in "${HISTORY_ARR[@]}"; do
       delimiter='SOLUTION:'
@@ -111,18 +112,27 @@ then
         #CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         #CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | jq -sR .)
+        CONTENT_USER=${CONTENT_USER//\\/\\\\}
+        CONTENT_USER=${CONTENT_USER//'"'/'\"'}
         CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | jq -sR .)
+        CONTENT_ASSISTANT=${CONTENT_ASSISTANT//\\/\\\\}
+        CONTENT_ASSISTANT=${CONTENT_ASSISTANT//'"'/'\"'}
         #printf "%s\n" "$CONTENT_ASSISTANT"
         if [[ "$i" == $(( ${#HISTORY_ARR[@]}-1 )) ]]
         then
-          HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
-          HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
+          #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
+          #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
+          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}' >> data/temp_test.txt
         else
-          HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
-          HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
+          #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
+          #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
+          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},' >> data/temp_test.txt
         fi
       fi
     done
+    printf ',{"role":"user","content":"Explain what we made and create a design doc for it."}]' >> data/temp_test.txt
     #printf "#!/bin/bash\n\n" > data/temp_test.txt
     #STRING_WITH="DATA_INSIDE_TEST='"
     #STRING_WITH+="$HISTORY_FORMATTED_STRING"
