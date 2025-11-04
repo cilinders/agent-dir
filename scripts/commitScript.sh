@@ -49,7 +49,7 @@ then
           printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},' >> data/temp_test.txt
         fi
       done
-      printf ',{"role":"user","content":"Explain what we made"}]' >> data/temp_test.txt
+      printf ',{"role":"user","content":"Explain what we made and create a design doc for it."}]' >> data/temp_test.txt
       #printf "#!/bin/bash\n\n" > data/temp_test.txt
       #STRING_WITH="DATA_INSIDE_TEST='"
       #STRING_WITH+="$HISTORY_FORMATTED_STRING"
