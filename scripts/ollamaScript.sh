@@ -8,6 +8,8 @@ then
   printf "                                       <promptFile.file>:            Writes a given message from file to llm using the configFile.\n"
   printf "  ollamaScript -promptVar|-pv <configFile.conf> <modelConfig>\n"
   printf "                              <prompt>                               Writes a given var message to llm using the configFile.\n"
+  printf "  ollamaScript -promptVarChat|-pvc <configFile.conf> <modelConfig>\n"
+  printf "                              <prompt>                               Writes a given var message to llm chat using configFile.\n"
   printf "  ollamaScript -promptName|-pn <configFile.conf>:                    Writes a given message to given llm using the configFile.\n"
   printf "  ollamaScript -start|-s:                                            Starts ollama service.\n"
   printf "  ollamaScript -serve|-se:                                           Starts ollama service with info in current shell.\n"
@@ -59,6 +61,32 @@ then
     printf "%s\n" "$RESPONSE"
   else
     printf "ConfigFile or modelConfigFile not found.\n"
+  fi
+elif [[ $1 == "-promptVarChat" ]] || [[ $1 == "-pvc" ]]
+then
+  if [[ -f $2 ]] || [[ -f $3 ]]
+  then
+    #TODO: add chat history -> $MESSAGE_HISTORY -> {"role":"user","content":"blahblahblah"},{"role":"assistant":"blahblahbla"},{..}..
+    source $2
+    source $3
+    #TODO: sourced data needs to be escaped for use
+    #source data/temp_test.txt
+    #TODO: HERE
+    #TODO: FORMAT better, it does some iffy stuff
+    printf "%s\n" "$DATA_INSIDE_TEST"
+    #MESSAGE_HISTORY=${MESSAGE_HISTORY//\\/\\\\}
+    #MESSAGE_HISTORY=${MESSAGE_HISTORY//'"'/'\"'}
+    PROMPT="$4"
+    PROMPT=${PROMPT//\\/\\\\}
+    PROMPT=${PROMPT//'"'/'\"'}
+    #MESSAGE="$DATA_INSIDE_TEST"',{"role":"user","content":"'"$PROMPT"'"}'
+    MESSAGE=$(cat data/temp_test.txt) # | jq -sR .)
+    printf "%s\n" "$MESSAGE"
+    #RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":['"$MESSAGE"']}' -X POST http://localhost:11434/v1/chat/completions) #| jq -r '.message.content')
+    RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$MESSAGE"'}' -X POST http://localhost:11434/v1/chat/completions) #| jq -r '.message.content')
+    printf "%s\n" "$RESPONSE"
+  else
+    printf "Config or model file not found.\n"
   fi
 elif [[ $1 == "-prompt" ]] || [[ $1 == "-p" ]]
 then
@@ -144,7 +172,8 @@ then
   printf "Started\n"
 elif [[ $1 == "-serve" ]] || [[ $1 == "-se" ]]
 then
-  OLLAMA_CONTEXT_LENGTH=32768 ollama serve
+  #OLLAMA_CONTEXT_LENGTH=16384 ollama serve
+  ollama serve
 elif [[ $1 == "-serveVerbose" ]] || [[ $1 == "-seb" ]]
 then
   OLLAMA_DEBUG=1 ollama serve

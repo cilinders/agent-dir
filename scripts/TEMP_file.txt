@@ -1,0 +1,286 @@
+**2**,*Title: User Profile Management*,*Description: Design and implement user profile management to store mayonnaise consumption data and display personalized statistics.*,*Labels: feature, user-profile*;
+
+`app.py`
+```python
+from flask import Flask, request, jsonify
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+import sqlite3
+app = Flask(__name__)
+jwt = JWTManager(app)
+app.config['SECRET_KEY'] = 'secret_key_here'
+# In-memory database for demonstration purposes. Replace with a real database in production.
+conn = sqlite3.connect('mayonnaise_consumption.db')
+c = conn.cursor()
+# Create table
+c.execute('''CREATE TABLE IF NOT EXISTS users
+             (id INTEGER PRIMARY KEY AUTOINCREMENT, username text, password text)''')
+c.execute('''CREATE TABLE IF NOT EXISTS mayonnaise_data
+             (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id integer, consumption_date text, amount float)''')
+conn.commit()
+# Login endpoint to get JWT token
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    
+    c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+    user = c.fetchone()
+    
+    if user:
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+    else:
+        return jsonify({'msg': 'Bad username or password'}), 401
+# Protected endpoint to get all mayonnaise consumption data for a user
+@app.route('/mayonnaise_data', methods=['GET'])
+@jwt_required()
+def get_mayonnaise_data():
+    current_user = get_jwt_identity()
+    
+    c.execute("SELECT * FROM mayonnaise_data WHERE user_id=?", (current_user,))
+    data = c.fetchall()
+    
+    return jsonify(data), 200
+# Protected endpoint to create new mayonnaise consumption data for a user
+@app.route('/mayonnaise_data', methods=['POST'])
+@jwt_required()
+def create_mayonnaise_data():
+    current_user = get_jwt_identity()
+    data = request.json
+    
+    c.execute("INSERT INTO mayonnaise_data (user_id, consumption_date, amount) VALUES (?, ?, ?)",
+              (current_user, data['consumption_date'], data['amount']))
+    
+    conn.commit()
+    
+    return jsonify({'msg': 'Mayonnaise data created successfully'}), 200
+# Protected endpoint to update existing mayonnaise consumption data for a user
+@app.route('/mayonnaise_data/<int:id>', methods=['PUT'])
+@jwt_required()
+def update_mayonnaise_data(id):
+    current_user = get_jwt_identity()
+    
+    c.execute("UPDATE mayonnaise_data SET user_id=?, consumption_date=?, amount=? WHERE id=?",
+              (current_user, request.json['consumption_date'], request.json['amount'], id))
+    
+    conn.commit()
+    
+    return jsonify({'msg': 'Mayonnaise data updated successfully'}), 200
+# Protected endpoint to delete existing mayonnaise consumption data for a user
+@app.route('/mayonnaise_data/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_mayonnaise_data(id):
+    current_user = get_jwt_identity()
+    
+    c.execute("DELETE FROM mayonnaise_data WHERE id=? AND user_id=?", (id, current_user))
+    
+    conn.commit()
+    
+    return jsonify({'msg': 'Mayonnaise data deleted successfully'}), 200
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+Note: The above code uses an in-memory SQLite database for demonstration purposes. In production, you should replace this with a real database like MySQL or PostgreSQL and handle database connections securely.
+Also note that the password is stored as plain text for simplicity, but in a real application, passwords should be hashed using a secure hashing algorithm.
+`user_profiles.sql`
+```sql
+-- Table to store user profiles
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- Table to store user mayonnaise consumption data
+CREATE TABLE mayonnaise_consumption (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    date DATE NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- Create index on mayonnaise_consumption table for efficient retrieval of data
+CREATE INDEX idx_user_id ON mayonnaise_consumption USING BTREE (user_id);
+CREATE INDEX idx_date ON mayonnaise_consumption USING BTREE (date);
+-- Create view to get user's total mayonnaise consumption
+CREATE VIEW user_mayonnaise_consumption AS
+SELECT u.email, SUM(mc.amount) as total_amount
+FROM users u
+JOIN mayonnaise_consumption mc ON u.id = mc.user_id
+GROUP BY u.email;
+```
+Note: This schema uses PostgreSQL-specific features. If you need to adapt this for a different database system, please let me know.
+`user_profile_service.py`
+```python
+from flask import current_app
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+class UserProfileService:
+    def __init__(self):
+        self.engine = create_engine(current_app.config['DATABASE_URL'])
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
+    def get_user_profile(self, user_id):
+        user = self.session.query(User).get(user_id)
+        if user:
+            return {
+                'name': user.name,
+                'mayonnaise_consumed': user.mayonnaise_consumed,
+                'average_daily_consumption': user.average_daily_consumption
+            }
+        else:
+            return None
+    def update_user_profile(self, user_id, mayonnaise_consumed):
+        user = self.session.query(User).get(user_id)
+        if user:
+            user.mayonnaise_consumed += mayonnaise_consumed
+            user.average_daily_consumption = (user.mayonnaise_consumed / (self.get_current_date() - user.created_at)).days
+            self.session.commit()
+            return True
+        else:
+            return False
+    def get_total_mayonnaise_consumed(self, start_date=None, end_date=None):
+        query = self.session.query(User.mayonnaise_consumed).filter(User.created_at >= start_date)
+        if end_date:
+            query = query.filter(User.created_at <= end_date)
+        return sum(query)
+    def get_average_daily_mayonnaise_consumption(self, start_date=None, end_date=None):
+        total_consumed = self.get_total_mayonnaise_consumed(start_date=start_date, end_date=end_date)
+        num_days = (self.get_current_date() - start_date).days if start_date else None
+        return total_consumed / num_days
+    def get_current_date(self):
+        return datetime.now()
+from models import User  # assuming User model is defined in models.py
+```
+`models.py`
+```python
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    mayonnaise_consumed = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.now)
+# Create the tables
+Base.metadata.create_all(current_app.config['DATABASE_URL'])
+```
+Note: This is a basic implementation and might require modifications to fit your specific use case. Also, it's assumed that `models.py` contains the User model definition.
+UserProfileService.js
+```javascript
+import axios from 'axios';
+class UserProfileService {
+  constructor() {
+    this.apiEndpoint = '/api/user-profile';
+  }
+  getUserProfile(id) {
+    return axios.get(`${this.apiEndpoint}/${id}`);
+  }
+}
+export default UserProfileService;
+```
+UserProfileContainer.js
+```javascript
+import React, { useState, useEffect } from 'react';
+import UserProfileService from './UserProfileService';
+const UserProfileContainer = ({ userId }) => {
+  const [userProfile, setUserProfile] = useState(null);
+  const userProfileService = new UserProfileService();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await userProfileService.getUserProfile(userId);
+        setUserProfile(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [userId]);
+  return (
+    <div>
+      {userProfile && (
+        <>
+          <h2>{userProfile.name}</h2>
+          <p>{userProfile.email}</p>
+          {/* Display other user profile fields here */}
+        </>
+      )}
+    </div>
+  );
+};
+export default UserProfileContainer;
+```
+App.js
+```javascript
+import React from 'react';
+import UserProfileContainer from './UserProfileContainer';
+const App = () => {
+  const userId = 1; // Replace with actual user ID
+  return (
+    <div>
+      <h1>User Profile</h1>
+      <UserProfileContainer userId={userId} />
+    </div>
+  );
+};
+export default App;
+```
+Note: This is a basic implementation and might require additional error handling, data validation, and security measures depending on your specific use case.
+`user_profile_management_test.py`
+```python
+import pytest
+from fastapi import status
+from starlette.testclient import TestClient
+from main import app
+# Test client for API endpoints
+client = TestClient(app)
+# User data for testing
+user_data = {
+    "username": "test_user",
+    "email": "test@example.com",
+    "password": "password123"
+}
+# Test user profile creation
+def test_create_user_profile():
+    response = client.post("/users", json=user_data)
+    assert response.status_code == status.HTTP_201_CREATED
+# Test getting user profile by ID
+def test_get_user_profile_by_id():
+    user_response = client.post("/users", json=user_data)
+    user_id = user_response.json()["id"]
+    response = client.get(f"/users/{user_id}")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["username"] == user_data["username"]
+# Test updating user profile
+def test_update_user_profile():
+    user_response = client.post("/users", json=user_data)
+    user_id = user_response.json()["id"]
+    updated_data = {"username": "updated_username"}
+    response = client.put(f"/users/{user_id}", json=updated_data)
+    assert response.status_code == status.HTTP_200_OK
+    response_get = client.get(f"/users/{user_id}")
+    assert response_get.json()["username"] == updated_data["username"]
+# Test deleting user profile
+def test_delete_user_profile():
+    user_response = client.post("/users", json=user_data)
+    user_id = user_response.json()["id"]
+    response = client.delete(f"/users/{user_id}")
+    assert response.status_code == status.HTTP_200_OK
+# Integration tests using mock database
+@pytest.fixture
+def mock_db():
+    # Mock database setup
+    pass
+def test_user_profile_crud(mock_db):
+    # Test CRUD operations on user profile
+    pass
+def test_user_profile_get_by_email(mock_db):
+    # Test getting user profile by email
+    pass
+```
+Note: The code above is a basic example and may require additional modifications to fit the specific requirements of your project. Additionally, you will need to implement the `main` module that contains the FastAPI application instance.

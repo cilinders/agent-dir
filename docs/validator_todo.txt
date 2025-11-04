@@ -23,3 +23,5 @@ rewrite codeblock validator -> validateScript.sh <- is needed after rewrite?
 
 .. plan.md .. what will the ai do
 <- feedback old input or simplfy
+
+TODO: commitScript -gic

@@ -19,7 +19,7 @@ then
       done < $ISSUE_FILE
       printf "%s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
-      printf "%s\n" "$RESPONSE" > $PLAN_FILE
+      printf "%s\n\n" "$RESPONSE" > $PLAN_FILE
     else
       printf "Issue file not found.\n"
     fi
@@ -36,11 +36,12 @@ then
     if [[ -f $PLAN_FILE ]]
     then
       printf "" > $TEMP_RESOLVED_FILE
+      printf "" > "../../output/1-recipe_program/docs/message_history.txt"
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
       for LINE in "${LINES[@]}"; do
-        printf "%s\n" "$LINE"
+        printf "TASK:\n %s\n" "$LINE" >> "../../output/1-recipe_program/docs/message_history.txt"
         RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$LINE")
-        printf "%s\n" "$RESPONSE" >> $TEMP_RESOLVED_FILE
+        printf "SOLUTION:\n %s\n" "$RESPONSE" >> "../../output/1-recipe_program/docs/message_history.txt" #$TEMP_RESOLVED_FILE
       done
     else
       printf "Plan file not found.\n"

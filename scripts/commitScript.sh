@@ -17,23 +17,122 @@ then
   else
     printf "ConfigFile or issueFile not found.\n"
   fi
-elif [[ $1 == "-gic" ]]
+elif [[ $1 == "-gict" ]]
 then
   if [[ -f $2 ]]
   then
     source $2
-    touch TEMP_file.txt
-    printf "" > TEMP_file.txt
-    IFS=$'\n' read -d '' -r -a LINES < $ISSUE_FILE
-    for LINE in "${LINES[@]}"; do
-      printf "%s\n" "$LINE" >> TEMP_file.txt
+    touch TEMP_commit.txt
+    if [[ -f $MESSAGE_HISTORY ]]
+    then
+      IFS=$'\n' read -d '' -r -a LINE_ARRAY < $MESSAGE_HISTORY
+      #HISTORY_FORMATTED_STRING=""
+      printf "[" > data/temp_test.txt
+      for ((i = 1; i < ${#LINE_ARRAY[@]}; i+=2)); do
+        printf "%s\n" "$i"
+        CONTENT_USER=$(printf "%s" "${LINE_ARRAY[$(($i-1))]}" | jq -sR .)
+        CONTENT_USER=${CONTENT_USER//\\/\\\\}
+        CONTENT_USER=${CONTENT_USER//'"'/'\"'}
+        CONTENT_ASSISTANT=$(printf "%s" "${LINE_ARRAY[$i]}" | jq -sR .)
+        CONTENT_ASSISTANT=${CONTENT_ASSISTANT//\\/\\\\}
+        CONTENT_ASSISTANT=${CONTENT_ASSISTANT//'"'/'\"'}
+        if [[ "$i" == $(( ${#LINE_ARRAY[@]}-1 )) ]]
+        then
+          #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
+          #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
+          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}' >> data/temp_test.txt
+        else
+          #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
+          #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
+          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},' >> data/temp_test.txt
+        fi
+      done
+      printf "]" >> data/temp_test.txt
+      #printf "#!/bin/bash\n\n" > data/temp_test.txt
+      #STRING_WITH="DATA_INSIDE_TEST='"
+      #STRING_WITH+="$HISTORY_FORMATTED_STRING"
+      #STRING_WITH+="'"
+      #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
+      printf "%s\n" "$(cat data/temp_test.txt | jq -sR .)"
+      printf "ollo\n"
+      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made"
+    fi
+  fi
+elif [[ $1 == "-gic" ]]
+then
+  #TODO: maak hiervan -> ?ask per element?
+  #                      ~Issue Name:
+  #                      ~Description:
+  #                      ~Structure:
+  #                      ~Code Changes:
+  #                      ~Tests:
+  #                      ~Commit Message:
+  if [[ -f $2 ]]
+  then
+    source $2
+    touch TEMP_commit.txt
+    #TODO: create HISTORY tasks done chat history file for G_SCRIPT to use
+    HISTORY_LINES=""
+    if [[ -f $MESSAGE_HISTORY ]]
+    then
+      while IFS='' read -e -r LINE; do
+        #printf "%s\n" "$LINE"
+        HISTORY_LINES+="$LINE\n"
+      done < $MESSAGE_HISTORY
+    fi
+    #TODO: split on full string not if its inside IFS
+    HISTORY_FORMATTED_STRING=""
+    delimiter='TASK:'
+    s=$HISTORY_LINES$delimiter
+    declare -a HISTORY_ARR=();
+    while [[ $s ]]; do
+      HISTORY_ARR+=( "${s%%"$delimiter"*}" );
+      s=${s#*"$delimiter"}
+    done;
+    for ((i = 0; i < ${#HISTORY_ARR[@]}; ++i)); do
+    #for LINE in "${HISTORY_ARR[@]}"; do
+      delimiter='SOLUTION:'
+      s=${HISTORY_ARR[$i]}$delimiter
+      #s=$LINE$delimiter
+      declare -a HISTORY_ARR_ELL=();
+      while [[ $s ]]; do
+        HISTORY_ARR_ELL+=( "${s%%"$delimiter"*}" );
+        s=${s#*"$delimiter"}
+      done;
+      if ! [[ ${#HISTORY_ARR_ELL[0]} -eq 0 ]]
+      then
+        #TODO: MAYBE jq RIGHT TRACK
+        #CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
+        #CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
+        CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | jq -sR .)
+        CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | jq -sR .)
+        #printf "%s\n" "$CONTENT_ASSISTANT"
+        if [[ "$i" == $(( ${#HISTORY_ARR[@]}-1 )) ]]
+        then
+          HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
+          HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
+        else
+          HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
+          HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
+        fi
+      fi
     done
-    printf "\n" >> TEMP_file.txt
-    IFS=$'\n' read -d '' -r -a LINES < $RESOLVED_TAKS
-    for LINE in "${LINES[@]}"; do
-      printf "%s\n" "$LINE" >> TEMP_file.txt
-    done
-    $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF TEMP_file.txt > $TEMP_COMMIT_FILE
+    #printf "#!/bin/bash\n\n" > data/temp_test.txt
+    #STRING_WITH="DATA_INSIDE_TEST='"
+    #STRING_WITH+="$HISTORY_FORMATTED_STRING"
+    #STRING_WITH+="'"
+    #printf "%s\n" "$HISTORY_FORMATTED_STRING" > data/temp_test.txt
+    #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
+    #TODO: make the HISTORY_FORMATTED_STRING go into the -pvc
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made"
+    #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
+    #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
+    #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
+    #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
+    #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
+    #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
   else
     printf "Config file not found.\n"
   fi
