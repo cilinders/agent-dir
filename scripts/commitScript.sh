@@ -195,10 +195,10 @@ then
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Name from our message thread, no additional commentary." >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Description from out message thread, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Description from out message thread, make it oneline, no additional commentary." >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the Project-Tree which includes all filepaths from our message thread, no additional commentary." >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the Project-Tree which includes all filepaths from our message thread, format it as output from the unix tree command, no additional commentary." >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"

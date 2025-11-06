@@ -25,7 +25,7 @@ then
   git switch -c REMOTE_EZ
   git add --all
   git commit -m "REMOTE_EZ push"
-  sh ./sshScript.sh -g
+  #sh ./sshScript.sh -g
   git push -u origin REMOTE_EZ
   printf "REMOTE_EZ push\n"
 elif [[ $1 == "-rpull" ]]
