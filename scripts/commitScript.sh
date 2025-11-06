@@ -201,7 +201,7 @@ then
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
     printf "Structure:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n```\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n```" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
