@@ -141,7 +141,7 @@ then
     #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
 
     #HISTORY_FORMATTED_STRING goes into the -pvc
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made"
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made" > TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
