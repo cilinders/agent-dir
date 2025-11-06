@@ -1,5 +1,47 @@
 #!/bin/bash
 
+CREATE_STRUCTURE() {
+  IFS=' ' read -d '' -ra COMPONENTS <<< "$TREE_STRING"
+  declare -a STRUCTURE_PATH=()
+  NESTED=0
+  for ((j = 1; j < ${#COMPONENTS[@]}; ++j))
+  do
+    #printf "$j %s" "${COMPONENTS[$j]}"
+    if [[ "${COMPONENTS[$j]}" == "{" ]]
+    then
+      ((NESTED++))
+      LAST_INDEX=$j
+      ((LAST_INDEX--))
+      STRUCTURE_PATH+=("${COMPONENTS[$LAST_INDEX]}")
+    elif [[ "${COMPONENTS[$j]}" == "}" ]]
+    then
+      ((NESTED--))
+      unset STRUCTURE_PATH[-1]
+    elif [[ "${COMPONENTS[$j]}" =~ "." ]]
+    then
+      CURRENT_PATH=""
+      for p in "${STRUCTURE_PATH[@]}"
+      do
+        CURRENT_PATH+="$p/"
+      done
+      printf "%s%s\n" "$CURRENT_PATH" "${COMPONENTS[$j]}"
+    else
+      if ! [[ "${COMPONENTS[$j]}" =~ "}" ]]
+      then
+        CURRENT_PATH=""
+        for p in "${STRUCTURE_PATH[@]}"
+        do
+          CURRENT_PATH+="$p/"
+        done
+        #printf " -> mkdir %s" "$CURRENT_PATH"
+        #printf "%s " "${COMPONENTS[$j]}"
+      fi
+    fi
+    #printf " %s " "$NESTED"
+    #printf "\n"
+  done
+}
+
 if [[ $# == 0 ]] || [[ $# -gt 4 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]
 then
   printf "Usage: \n"
@@ -141,16 +183,19 @@ then
     #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
 
     #HISTORY_FORMATTED_STRING goes into the -pvc
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Name, no additional commentary." > TEMP_commit.txt
-    printf "\n" >> TEMP_commit.txt
+    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Name, no additional commentary." > TEMP_commit.txt
+    #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Description, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
-    printf "\n" >> TEMP_commit.txt
+    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Description, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
+    #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Project-Tree, no additional commentary." >> TEMP_commit.txt
-    printf "\n" >> TEMP_commit.txt
+    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Project-Tree, no additional commentary." >> TEMP_commit.txt
+    #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
-    printf "%s\n" "$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
+    TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
+    #TODO: split tree into files function
+    FILES_STRING=$(CREATE_STRUCTURE)
+    printf "%s\n" "$FILES_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
