@@ -85,7 +85,7 @@ then
     MESSAGE="$MESSAGE,{\"role\":\"user\",\"content\":\"$PROMPT\"}]"
     #printf "%s\n\n" "$MESSAGE"
     #RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":['"$MESSAGE"']}' -X POST http://localhost:11434/v1/chat/completions) #| jq -r '.message.content')
-    RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$MESSAGE"'}' -X POST http://localhost:11434/v1/chat/completions | jq -r '.choices[].message.content')
+    RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$MESSAGE"'}' -X POST http://localhost:11434/api/chat) # | jq -r '.choices[].message.content')
     printf "%s\n" "$RESPONSE"
   else
     printf "Config or model file not found.\n"
