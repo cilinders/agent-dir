@@ -192,10 +192,10 @@ then
 
     printf "" > TEMP_commit.txt
     #HISTORY_FORMATTED_STRING goes into the -pvc
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Name, no additional commentary." >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the Name, no additional commentary." >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with a brief issue Description, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with a brief Description, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the Project-Tree with correct filenames, no additional commentary." >> TEMP_commit.txt
