@@ -201,8 +201,8 @@ then
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
     printf "Structure:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary." >> TEMP_commit.txt
-    printf "\-\-\-\n" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example .\n├── TEMP_commit.txt\n├── TEMP_file.txt\n├── TEMP_tree.txt\n├── commitScript.sh\n├── conf\n│   ├── agentConfig.conf\n│   ├── commitAllCodeConfig.conf\n│   ├── commitCodeConfig.conf\n│   ├── commitCodeGivenConfig.conf\n│   ├── commitConfig.conf\n│   └── validate_issuesConfig.conf\n├── data\n│   ├── actionDummyData1.txt\n│   └── temp_test_bak.txt\n├── deepseekScript.sh\n├── designScript.sh\n├── issueScript.sh\n├── log\n│   └── treelog.txt\n├── logScript.sh\n├── model\n│   ├── commit_llama3-1-latest\n│   │   └── Modelfile\n│   ├── conf\n│   │   ├── commit.conf\n│   │   ├── commitCodeGiven.conf\n│   │   ├── commit_test.conf\n│   │   └── validateIssueFile.conf\n│   └── structureFormat_llama3-1-latest\n│       └── Modelfile\n├── ollamaScript.sh\n└── validateScript.sh\n" >> TEMP_commit.txt
+    printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
     printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
