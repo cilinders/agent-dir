@@ -183,14 +183,14 @@ then
     #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
 
     #HISTORY_FORMATTED_STRING goes into the -pvc
-    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Name, no additional commentary." > TEMP_commit.txt
-    #printf "\n" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Name, no additional commentary." > TEMP_commit.txt
+    printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
-    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Description, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
-    #printf "\n" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Description, NO ADDITIONAL COMMENTARY." >> TEMP_commit.txt
+    printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
-    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Project-Tree, no additional commentary." >> TEMP_commit.txt
-    #printf "\n" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the issue Project-Tree, no additional commentary." >> TEMP_commit.txt
+    printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
     #TODO: split tree into files function
