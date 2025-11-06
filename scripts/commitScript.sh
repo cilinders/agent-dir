@@ -194,7 +194,7 @@ then
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
     #TODO: split tree into files function
-    FILES_STRING=$(CREATE_STRUCTURE)
+    FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
     printf "%s\n" "$FILES_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
