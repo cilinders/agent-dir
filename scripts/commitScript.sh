@@ -132,7 +132,7 @@ then
         fi
       fi
     done
-    printf ',{"role":"user","content":"Respond with project file structure."}]' >> data/temp_test.txt
+    #printf ',{"role":"user","content":"Respond with project file structure."}]' >> data/temp_test.txt
     #printf "#!/bin/bash\n\n" > data/temp_test.txt
     #STRING_WITH="DATA_INSIDE_TEST='"
     #STRING_WITH+="$HISTORY_FORMATTED_STRING"
