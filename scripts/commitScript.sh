@@ -192,12 +192,15 @@ then
 
     printf "" > TEMP_commit.txt
     #HISTORY_FORMATTED_STRING goes into the -pvc
+    printf "Title:\n" >> TEMP_commit.txt
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Name from our message thread, no additional commentary." >> TEMP_commit.txt
-    printf "\-\-\-\n" >> TEMP_commit.txt
+    printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
+    printf "Description:\n" >> TEMP_commit.txt
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Description from out message thread, make it oneline, no additional commentary." >> TEMP_commit.txt
-    printf "\-\-\-\n" >> TEMP_commit.txt
+    printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
+    printf "Structure:\n" >> TEMP_commit.txt
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary." >> TEMP_commit.txt
     printf "\-\-\-\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
