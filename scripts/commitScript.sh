@@ -205,6 +205,7 @@ then
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
+    TREE_STRING=${TREE_STRING//'`'/''}
     printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
