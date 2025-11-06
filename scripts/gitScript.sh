@@ -21,7 +21,6 @@ then
   fi
 elif [[ $1 == "-rpush" ]]
 then
-  printf "TODO: make pushscript for ez remote desktop work.\n"
   git switch -c REMOTE_EZ
   git add --all
   git commit -m "REMOTE_EZ push"
