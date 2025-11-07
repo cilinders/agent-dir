@@ -214,7 +214,7 @@ then
     printf "%s\n" "$FILES_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
-    IFS=$'\n' read -d '' -r -a FILE_ARRAY < $FILES_STRING
+    IFS=$'\n' read -d '' -r -a FILE_ARRAY < "$FILES_STRING"
     for FILE in "${FILE_ARRAY}"; do
       #TODO: ask llm per file
       printf "%s\n" "$FILE"
