@@ -158,7 +158,6 @@ then
       done;
       if ! [[ ${#HISTORY_ARR_ELL[0]} -eq 0 ]]
       then
-        #TODO: MAYBE jq RIGHT TRACK
         #CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         #CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | jq -sR .)
@@ -204,8 +203,11 @@ then
     ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
+      #TODO: needs extra testing sometimes goes well, sometimes not so well :/
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
     TREE_STRING=${TREE_STRING//'`'/''}
+    TREE_STRING=${TREE_STRING//'/'/''}
+    TREE_STRING=${TREE_STRING//$'\n'/''}
     printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
