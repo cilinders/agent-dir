@@ -217,7 +217,7 @@ then
     IFS=$'\n' read -d '' -r -a FILE_ARRAY < $FILES_STRING
     for FILE in "${FILE_ARRAY}"; do
       #TODO: ask llm per file
-      
+      printf "%s\n" "$FILE"
     done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
