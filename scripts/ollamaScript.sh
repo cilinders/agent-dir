@@ -85,7 +85,7 @@ then
     MESSAGE="$MESSAGE,{\"role\":\"user\",\"content\":\"$PROMPT\"}]"
     #printf "%s\n\n" "$MESSAGE"
     #RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":['"$MESSAGE"']}' -X POST http://localhost:11434/v1/chat/completions) #| jq -r '.message.content')
-    RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$MESSAGE"'}' -X POST http://localhost:11434/api/chat) #| jq -r '.message.content')
+    RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$MESSAGE"'}' -X POST http://localhost:11434/api/chat | jq -r '.message.content')
     printf "%s\n" "$RESPONSE"
   else
     printf "Config or model file not found.\n"
@@ -174,7 +174,7 @@ then
   printf "Started\n"
 elif [[ $1 == "-serve" ]] || [[ $1 == "-se" ]]
 then
-  OLLAMA_CONTEXT_LENGTH=131072 ollama serve
+  OLLAMA_CONTEXT_LENGTH=32768 ollama serve
   #ollama serve
 elif [[ $1 == "-serveVerbose" ]] || [[ $1 == "-seb" ]]
 then
