@@ -49,6 +49,7 @@ CREATE_STRUCTURE() {
     #printf " %s " "$NESTED"
     #printf "\n"
   done
+  printf "%s" "$RETURN_STRING"
 }
 
 if [[ $# == 0 ]] || [[ $# -gt 4 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]
