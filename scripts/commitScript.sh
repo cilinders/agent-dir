@@ -213,15 +213,14 @@ then
     printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
-    printf "file:\n%s\n" "$FILES_STRING"
-    printf "return:\n%s\n" "$RETURN_STRING"
+    printf "%s\n" "$FILES_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
-    #IFS=$'\n' read -d '' -r -a FILE_ARRAY < "$FILES_STRING"
-    #for FILE in "${FILE_STRING[@]}"; do
+    IFS=$'\n' read -d '' -r -a FILE_ARRAY < "$FILES_STRING"
+    for FILE in "${FILE_STRING[@]}"; do
       #TODO: ask llm per file
-      #printf "%s\n" "$FILE"
-    #done
+      printf "%s\n" "$FILE"
+    done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
   else
