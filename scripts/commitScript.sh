@@ -200,7 +200,19 @@ then
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
     printf "Structure:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n" \
+		"\`\`\`\n" \
+		".\n" \
+		"├── foo.bar\n" \
+		"├── baz\n" \
+		"│	└── qux.quux\n" \
+		"├── corge\n" \
+		"│	├── grault.garply\n" \
+		"│	├── waldo\n" \
+		"│	│	└── fred.plugh\n" \
+		"│	└── xyz.zy\n" \
+		"└── thud.foobar\n" \
+                "\`\`\`\n" >> TEMP_commit.txt
     printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
       #TODO: needs extra testing sometimes goes well, sometimes not so well :/
@@ -214,6 +226,11 @@ then
     printf "%s\n" "$FILES_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
+    IFS=$'\n' read -d '' -r -a FILE_ARRAY < $FILES_STRING
+    for FILE in "${FILE_ARRAY}"; do
+      #TODO: ask llm per file
+      
+    done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
   else
