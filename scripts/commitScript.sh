@@ -220,7 +220,7 @@ then
     printf "" > TEMP_file.txt
     for FILE in "${FILE_ARRAY[@]}"; do
       #TODO: ask llm per file
-      if ! [[ $FILE == "}" ]]
+      if ! [[ $FILE == "\n" ]]
       then
         printf "%s\n" "$FILE"
         printf "%s\n" "$FILE" >> TEMP_file.txt
