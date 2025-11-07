@@ -221,6 +221,7 @@ then
     for FILE in "${FILE_ARRAY[@]}"; do
       #TODO: ask llm per file
       printf "%s\n" "$FILE"
+      printf "%s\n" "$FILE" >> TEMP_file.txt
       ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the code-block for: $FILE, no additional commentary." >> TEMP_file.txt
     done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
