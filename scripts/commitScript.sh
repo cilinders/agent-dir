@@ -5,6 +5,7 @@ CREATE_STRUCTURE() {
   declare -a STRUCTURE_PATH=()
   NESTED=0
   START_INDEX=0
+  RETURN_STRING=""
   for ((j = 0; j < ${#COMPONENTS[@]}; ++j)); do
     if [[ $j == "." ]]
     then
@@ -32,7 +33,7 @@ CREATE_STRUCTURE() {
       do
         CURRENT_PATH+="$p/"
       done
-      printf "%s%s\n" "$CURRENT_PATH" "${COMPONENTS[$j]}"
+      RETURN_STRING+="$CURRENT_PATH${COMPONENTS[$j]}\n"
     else
       if ! [[ "${COMPONENTS[$j]}" =~ "}" ]]
       then
@@ -211,14 +212,15 @@ then
     printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
-    printf "%s\n" "$FILES_STRING"
+    printf "file:\n%s\n" "$FILES_STRING"
+    printf "return:\n%s\n" "$RETURN_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
     #IFS=$'\n' read -d '' -r -a FILE_ARRAY < "$FILES_STRING"
-    for FILE in "${FILE_STRING[@]}"; do
+    #for FILE in "${FILE_STRING[@]}"; do
       #TODO: ask llm per file
-      printf "%s\n" "$FILE"
-    done
+      #printf "%s\n" "$FILE"
+    #done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
   else
