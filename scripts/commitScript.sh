@@ -173,7 +173,9 @@ then
         then
           #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
           #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
+          printf '{"role":"user","content":'"$CONTENT_USER"'},'
           printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
           printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}' >> data/temp_test.txt
         else
           #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
