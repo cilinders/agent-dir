@@ -217,9 +217,11 @@ then
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
     IFS=$' ' read -d '' -r -a FILE_ARRAY <<< "$FILES_STRING"
+    printf "" > TEMP_file.txt
     for FILE in "${FILE_ARRAY[@]}"; do
       #TODO: ask llm per file
       printf "%s\n" "$FILE"
+      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the code-block for: $FILE, no additional commentary." >> TEMP_file.txt
     done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
