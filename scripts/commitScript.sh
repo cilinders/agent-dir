@@ -201,7 +201,6 @@ then
     COUNT=0
     for FILE in "${FILE_ARRAY[@]}"; do
       ((++COUNT))
-      printf "%s%s" "$COUNT" "${#FILE_ARRAY[@]}"
       #TODO: ask llm per file
       if [[ $COUNT -eq ${#FILE_ARRAY[@]} ]]
       then
@@ -213,6 +212,8 @@ then
     done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
+    printf "Message:\n" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Message, no additional commentary" >> TEMP_commit.txt
   else
     printf "Config file not found.\n"
   fi
