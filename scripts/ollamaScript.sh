@@ -174,8 +174,12 @@ then
   printf "Started\n"
 elif [[ $1 == "-serve" ]] || [[ $1 == "-se" ]]
 then
-  OLLAMA_CONTEXT_LENGTH=32768 ollama serve
-  #ollama serve
+  if [[ $2 == "-l" ]]
+  then
+    OLLAMA_CONTEXT_LENGTH=32768 ollama serve
+  else
+    ollama serve
+  fi
 elif [[ $1 == "-serveVerbose" ]] || [[ $1 == "-seb" ]]
 then
   OLLAMA_DEBUG=1 ollama serve
