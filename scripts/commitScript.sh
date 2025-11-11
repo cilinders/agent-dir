@@ -198,17 +198,18 @@ then
     IFS=$' ' read -d '' -r -a FILE_ARRAY <<< "$FILES_STRING"
     printf "" > TEMP_file.txt
     #HACKY: count for last element which causes null response. idk what kind of char or whatever it is :/
-    COUNT=1
+    COUNT=0
     for FILE in "${FILE_ARRAY[@]}"; do
       ((++COUNT))
       printf "%s%s" "$COUNT" "${#FILE_ARRAY[@]}"
       #TODO: ask llm per file
-      if ! [[ $COUNT -eq ${#FILE_ARRAY[@]} ]]
+      if [[ $COUNT -eq ${#FILE_ARRAY[@]} ]]
       then
-        printf "%s\n" "$FILE"
-        printf "%s\n" "$FILE" >> TEMP_file.txt
-        ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the code-block for: $FILE, no additional commentary." >> TEMP_file.txt
+        break
       fi
+      printf "%s\n" "$FILE"
+      printf "%s\n" "$FILE" >> TEMP_file.txt
+      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the code-block for: $FILE, no additional commentary." >> TEMP_file.txt
     done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file

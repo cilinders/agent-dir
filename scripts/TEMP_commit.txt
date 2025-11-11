@@ -7,10 +7,6 @@ User Registration Endpoint: Create a POST endpoint to handle user registration r
 Structure:
 ```
 .\n
-├── db
-│   ├── models
-│   │   └── user.py
-│   └── tables.sql
 ├── templates
 │   └── register.html
 └── validation.py
