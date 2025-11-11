@@ -163,11 +163,11 @@ then
         #CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         #CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | jq -sR .)
-        #CONTENT_USER=${CONTENT_USER//\\/\\\\}
-        #CONTENT_USER=${CONTENT_USER//'"'/'\"'}
+        CONTENT_USER=${CONTENT_USER//\\/\\\\}
+        CONTENT_USER=${CONTENT_USER//'"'/'\"'}
         CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | jq -sR .)
-        #CONTENT_ASSISTANT=${CONTENT_ASSISTANT//\\/\\\\}
-        #CONTENT_ASSISTANT=${CONTENT_ASSISTANT//'"'/'\"'}
+        CONTENT_ASSISTANT=${CONTENT_ASSISTANT//\\/\\\\}
+        CONTENT_ASSISTANT=${CONTENT_ASSISTANT//'"'/'\"'}
         #printf "%s\n" "$CONTENT_ASSISTANT"
         if [[ "$i" == $(( ${#HISTORY_ARR[@]}-1 )) ]]
         then

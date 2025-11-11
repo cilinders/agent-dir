@@ -82,7 +82,7 @@ then
     #MESSAGE="$DATA_INSIDE_TEST"',{"role":"user","content":"'"$PROMPT"'"}'
     MESSAGE=$(cat data/temp_test.txt) # | jq -sR .)
     #printf "%s\n\n" "$MESSAGE"
-    MESSAGE="$MESSAGE,{\"role\":\"user\",\"content\":\"$PROMPT\"}]"
+    MESSAGE="$MESSAGE"',{"role":"user","content":"'"$PROMPT"'"}]'
     #printf "%s\n\n" "$MESSAGE"
     #RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":['"$MESSAGE"']}' -X POST http://localhost:11434/v1/chat/completions) #| jq -r '.message.content')
     RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$MESSAGE"'}' -X POST http://localhost:11434/api/chat) # | jq -r '.message.content')
