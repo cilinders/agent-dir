@@ -201,8 +201,9 @@ then
     COUNT=1
     for FILE in "${FILE_ARRAY[@]}"; do
       ((++COUNT))
+      printf "%s%s" "$COUNT" "${#FILE_ARRAY[@]}"
       #TODO: ask llm per file
-      if ! [[ "$COUNT" -eq "${#FILE_ARRAY[@]}" ]]
+      if ! [[ $COUNT -eq ${#FILE_ARRAY[@]} ]]
       then
         printf "%s\n" "$FILE"
         printf "%s\n" "$FILE" >> TEMP_file.txt
