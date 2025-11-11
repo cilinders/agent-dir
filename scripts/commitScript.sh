@@ -22,7 +22,7 @@ CREATE_STRUCTURE() {
       LAST_INDEX=$j
       ((LAST_INDEX--))
       STRUCTURE_PATH+=("${COMPONENTS[$LAST_INDEX]}")
-    elif [[ "${COMPONENTS[$j]}" == "}" ]]
+    elif [[ "${COMPONENTS[$j]}" == "}" ]] || [[ "${COMPONENTS[$j]}" == "}\n" ]]
     then
       ((NESTED--))
       unset STRUCTURE_PATH[-1]
@@ -170,26 +170,26 @@ then
         fi
       fi
     done
-    printf "" > TEMP_commit.txt
+    #printf "" > TEMP_commit.txt
     #HISTORY_FORMATTED_STRING goes into the -pvc
-    printf "Title:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Name from our message thread, no additional commentary." >> TEMP_commit.txt
-    printf "\n" >> TEMP_commit.txt
+    #printf "Title:\n" >> TEMP_commit.txt
+    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Name from our message thread, no additional commentary." >> TEMP_commit.txt
+    #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT ISSUE_NAME with HISTORY > print to file
-    printf "Description:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Description from out message thread, make it oneline, no additional commentary." >> TEMP_commit.txt
-    printf "\n" >> TEMP_commit.txt
+    #printf "Description:\n" >> TEMP_commit.txt
+    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Description from out message thread, make it oneline, no additional commentary." >> TEMP_commit.txt
+    #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
-    printf "Structure:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> TEMP_commit.txt
-    printf "\n" >> TEMP_commit.txt
+    #printf "Structure:\n" >> TEMP_commit.txt
+    #./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> TEMP_commit.txt
+    #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
       #TODO: needs extra testing sometimes goes well, sometimes not so well :/
     TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
     TREE_STRING=${TREE_STRING//'`'/''}
     TREE_STRING=${TREE_STRING//'/'/''}
     TREE_STRING=${TREE_STRING//$'\n'/''}
-    printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
+    #printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
     printf "%s\n" "$FILES_STRING"
@@ -199,7 +199,7 @@ then
     printf "" > TEMP_file.txt
     for FILE in "${FILE_ARRAY[@]}"; do
       #TODO: ask llm per file
-      if ! [[ "$FILE" == "\n" ]]
+      if ! [[ "$FILE" == " " ]]
       then
         printf "%s\n" "$FILE"
         printf "%s\n" "$FILE" >> TEMP_file.txt
