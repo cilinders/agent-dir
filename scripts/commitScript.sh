@@ -185,31 +185,31 @@ then
     #printf "\n" >> TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
       #TODO: needs extra testing sometimes goes well, sometimes not so well :/
-    TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
-    TREE_STRING=${TREE_STRING//'`'/''}
-    TREE_STRING=${TREE_STRING//'/'/''}
-    TREE_STRING=${TREE_STRING//$'\n'/''}
+    #TREE_STRING="$(./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/structureFormat.conf TEMP_commit.txt)"
+    #TREE_STRING=${TREE_STRING//'`'/''}
+    #TREE_STRING=${TREE_STRING//'/'/''}
+    #TREE_STRING=${TREE_STRING//$'\n'/''}
     #printf "%s\n" "$TREE_STRING" >> TEMP_commit.txt
     #TODO: split tree into files function
-    FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
-    printf "%s\n" "$FILES_STRING"
+    #FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
+    #printf "%s\n" "$FILES_STRING"
     #TODO: G_SCRIPT CODE_CHANGE per FILE from STRUCTURE with HISTORY > print all to file
       #TODO: extract FILE from structure
-    IFS=$' ' read -d '' -r -a FILE_ARRAY <<< "$FILES_STRING"
-    printf "" > TEMP_file.txt
+    #IFS=$' ' read -d '' -r -a FILE_ARRAY <<< "$FILES_STRING"
+    #printf "" > TEMP_file.txt
     #HACKY: count for last element which causes null response. idk what kind of char or whatever it is :/
-    COUNT=0
-    for FILE in "${FILE_ARRAY[@]}"; do
-      ((++COUNT))
+    #COUNT=0
+    #for FILE in "${FILE_ARRAY[@]}"; do
+    #  ((++COUNT))
       #TODO: ask llm per file
-      if [[ $COUNT -eq ${#FILE_ARRAY[@]} ]]
-      then
-        break
-      fi
-      printf "%s\n" "$FILE"
-      printf "%s\n" "$FILE" >> TEMP_file.txt
-      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the code-block for: $FILE, no additional commentary." >> TEMP_file.txt
-    done
+    #  if [[ $COUNT -eq ${#FILE_ARRAY[@]} ]]
+    #  then
+    #    break
+    #  fi
+    #  printf "%s\n" "$FILE"
+    #  printf "%s\n" "$FILE" >> TEMP_file.txt
+    #  ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the code-block for: $FILE, no additional commentary." >> TEMP_file.txt
+    #done
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
     printf "Message:\n" >> TEMP_commit.txt
