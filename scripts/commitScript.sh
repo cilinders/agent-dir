@@ -58,6 +58,7 @@ then
   printf "  commitScript -gi <configFile.conf> <issueFile.txt>   :  Generates commit from issuefile using llm.\n"
   printf "  commitScript -gic <configFile.conf>                  :  Generates commit from issuefile and codeblocks using llm.\n"
   printf "  commitScript -fs <configFile.conf>                   :  Formats structure for use with actionScript from commitFile.\n"
+  printf "  commitScript -ff <configFile.conf>                   :  Formats fileFile for use with actionScript.\n"
   printf "  commitScript -fp <configFile.txt> <file_path>        :  Returns files codeblock from commit using llm.\n"
   printf "  commitScript -fpa <configFile.txt>                   :  Formats all codeblocks from commit for use actionScript.\n"
 elif [[ $1 == "-gi" ]]
@@ -241,6 +242,60 @@ then
     fi
   else
     printf "ConfigFile not found.\n"
+  fi
+elif [[ $1 == "-ff" ]]
+then
+  # Format => filePath
+  #           ```lang
+  #           ...
+  #           ```
+  #           filePath
+  #           ...
+  if [[ -f $2 ]]
+  then
+    source $2
+    if [[ -f $FILES_FILE ]]
+    then
+      # Uses wierd loop to keep empty lines intact
+      #  IFS=$'\n' read -d '' -r -a LINE_ARRAY < $FILES_FILE
+      #  FILE_PATH=${LINE_ARRAY[0]}
+      declare -a LINE_ARRAY=()
+      INDEX=0
+      while read LINE; do
+        LINE_ARRAY[$INDEX]="$LINE"
+        ((++INDEX))
+      done < $FILES_FILE
+      BEGIN=false
+      COUNT=0
+      FORMAT_LINE=""
+      for LINE in "${LINE_ARRAY[@]}"; do
+        if [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == false ]]
+        then
+          BEGIN=true
+          printf "%s: " "$FILE_PATH"
+          COUNT=0
+          FORMAT_LINE="create,file,$FILE_PATH\n"
+        elif [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == true ]]
+        then
+          BEGIN=false
+          FORMAT_LINE+=";\n"
+          printf "%s\n" "$COUNT"
+          printf "%s\n" "$FORMAT_LINE"
+          #TODO: concat this to file for actionScript
+        elif ! [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == false ]]
+        then
+          FILE_PATH=$LINE
+        else
+          ((++COUNT))
+          #printf "%s\n" "$LINE"
+          FORMAT_LINE+="$LINE\n"
+        fi
+      done
+    else
+      printf "fileFile not found.\n"
+    fi
+  else
+    printf "Config file not found.\n"
   fi
 #TODO: :)))) werkt in eerste tests
 elif [[ $1 == "-fp" ]]

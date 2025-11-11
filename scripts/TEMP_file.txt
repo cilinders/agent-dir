@@ -1,286 +1,341 @@
-**2**,*Title: User Profile Management*,*Description: Design and implement user profile management to store mayonnaise consumption data and display personalized statistics.*,*Labels: feature, user-profile*;
-
-`app.py`
+./app.py
 ```python
 from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
-import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+import uuid
+
 app = Flask(__name__)
-jwt = JWTManager(app)
-app.config['SECRET_KEY'] = 'secret_key_here'
-# In-memory database for demonstration purposes. Replace with a real database in production.
-conn = sqlite3.connect('mayonnaise_consumption.db')
-c = conn.cursor()
-# Create table
-c.execute('''CREATE TABLE IF NOT EXISTS users
-             (id INTEGER PRIMARY KEY AUTOINCREMENT, username text, password text)''')
-c.execute('''CREATE TABLE IF NOT EXISTS mayonnaise_data
-             (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id integer, consumption_date text, amount float)''')
-conn.commit()
-# Login endpoint to get JWT token
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    
-    c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
-    user = c.fetchone()
-    
-    if user:
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
-    else:
-        return jsonify({'msg': 'Bad username or password'}), 401
-# Protected endpoint to get all mayonnaise consumption data for a user
-@app.route('/mayonnaise_data', methods=['GET'])
-@jwt_required()
-def get_mayonnaise_data():
-    current_user = get_jwt_identity()
-    
-    c.execute("SELECT * FROM mayonnaise_data WHERE user_id=?", (current_user,))
-    data = c.fetchall()
-    
-    return jsonify(data), 200
-# Protected endpoint to create new mayonnaise consumption data for a user
-@app.route('/mayonnaise_data', methods=['POST'])
-@jwt_required()
-def create_mayonnaise_data():
-    current_user = get_jwt_identity()
-    data = request.json
-    
-    c.execute("INSERT INTO mayonnaise_data (user_id, consumption_date, amount) VALUES (?, ?, ?)",
-              (current_user, data['consumption_date'], data['amount']))
-    
-    conn.commit()
-    
-    return jsonify({'msg': 'Mayonnaise data created successfully'}), 200
-# Protected endpoint to update existing mayonnaise consumption data for a user
-@app.route('/mayonnaise_data/<int:id>', methods=['PUT'])
-@jwt_required()
-def update_mayonnaise_data(id):
-    current_user = get_jwt_identity()
-    
-    c.execute("UPDATE mayonnaise_data SET user_id=?, consumption_date=?, amount=? WHERE id=?",
-              (current_user, request.json['consumption_date'], request.json['amount'], id))
-    
-    conn.commit()
-    
-    return jsonify({'msg': 'Mayonnaise data updated successfully'}), 200
-# Protected endpoint to delete existing mayonnaise consumption data for a user
-@app.route('/mayonnaise_data/<int:id>', methods=['DELETE'])
-@jwt_required()
-def delete_mayonnaise_data(id):
-    current_user = get_jwt_identity()
-    
-    c.execute("DELETE FROM mayonnaise_data WHERE id=? AND user_id=?", (id, current_user))
-    
-    conn.commit()
-    
-    return jsonify({'msg': 'Mayonnaise data deleted successfully'}), 200
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Invalid request'}), 400
+
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+
+    if not username or not email or not password:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+        return jsonify({'error': 'Username already taken'}), 400
+
+    new_user = User(
+        id=str(uuid.uuid4()),
+        username=username,
+        email=email,
+        password=generate_password_hash(password)
+    )
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully'}), 201
+
 if __name__ == '__main__':
     app.run(debug=True)
 ```
-Note: The above code uses an in-memory SQLite database for demonstration purposes. In production, you should replace this with a real database like MySQL or PostgreSQL and handle database connections securely.
-Also note that the password is stored as plain text for simplicity, but in a real application, passwords should be hashed using a secure hashing algorithm.
-`user_profiles.sql`
-```sql
--- Table to store user profiles
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
--- Table to store user mayonnaise consumption data
-CREATE TABLE mayonnaise_consumption (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES users(id),
-    date DATE NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
--- Create index on mayonnaise_consumption table for efficient retrieval of data
-CREATE INDEX idx_user_id ON mayonnaise_consumption USING BTREE (user_id);
-CREATE INDEX idx_date ON mayonnaise_consumption USING BTREE (date);
--- Create view to get user's total mayonnaise consumption
-CREATE VIEW user_mayonnaise_consumption AS
-SELECT u.email, SUM(mc.amount) as total_amount
-FROM users u
-JOIN mayonnaise_consumption mc ON u.id = mc.user_id
-GROUP BY u.email;
-```
-Note: This schema uses PostgreSQL-specific features. If you need to adapt this for a different database system, please let me know.
-`user_profile_service.py`
+./db/__init__.py
 ```python
-from flask import current_app
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-class UserProfileService:
-    def __init__(self):
-        self.engine = create_engine(current_app.config['DATABASE_URL'])
-        Session = sessionmaker(bind=self.engine)
-        self.session = Session()
-    def get_user_profile(self, user_id):
-        user = self.session.query(User).get(user_id)
-        if user:
-            return {
-                'name': user.name,
-                'mayonnaise_consumed': user.mayonnaise_consumed,
-                'average_daily_consumption': user.average_daily_consumption
-            }
-        else:
-            return None
-    def update_user_profile(self, user_id, mayonnaise_consumed):
-        user = self.session.query(User).get(user_id)
-        if user:
-            user.mayonnaise_consumed += mayonnaise_consumed
-            user.average_daily_consumption = (user.mayonnaise_consumed / (self.get_current_date() - user.created_at)).days
-            self.session.commit()
-            return True
-        else:
-            return False
-    def get_total_mayonnaise_consumed(self, start_date=None, end_date=None):
-        query = self.session.query(User.mayonnaise_consumed).filter(User.created_at >= start_date)
-        if end_date:
-            query = query.filter(User.created_at <= end_date)
-        return sum(query)
-    def get_average_daily_mayonnaise_consumption(self, start_date=None, end_date=None):
-        total_consumed = self.get_total_mayonnaise_consumed(start_date=start_date, end_date=end_date)
-        num_days = (self.get_current_date() - start_date).days if start_date else None
-        return total_consumed / num_days
-    def get_current_date(self):
-        return datetime.now()
-from models import User  # assuming User model is defined in models.py
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.pool import NullPool
+
+db = SQLAlchemy()
+
+class Config:
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///example.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_recycle": 300, # seconds
+        "pool_size": 20,
+        "max_overflow": 10,
+        "pool_timeout": None,
+        "echo": False,
+        "poolclass": NullPool
+    }
+
+def init_db(app):
+    global db
+    db.init_app(app)
+
+def create_tables():
+    with app.app_context():
+        db.create_all()
+
+from .models import User, Post, Comment
+
 ```
-`models.py`
+./db/models/__init__.py
+```python
+from .user import User
+__all__ = ['User']
+```
+./db/models/user.py
 ```python
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+import datetime
+
 Base = declarative_base()
+
 class User(Base):
     __tablename__ = 'users'
+
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False)
-    mayonnaise_consumed = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.now)
-# Create the tables
-Base.metadata.create_all(current_app.config['DATABASE_URL'])
+    username = Column(String(50), unique=True, nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+    def __repr__(self):
+        return '<User %r>' % self.username
 ```
-Note: This is a basic implementation and might require modifications to fit your specific use case. Also, it's assumed that `models.py` contains the User model definition.
-UserProfileService.js
-```javascript
-import axios from 'axios';
-class UserProfileService {
-  constructor() {
-    this.apiEndpoint = '/api/user-profile';
-  }
-  getUserProfile(id) {
-    return axios.get(`${this.apiEndpoint}/${id}`);
-  }
-}
-export default UserProfileService;
+./db/tables.sql
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 ```
-UserProfileContainer.js
-```javascript
-import React, { useState, useEffect } from 'react';
-import UserProfileService from './UserProfileService';
-const UserProfileContainer = ({ userId }) => {
-  const [userProfile, setUserProfile] = useState(null);
-  const userProfileService = new UserProfileService();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await userProfileService.getUserProfile(userId);
-        setUserProfile(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, [userId]);
-  return (
-    <div>
-      {userProfile && (
-        <>
-          <h2>{userProfile.name}</h2>
-          <p>{userProfile.email}</p>
-          {/* Display other user profile fields here */}
-        </>
-      )}
-    </div>
-  );
-};
-export default UserProfileContainer;
-```
-App.js
-```javascript
-import React from 'react';
-import UserProfileContainer from './UserProfileContainer';
-const App = () => {
-  const userId = 1; // Replace with actual user ID
-  return (
-    <div>
-      <h1>User Profile</h1>
-      <UserProfileContainer userId={userId} />
-    </div>
-  );
-};
-export default App;
-```
-Note: This is a basic implementation and might require additional error handling, data validation, and security measures depending on your specific use case.
-`user_profile_management_test.py`
+./db/migration/version_001.py
 ```python
-import pytest
-from fastapi import status
-from starlette.testclient import TestClient
-from main import app
-# Test client for API endpoints
-client = TestClient(app)
-# User data for testing
-user_data = {
-    "username": "test_user",
-    "email": "test@example.com",
-    "password": "password123"
-}
-# Test user profile creation
-def test_create_user_profile():
-    response = client.post("/users", json=user_data)
-    assert response.status_code == status.HTTP_201_CREATED
-# Test getting user profile by ID
-def test_get_user_profile_by_id():
-    user_response = client.post("/users", json=user_data)
-    user_id = user_response.json()["id"]
-    response = client.get(f"/users/{user_id}")
-    assert response.status_code == status.HTTP_200_OK
-    assert response.json()["username"] == user_data["username"]
-# Test updating user profile
-def test_update_user_profile():
-    user_response = client.post("/users", json=user_data)
-    user_id = user_response.json()["id"]
-    updated_data = {"username": "updated_username"}
-    response = client.put(f"/users/{user_id}", json=updated_data)
-    assert response.status_code == status.HTTP_200_OK
-    response_get = client.get(f"/users/{user_id}")
-    assert response_get.json()["username"] == updated_data["username"]
-# Test deleting user profile
-def test_delete_user_profile():
-    user_response = client.post("/users", json=user_data)
-    user_id = user_response.json()["id"]
-    response = client.delete(f"/users/{user_id}")
-    assert response.status_code == status.HTTP_200_OK
-# Integration tests using mock database
-@pytest.fixture
-def mock_db():
-    # Mock database setup
-    pass
-def test_user_profile_crud(mock_db):
-    # Test CRUD operations on user profile
-    pass
-def test_user_profile_get_by_email(mock_db):
-    # Test getting user profile by email
-    pass
+from alembic import op
+import sqlalchemy as sa
+
+revision = 'version_001'
+down_revision = None
+branch_labels = None
+depends_on = None
+
+
+def upgrade():
+    op.create_table('users',
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('username', sa.String(length=50), nullable=False),
+        sa.Column('email', sa.String(length=100), nullable=False),
+        sa.Column('password', sa.String(length=255), nullable=False),
+        sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
+        sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('CURRENT_TIMESTAMP'), onupdate=sa.text('CURRENT_TIMESTAMP'),
+            nullable=False),
+        sa.PrimaryKeyConstraint('id')
+    )
+
+
+def downgrade():
+    op.drop_table('users')
 ```
-Note: The code above is a basic example and may require additional modifications to fit the specific requirements of your project. Additionally, you will need to implement the `main` module that contains the FastAPI application instance.
+./email_verification.py
+```python
+import boto3
+from flask import Flask, request, jsonify
+import mailgun
+
+app = Flask(__name__)
+
+# AWS SES settings
+AWS_ACCESS_KEY_ID = 'YOUR_AWS_ACCESS_KEY_ID'
+AWS_SECRET_ACCESS_KEY = 'YOUR_AWS_SECRET_ACCESS_KEY'
+
+# Mailgun settings
+MAILGUN_API_KEY = 'YOUR_MAILGUN_API_KEY'
+MAILGUN_DOMAIN = 'YOUR_MAILGUN_DOMAIN'
+
+ses = boto3.client('ses', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+
+@app.route('/verify-email', methods=['POST'])
+def verify_email():
+    data = request.json
+    email = data['email']
+
+    try:
+        # Verify email using AWS SES
+        response = ses.verify_email_identity(
+            EmailAddress=email
+        )
+        return jsonify({'status': 'success', 'message': f'Email {email} verified successfully'}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({'status': 'error', 'message': f'Failed to verify email {email}: {e}'}), 400
+
+@app.route('/send-email', methods=['POST'])
+def send_email():
+    data = request.json
+    email_to = data['email']
+    subject = data['subject']
+    body = data['body']
+
+    try:
+        # Send email using AWS SES
+        response = ses.send_email(
+            Source='your-email@example.com',
+            Destination={
+                'ToAddresses': [
+                    email_to,
+                ],
+                'CcAddresses': [],
+                'BccAddresses': []
+            },
+            Message={
+                'Body': {
+                    'Text': {
+                        'Data': body
+                    }
+                },
+                'Subject': {
+                    'Data': subject
+                }
+            }
+
+        )
+        return jsonify({'status': 'success', 'message': f'Email sent to {email_to} successfully'}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({'status': 'error', 'message': f'Failed to send email: {e}'}), 400
+
+@app.route('/verify-email-mailgun', methods=['POST'])
+def verify_email_mailgun():
+    data = request.json
+    email = data['email']
+
+    try:
+        # Verify email using Mailgun
+        client = mailgun.Client(api_key=MAILGUN_API_KEY)
+        response = client.verify_email(email, 24)
+        return jsonify({'status': 'success', 'message': f'Email {email} verified successfully'}), 200
+
+    except Exception as e:
+        print(e)
+        return jsonify({'status': 'error', 'message': f'Failed to verify email: {e}'}), 400
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+./password_hashing.py
+```python
+import bcrypt
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/hash-password', methods=['POST'])
+def hash_password():
+    password = request.json['password']
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    return jsonify({'hashed_password': hashed_password.decode('utf-8')})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+./templates/register.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.username.label }}<br>
+                {{ form.username(size=32) }}
+            </p>
+            <p>
+                {{ form.email.label }}<br>
+                {{ form.email(size=32) }}
+            </p>
+            <p>
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}
+            </p>
+            <p>{{ form.confirm.label }}<br>{{ form.confirm(size=32) }}</p>
+            <p>{{ form.submit() }}</p>
+        </form>
+    </div>
+</body>
+</html>
+```
+./templates/login.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Login</h1>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.username.label }} {{ form.username() }}</p>
+    <p>{{ form.password.label }} {{ form.password() }}</p>
+    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p><input type="submit" value="Login"></p>
+  </form>
+{% endblock %}
+```
+./requirements.txt
+```
+Flask==2.0.1
+flask-sqlalchemy==2.5.1
+flask-wtf==1.0.3
+wtforms==2.4.2
+bcrypt==3.1.7
+alembic==1.7.3
+```
+./validation.py
+```python
+from flask import Flask, request, render_template, redirect, url_for
+from wtforms import Form, StringField, PasswordField, validators
+
+app = Flask(__name__)
+
+class RegistrationForm(Form):
+    name = StringField('Name', [validators.DataRequired()])
+    email = StringField('Email', [validators.DataRequired(), validators.Email()])
+    password = PasswordField('Password', [validators.DataRequired(),
+                                          validators.EqualTo('confirm', message='Passwords must match')])
+    confirm = PasswordField('Confirm Password')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        email = form.email.data
+        password = form.password.data
+
+        # TO DO: store the user data in a database or other storage
+        return redirect(url_for('success'))
+
+    return render_template('register.html', form=form)
+
+@app.route('/success')
+def success():
+    return 'Registration successful!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
