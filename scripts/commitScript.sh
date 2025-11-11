@@ -197,9 +197,12 @@ then
       #TODO: extract FILE from structure
     IFS=$' ' read -d '' -r -a FILE_ARRAY <<< "$FILES_STRING"
     printf "" > TEMP_file.txt
+    #HACKY: count for last element which causes null response. idk what kind of char or whatever it is :/
+    COUNT=1
     for FILE in "${FILE_ARRAY[@]}"; do
+      ((++COUNT))
       #TODO: ask llm per file
-      if ! [[ "$FILE" == " " ]]
+      if ! [[ "$COUNT" -eq "${#FILE_ARRAY[@]}" ]]
       then
         printf "%s\n" "$FILE"
         printf "%s\n" "$FILE" >> TEMP_file.txt
