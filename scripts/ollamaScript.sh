@@ -74,7 +74,7 @@ then
     PROMPT=${PROMPT//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
     #MESSAGE="$DATA_INSIDE_TEST"',{"role":"user","content":"'"$PROMPT"'"}'
-    MESSAGE=$(cat data/temp_test.txt) # | jq -sR .)
+    MESSAGE=$(cat data/temp_test.txt | jq -sR .)
     #printf "%s\n\n" "$MESSAGE"
     #MESSAGE=${MESSAGE//\\/\\\\}
     #MESSAGE=${MESSAGE//'"'/'\"'}
