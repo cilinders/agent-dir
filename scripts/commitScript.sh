@@ -149,10 +149,8 @@ then
     done;
     printf "[" > data/temp_test.txt
     for ((i = 0; i < ${#HISTORY_ARR[@]}; ++i)); do
-    #for LINE in "${HISTORY_ARR[@]}"; do
       delimiter='SOLUTION:'
       s=${HISTORY_ARR[$i]}$delimiter
-      #s=$LINE$delimiter
       declare -a HISTORY_ARR_ELL=();
       while [[ $s ]]; do
         HISTORY_ARR_ELL+=( "${s%%"$delimiter"*}" );
@@ -160,39 +158,18 @@ then
       done;
       if ! [[ ${#HISTORY_ARR_ELL[0]} -eq 0 ]]
       then
-        #CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
-        #CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | sed -e 's/./\\&/g; 1{$s/^$/""/}; 1!s/^/"/; $!s/$/"/')
         CONTENT_USER=$(printf "%s" "${HISTORY_ARR_ELL[0]}" | jq -sR .)
-        #CONTENT_USER=${CONTENT_USER//\\/\\\\}
-        #CONTENT_USER=${CONTENT_USER//'"'/'\"'}
         CONTENT_ASSISTANT=$(printf "%s" "${HISTORY_ARR_ELL[1]}" | jq -sR .)
-        #CONTENT_ASSISTANT=${CONTENT_ASSISTANT//\\/\\\\}
-        #CONTENT_ASSISTANT=${CONTENT_ASSISTANT//'"'/'\"'}
-        #printf "%s\n" "$CONTENT_ASSISTANT"
         if [[ "$i" == $(( ${#HISTORY_ARR[@]}-1 )) ]]
         then
-          #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
-          #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
-          #printf '{"role":"user","content":'"%s"'},' "$CONTENT_USER"
           printf '{"role":"user","content":'"%s"'},' "$CONTENT_USER" >> data/temp_test.txt
-          #printf '{"role":"assistant","content":'"%s"'}' "$CONTENT_ASSISTANT"
           printf '{"role":"assistant","content":'"%s"'}' "$CONTENT_ASSISTANT" >> data/temp_test.txt
         else
-          #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
-          #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
           printf '{"role":"user","content":'"%s"'},' "$CONTENT_USER" >> data/temp_test.txt
           printf '{"role":"assistant","content":'"%s"'},' "$CONTENT_ASSISTANT" >> data/temp_test.txt
         fi
       fi
     done
-    #printf ',{"role":"user","content":"Respond with project file structure."}]' >> data/temp_test.txt
-    #printf "#!/bin/bash\n\n" > data/temp_test.txt
-    #STRING_WITH="DATA_INSIDE_TEST='"
-    #STRING_WITH+="$HISTORY_FORMATTED_STRING"
-    #STRING_WITH+="'"
-    #printf "%s\n" "$HISTORY_FORMATTED_STRING" > data/temp_test.txt
-    #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
-
     printf "" > TEMP_commit.txt
     #HISTORY_FORMATTED_STRING goes into the -pvc
     printf "Title:\n" >> TEMP_commit.txt
@@ -222,7 +199,7 @@ then
     printf "" > TEMP_file.txt
     for FILE in "${FILE_ARRAY[@]}"; do
       #TODO: ask llm per file
-      if ! [[ $FILE == "\n" ]]
+      if ! [[ "$FILE" == "\n" ]]
       then
         printf "%s\n" "$FILE"
         printf "%s\n" "$FILE" >> TEMP_file.txt
