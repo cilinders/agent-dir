@@ -213,7 +213,7 @@ then
     #TODO: G_SCRIPT TESTS per FILE from STRUCTURE with HISTORY > print all to file
     #TODO: G_SCRIPT COMMIT_MESSAGE with HISTORY > print to file
     printf "Message:\n" >> TEMP_commit.txt
-    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Commit-Message, make it oneline, no additional commentary" >> TEMP_commit.txt
+    ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Respond with the git issue Commit-Message, make it oneline, do not use `, no additional commentary" >> TEMP_commit.txt
   else
     printf "Config file not found.\n"
   fi
