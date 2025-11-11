@@ -69,18 +69,12 @@ then
     #TODO: add chat history -> $MESSAGE_HISTORY -> {"role":"user","content":"blahblahblah"},{"role":"assistant":"blahblahbla"},{..}..
     source $2
     source $3
-    #TODO: sourced data needs to be escaped for use
-    #source data/temp_test.txt
-    #TODO: HERE
     #TODO: FORMAT better, it does some iffy stuff
-    #printf "%s\n" "$DATA_INSIDE_TEST"
-    #MESSAGE_HISTORY=${MESSAGE_HISTORY//\\/\\\\}
-    #MESSAGE_HISTORY=${MESSAGE_HISTORY//'"'/'\"'}
     PROMPT="$4"
     PROMPT=${PROMPT//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
     #MESSAGE="$DATA_INSIDE_TEST"',{"role":"user","content":"'"$PROMPT"'"}'
-    MESSAGE=$(cat data/temp_test.txt) # | jq -sR .)
+    MESSAGE=$(cat data/temp_test.txt | jq -sR .)
     #printf "%s\n\n" "$MESSAGE"
     MESSAGE="$MESSAGE"',{"role":"user","content":"'"$PROMPT"'"}]'
     #printf "%s\n\n" "$MESSAGE"
