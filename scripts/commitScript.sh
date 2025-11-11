@@ -180,8 +180,8 @@ then
         else
           #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
           #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
-          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
-          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},' >> data/temp_test.txt
+          printf '{"role":"user","content":'"%s"'},' "$CONTENT_USER" >> data/temp_test.txt
+          printf '{"role":"assistant","content":'"%s"'},' "$CONTENT_ASSISTANT" >> data/temp_test.txt
         fi
       fi
     done
