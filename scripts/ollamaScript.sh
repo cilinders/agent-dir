@@ -78,7 +78,7 @@ then
     #printf "%s\n\n" "$MESSAGE"
     #MESSAGE=${MESSAGE//\\/\\\\}
     #MESSAGE=${MESSAGE//'"'/'\"'}
-    MESSAGE="$MESSAGE"',{"role":"user","content":'"$PROMPT"'}]'
+    MESSAGE="$MESSAGE"',{"role":"user","content":"'"$PROMPT"'"}]'
     printf "%s" "$MESSAGE" > data/temp_test_message.txt
     while :
     do
