@@ -261,6 +261,7 @@ then
       #  FILE_PATH=${LINE_ARRAY[0]}
       declare -a LINE_ARRAY=()
       INDEX=0
+      IFS=''
       while read LINE; do
         LINE_ARRAY[$INDEX]="$LINE"
         ((++INDEX))
@@ -272,14 +273,14 @@ then
         if [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == false ]]
         then
           BEGIN=true
-          printf "%s: " "$FILE_PATH"
+          #printf "%s: " "$FILE_PATH"
           COUNT=0
           FORMAT_LINE="create,file,$FILE_PATH\n"
         elif [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == true ]]
         then
           BEGIN=false
-          FORMAT_LINE+=";\n"
-          printf "%s\n" "$COUNT"
+          FORMAT_LINE+="\n;"
+          #printf "%s\n" "$COUNT"
           printf "%s\n" "$FORMAT_LINE"
           #TODO: concat this to file for actionScript
         elif ! [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == false ]]
