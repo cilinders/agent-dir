@@ -48,13 +48,9 @@ then
       for LINE in ${FILE_LINES[@]}; do
         printf '%s\\n' "$LINE" >> $CONTEXT_FILE
       done
-      if ! [[ $i -eq ${#PROJECT_FILES[@]}-1 ]]
-      then
-        printf '```"},' >> $CONTEXT_FILE
-      else
-        printf '```"}]' >> $CONTEXT_FILE
-      fi
+      printf '```"},' >> $CONTEXT_FILE
     done
+    printf '{"role":"user","content":"Generate a bash to run the application, no additional commentary."}]' >> $CONTEXT_FILE
     printf "%s\n" "$(cat $CONTEXT_FILE)"
   else
     printf "Config file not found.\n"
