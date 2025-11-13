@@ -59,7 +59,8 @@ then
     #TODO: curl llm and print/run runner
     #CONFIG: ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "$PROMPT"
     RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
-    #IFS=$'\n'
+    printf "%s\n" "$RESPONSE"
+    IFS=$'\n'
     touch $PROJECT_DIR/run.sh
     START_RUN_PRINT=false
     for LINE in ${RESPONSE[@]}; do
