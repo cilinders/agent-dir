@@ -70,10 +70,10 @@ then
         START_RUN_PRINT=false
       elif [[ "$START_RUN_PRINT" == true ]]
       then
-        printf "%s\n" "$LINE" #> $PROJECT_DIR/run.sh
+        printf "%s\n" "$LINE" > $PROJECT_DIR/run.sh
       fi
     done
-    #TODO: on exit curl stacktrace
+    chmod +x $PROJECT_DIR/run.sh
   else
     printf "Config file not found.\n"
   fi
@@ -81,7 +81,8 @@ elif [[ $1 == "-r" ]]
 then
   if [[ -f $2 ]]
   then
-    printf "TODO: \n"
+    source $2
+    ./$PROJECT_DIR/run.sh
   else
     printf "Config file not found.\n"
   fi
