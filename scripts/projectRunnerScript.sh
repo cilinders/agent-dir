@@ -80,7 +80,7 @@ then
   fi
 elif [[ $1 == "-r" ]]
 then
-  # CONTEXT_FILE has to be 
+  # CONTEXT/ERROR_FILE req from -b/-r
   if [[ -f $2 ]]
   then
     source $2
@@ -97,7 +97,7 @@ then
   then
     source $2
     #PROMPT="$(cat $CONTEXT_FILE)"
-    printf '"``` %srun.sh\\n' "$PROJECT_DIR" >> $CONTENT_FILE
+    printf '"``` %srun.sh\\n' "$PROJECT_DIR" >> $CONTEXT_FILE
     IFS=$'\n'
     FILE_LINES=$(cat "$PROJECT_DIR"run.sh)
     for LINE in ${FILE_LINES[@]}; do
