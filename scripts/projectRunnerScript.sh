@@ -111,7 +111,7 @@ then
     for LINE in ${FILE_LINES[@]}; do
       printf '%s\\n' "$LINE" >> $CONTEXT_FILE
     done
-    printf '"}]' >> $CONTEXT_FILE
+    printf '"},{"role":"user","content","Generate a response resolving the error, no additional commentary."}]' >> $CONTEXT_FILE
     PROMPT="$(cat $CONTEXT_FILE)"
     RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
     printf "%s\n" "$RESPONSE"
