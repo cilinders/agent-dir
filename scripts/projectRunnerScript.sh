@@ -21,7 +21,7 @@ then
     PROJECT_PATHS_RAW+=($(ls -R $PROJECT_DIR))
     DIR_PATH=""
     for LINE in ${PROJECT_PATHS_RAW[@]}; do
-      printf "%s\n" "$LINE"
+      #printf "%s\n" "$LINE"
       if [[ "$LINE" =~ ":" ]]
       then
         #DIR_PATH="${LINE:0:${#LINE}-1}/"
@@ -30,17 +30,32 @@ then
         DIR_PATH=${DIR_PATH//'//'/'/'}
       elif [[ "$LINE" =~ "." ]]
       then
-        printf "%s%s\n" "$DIR_PATH" "$LINE"
+        #printf "%s%s\n" "$DIR_PATH" "$LINE"
         PROJECT_FILES+=("$DIR_PATH$LINE")
       fi
     done
-    printf "%s\n" "${#PROJECT_FILES[@]}"
+    #printf "%s\n" "${#PROJECT_FILES[@]}"
     touch $CONTEXT_FILE
     printf "[" > $CONTEXT_FILE
     #TODO: cat all files into PROJECT_CONTEXT_FILE
-    for LINE in ${PROJECT_FILES[@]}; do
-      printf "%s\n" "$LINE"
+    for ((i=0; i<${#PROJECT_FILES[@]}; ++i)); do #LINE in ${PROJECT_FILES[@]}; do
+      printf "%s\n" "${PROJECT_FILES[$i]}"
+      # Prints the filepath to the context
+      printf '{"role":"user","content":"``` // '"${PROJECT_FILES[$i]}"'\\n' >> $CONTEXT_FILE
+      # Prints the content of file to the context
+      declare -a FILES_LINES_ARR=()
+      FILE_LINES=$(cat "${PROJECT_FILES[$i]}")
+      for LINE in ${FILE_LINES[@]}; do
+        printf '%s\\n' "$LINE" >> $CONTEXT_FILE
+      done
+      if ! [[ $i -eq ${#PROJECT_FILES[@]}-1 ]]
+      then
+        printf '```"},' >> $CONTEXT_FILE
+      else
+        printf '```"}]' >> $CONTEXT_FILE
+      fi
     done
+    printf "%s\n" "$(cat $CONTEXT_FILE)"
   else
     printf "Config file not found.\n"
   fi
