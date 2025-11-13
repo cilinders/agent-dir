@@ -1,9 +1,6 @@
 #!/bin/bash
 
-for ((i = 0; i < 5; i++)) do
-  printf "A: %s\n" "$i"
-done
+PROMPT='[{"role":"user", "content":"The secret word is: AUGURK"}, {"role":"user", "content":"What is the secret word?"}]'
 
-for ((i = 0; i < 5; ++i)) do
-  printf "B: %s\n" "$i"
-done
+RESPONSE=$(./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "$PROMPT" | jq -r '.message.content' )
+printf "%s\n" "$RESPONSE"
