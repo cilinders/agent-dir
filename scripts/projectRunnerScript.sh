@@ -52,6 +52,12 @@ then
     done
     printf '{"role":"user","content":"Generate a bash to run the application, no additional commentary."}]' >> $CONTEXT_FILE
     printf "%s\n" "$(cat $CONTEXT_FILE)"
+    PROMPT="$(cat $CONTEXT_FILE)"
+    #TODO: curl llm and print/run runner
+    #CONFIG: ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "$PROMPT"
+    RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
+    printf "%s\n" "$RESPONSE"
+    #TODO: on exit curl stacktrace
   else
     printf "Config file not found.\n"
   fi
