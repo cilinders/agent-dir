@@ -47,7 +47,7 @@ then
       IFS=$'\n'
       FILE_LINES=$(cat "${PROJECT_FILES[$i]}")
       for LINE in ${FILE_LINES[@]}; do
-        printf '%s\n' "$LINE"
+        #printf '%s\n' "$LINE"
         printf '%s\\n' "$LINE" >> $CONTEXT_FILE
       done
       printf '```"},' >> $CONTEXT_FILE
@@ -58,7 +58,21 @@ then
     #TODO: curl llm and print/run runner
     #CONFIG: ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "$PROMPT"
     RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
-    printf "%s\n" "$RESPONSE"
+    #IFS=$'\n'
+    touch $PROJECT_DIR/run.sh
+    START_RUN_PRINT=false
+    for LINE in ${RESPONSE[@]}; do
+      if [[ "$LINE" == "```bash" ]]
+      then
+        START_RUN_PRINT=true
+      elif [[ "$LINE" == "```" ]]
+      then
+        START_RUN_PRINT=false
+      elif [[ "$START_RUN_PRINT" == true ]]
+      then
+        printf "%s\n" "$LINE" #> $PROJECT_DIR/run.sh
+      fi
+    done
     #TODO: on exit curl stacktrace
   else
     printf "Config file not found.\n"
