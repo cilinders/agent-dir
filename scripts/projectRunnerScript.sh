@@ -62,16 +62,15 @@ then
     touch $PROJECT_DIR/run.sh
     START_RUN_PRINT=false
     for LINE in ${RESPONSE[@]}; do
-      LINE_STRING="""$LINE"
-      if [[ "$LINE_STRING" == "```bash" ]]
+      if [[ "$LINE" == '```bash' ]]
       then
         START_RUN_PRINT=true
-      elif [[ "$LINE_STRING" == "```" ]]
+      elif [[ "$LINE" == '```' ]]
       then
         START_RUN_PRINT=false
       elif [[ "$START_RUN_PRINT" == true ]]
       then
-        printf "%s\n" "$LINE_STRING" #> $PROJECT_DIR/run.sh
+        printf "%s\n" "$LINE" #> $PROJECT_DIR/run.sh
       fi
     done
     #TODO: on exit curl stacktrace
