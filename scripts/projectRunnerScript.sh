@@ -5,6 +5,7 @@ then
   printf "Usage: \n"
   printf "  projectRunnerScript -c <configFile>  :  Creates the actionFile for the using llm.\n"
   printf "  projectRunnerScript -r <configFile>  :  Runs actionFile to start the project.\n"
+  printf "  projectRunnerScript -d <configFile>  :  Debugs runScript using llm.\n"
 elif [[ $1 == "-c" ]]
 then
   if [[ -f $2 ]]
@@ -52,9 +53,9 @@ then
       done
       printf '```"},' >> $CONTEXT_FILE
     done
-    printf '{"role":"user","content":"Generate a bash script to run the application, no additional commentary."}]' >> $CONTEXT_FILE
+    printf '{"role":"user","content":' >> $CONTEXT_FILE
     #printf "%s\n" "$(cat $CONTEXT_FILE)"
-    PROMPT="$(cat $CONTEXT_FILE)"
+    PROMPT="$(cat $CONTEXT_FILE)"'"Generate a bash script to run the application, no additional commentary."}]'
     #TODO: curl llm and print/run runner
     #CONFIG: ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "$PROMPT"
     RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
@@ -79,6 +80,7 @@ then
   fi
 elif [[ $1 == "-r" ]]
 then
+  # CONTEXT_FILE has to be 
   if [[ -f $2 ]]
   then
     source $2
@@ -86,6 +88,31 @@ then
     printf "ERROR from running run script: " > $ERROR_LOG
     sh "$PROJECT_DIR"run.sh 2>>$ERROR_LOG
     cat $ERROR_LOG
+  else
+    printf "Config file not found.\n"
+  fi
+elif [[ $1 == "-d" ]]
+then
+  if [[ -f $2 ]]
+  then
+    source $2
+    #PROMPT="$(cat $CONTEXT_FILE)"
+    printf '"``` %srun.sh\\n' "$PROJECT_DIR" >> $CONTENT_FILE
+    IFS=$'\n'
+    FILE_LINES=$(cat "$PROJECT_DIR"run.sh)
+    for LINE in ${FILE_LINES[@]}; do
+      #printf '%s\n' "$LINE"
+      printf '%s\\n' "$LINE" >> $CONTEXT_FILE
+    done
+    printf '```"},{"role":"user","content":"' >> $CONTEXT_FILE
+    FILE_LINES=$(cat "$ERROR_LOG")
+    for LINE in ${FILE_LINES[@]}; do
+      printf '%s\\n' "$LINE" >> $CONTEXT_FILE
+    done
+    printf '"}]' >> $CONTEXT_FILE
+    PROMPT="$(cat $CONTEXT_FILE)"
+    RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
+    printf "%s\n" "$RESPONSE"
   else
     printf "Config file not found.\n"
   fi
