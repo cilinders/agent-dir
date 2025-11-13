@@ -82,7 +82,8 @@ then
   if [[ -f $2 ]]
   then
     source $2
-    sh "$PROJECT_DIR"run.sh
+    touch $ERROR_LOG
+    sh "$PROJECT_DIR"run.sh 2>$ERROR_LOG
   else
     printf "Config file not found.\n"
   fi
