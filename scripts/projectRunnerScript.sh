@@ -84,7 +84,7 @@ then
     source $2
     touch $ERROR_LOG
     printf "ERROR from running run script: " > $ERROR_LOG
-    sh "$PROJECT_DIR"run.sh 2>$ERROR_LOG
+    sh "$PROJECT_DIR"run.sh 2>>$ERROR_LOG
     cat $ERROR_LOG
   else
     printf "Config file not found.\n"
