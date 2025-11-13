@@ -62,6 +62,7 @@ then
     printf "%s\n" "$RESPONSE"
     IFS=$'\n'
     touch $PROJECT_DIR/run.sh
+    printf "" > $PROJECT_DIR/run.sh
     START_RUN_PRINT=false
     for LINE in ${RESPONSE[@]}; do
       if [[ "$LINE" == '```bash' ]]
@@ -72,7 +73,7 @@ then
         START_RUN_PRINT=false
       elif [[ "$START_RUN_PRINT" == true ]]
       then
-        printf "%s\n" "$LINE" > $PROJECT_DIR/run.sh
+        printf "%s\n" "$LINE" >> $PROJECT_DIR/run.sh
       fi
     done
     chmod +x $PROJECT_DIR/run.sh
