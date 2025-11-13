@@ -50,7 +50,7 @@ then
       done
       printf '```"},' >> $CONTEXT_FILE
     done
-    printf '{"role":"user","content":"Generate a bash to run the application, no additional commentary."}]' >> $CONTEXT_FILE
+    printf '{"role":"user","content":"Generate a bash script to run the application, no additional commentary."}]' >> $CONTEXT_FILE
     printf "%s\n" "$(cat $CONTEXT_FILE)"
     PROMPT="$(cat $CONTEXT_FILE)"
     #TODO: curl llm and print/run runner
