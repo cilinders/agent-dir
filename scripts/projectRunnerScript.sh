@@ -43,15 +43,17 @@ then
       # Prints the filepath to the context
       printf '{"role":"user","content":"``` // '"${PROJECT_FILES[$i]}"'\\n' >> $CONTEXT_FILE
       # Prints the content of file to the context
-      declare -a FILES_LINES_ARR=()
+      #declare -a FILES_LINES_ARR=()
+      IFS=$'\n'
       FILE_LINES=$(cat "${PROJECT_FILES[$i]}")
       for LINE in ${FILE_LINES[@]}; do
+        printf '%s\n' "$LINE"
         printf '%s\\n' "$LINE" >> $CONTEXT_FILE
       done
       printf '```"},' >> $CONTEXT_FILE
     done
     printf '{"role":"user","content":"Generate a bash script to run the application, no additional commentary."}]' >> $CONTEXT_FILE
-    printf "%s\n" "$(cat $CONTEXT_FILE)"
+    #printf "%s\n" "$(cat $CONTEXT_FILE)"
     PROMPT="$(cat $CONTEXT_FILE)"
     #TODO: curl llm and print/run runner
     #CONFIG: ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "$PROMPT"
