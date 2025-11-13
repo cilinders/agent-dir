@@ -82,7 +82,7 @@ then
   if [[ -f $2 ]]
   then
     source $2
-    ./"$PROJECT_DIR"run.sh
+    ."$PROJECT_DIR"run.sh
   else
     printf "Config file not found.\n"
   fi
