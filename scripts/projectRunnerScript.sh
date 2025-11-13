@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO: llm assumes you have dependencies installed.
+#       which makes debugging with llm impossible.
+
 if [[ $# == 0 ]] || [[ $1 == "-h" ]]
 then
   printf "Usage: \n"
@@ -95,6 +98,7 @@ then
   fi
 elif [[ $1 == "-d" ]]
 then
+  #TODO: isn't helpfull, ??let it generate something to use with commitScript??
   if [[ -f $2 ]]
   then
     source $2
@@ -111,7 +115,7 @@ then
     for LINE in ${FILE_LINES[@]}; do
       printf '%s\\n' "$LINE" >> $CONTEXT_FILE
     done
-    printf '"},{"role":"user","content","Generate a response resolving the error, no additional commentary."}]' >> $CONTEXT_FILE
+    printf '"},{"role":"user","content","Generate a response resolving the error."}]' >> $CONTEXT_FILE
     PROMPT="$(cat $CONTEXT_FILE)"
     RESPONSE=$($G_SCRIPT $G_TAG $G_CONF $G_MODEL_CONF "$PROMPT")
     printf "%s\n" "$RESPONSE"
