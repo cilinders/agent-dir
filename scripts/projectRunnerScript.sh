@@ -62,12 +62,12 @@ then
     printf "%s\n" "$RESPONSE"
     IFS=$'\n'
     touch $PROJECT_DIR/run.sh
-    printf "" > $PROJECT_DIR/run.sh
     START_RUN_PRINT=false
     for LINE in ${RESPONSE[@]}; do
-      if [[ "$LINE" == '```bash' ]]
+      if [[ "$LINE" == '#!/bin/bash' ]]
       then
         START_RUN_PRINT=true
+        printf '#!/bin/bash' > $PROJECT_DIR/run.sh
       elif [[ "$LINE" == '```' ]]
       then
         START_RUN_PRINT=false
