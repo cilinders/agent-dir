@@ -10,13 +10,15 @@ elif [[ $1 == "-g" ]]
 then
   if [[ -f $2 ]] || [[ -f $3 ]]
   then
-    #TODO: HANDLE designfile being read!!
-    #TODO: splitting into 1 line does not work
-    #TODO: removing \r doesnt work
+    #TODO: printf to file loses identation, look @ plannerScript for implementation
     source $2
     RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3) # > $RAW_ISSUE_FILE
     printf "%s\n" "$RESPONSE"
-    printf "%s\n" "$RESPONSE" > $RAW_ISSUE_FILE
+    printf "" > $RAW_ISSUE_FILE
+    IFS=$'\n'
+    for LINE in ${RESPONSE[@]}; do
+      printf "%s\n" "$LINE" >> $RAW_ISSUE_FILE
+    done
   else
     printf "ConfigFile or designFile not found.\n"
   fi
