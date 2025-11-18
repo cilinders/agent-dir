@@ -14,7 +14,9 @@ then
     #TODO: splitting into 1 line does not work
     #TODO: removing \r doesnt work
     source $2
-    $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3 > $RAW_ISSUE_FILE
+    RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3) # > $RAW_ISSUE_FILE
+    printf "%s\n" "$RESPONSE"
+    printf "%s\n" "$RESPONSE" > $RAW_ISSUE_FILE
   else
     printf "ConfigFile or designFile not found.\n"
   fi
