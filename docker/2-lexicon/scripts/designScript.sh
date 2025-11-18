@@ -11,14 +11,21 @@ then
   then
     #TODO: source llmscript, tag, llmconfig, modelconfig, designfile
     source $2
-    read -rp "Prompt: " PROMPT
-    PROMPT=${PROMPT//\\/\\\\}
-    PROMPT=${PROMPT//'"'/'\"'}
-    printf "sending: %s\n" "$PROMPT"
-    $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT" > $DESIGN_FILE
-    #for \r to \n
-    sed 's/\r$//' $DESIGN_FILE > $DESIGN_FILE
-    #./ollamaScript.sh -pv conf/ollamaConfig.conf model/conf/designFormat.conf "Mayonaise spoonfulls eaten application"
+    if [[ -f $DESIGN_FILE ]]
+    then
+      read -rp "Prompt: " PROMPT
+      PROMPT=${PROMPT//\\/\\\\}
+      PROMPT=${PROMPT//'"'/'\"'}
+      printf "sending: %s\n" "$PROMPT"
+      RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT") # > $DESIGN_FILE
+      printf "%s\n" "$RESPONSE"
+      printf "%s\n" "$RESPONES" > $DESIGN_FILE
+      #for \r to \n
+      sed 's/\r$//' $DESIGN_FILE > $DESIGN_FILE
+      #./ollamaScript.sh -pv conf/ollamaConfig.conf model/conf/designFormat.conf "Mayonaise spoonfulls eaten application"
+    else
+      printf "DesignFile not found.\n"
+    fi
   else
     printf "ConfigFile not found.\n"
   fi
