@@ -18,8 +18,13 @@ then
       PROMPT=${PROMPT//'"'/'\"'}
       printf "sending: %s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT") # > $DESIGN_FILE
-      #printf "%s\n" "$RESPONSE"
-      printf "%s\n" "$RESPONES" > $DESIGN_FILE
+      printf "%s\n" "$RESPONSE"
+      #printf "%s\n" "$RESPONES" > $DESIGN_FILE
+      printf "" > $DESIGN_FILE
+      IFS=$'\n'
+      for LINE in ${RESPONSE[@]}; do
+        printf "%s\n" "$LINE" >> $DESIGN_FILE
+      done
       #for \r to \n
       #sed 's/\r$//' $DESIGN_FILE > $DESIGN_FILE
       #./ollamaScript.sh -pv conf/ollamaConfig.conf model/conf/designFormat.conf "Mayonaise spoonfulls eaten application"
