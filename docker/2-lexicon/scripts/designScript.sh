@@ -21,7 +21,7 @@ then
       printf "%s\n" "$RESPONSE"
       printf "%s\n" "$RESPONES" > $DESIGN_FILE
       #for \r to \n
-      sed 's/\r$//' $DESIGN_FILE > $DESIGN_FILE
+      #sed 's/\r$//' $DESIGN_FILE > $DESIGN_FILE
       #./ollamaScript.sh -pv conf/ollamaConfig.conf model/conf/designFormat.conf "Mayonaise spoonfulls eaten application"
     else
       printf "DesignFile not found.\n"
