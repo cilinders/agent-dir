@@ -18,7 +18,7 @@ then
       PROMPT=${PROMPT//'"'/'\"'}
       printf "sending: %s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT") # > $DESIGN_FILE
-      printf "%s\n" "$RESPONSE"
+      #printf "%s\n" "$RESPONSE"
       printf "%s\n" "$RESPONES" > $DESIGN_FILE
       #for \r to \n
       #sed 's/\r$//' $DESIGN_FILE > $DESIGN_FILE
