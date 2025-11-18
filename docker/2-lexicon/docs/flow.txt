@@ -1,0 +1,2 @@
+1. designScript.sh -p | -f promptFile.txt
+2. issueScript.sh -g configFile.conf designFile.txt -> 

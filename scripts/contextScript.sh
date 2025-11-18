@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#TODO: add this from the start of the gen loop
+
 if [[ $# == 0 ]] || [[ $1 == "-h" ]]
 then
   printf "Usage: \n"
