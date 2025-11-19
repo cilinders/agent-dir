@@ -19,7 +19,12 @@ then
       done < $ISSUE_FILE
       printf "%s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
-      printf "%s\n\n" "$RESPONSE" > $PLAN_FILE
+      printf "%s\n" "$RESPONSE"
+      printf "" > $PLAN_FILE
+      IFS=$'\n'
+      for LINE in ${RESPONSE[@]}; do
+        printf "%s\n" "$LINE" >> $PLAN_FILE
+      done
     else
       printf "Issue file not found.\n"
     fi

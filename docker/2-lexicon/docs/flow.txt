@@ -1,2 +1,4 @@
 1. designScript.sh -p | -f promptFile.txt
-2. issueScript.sh -g configFile.conf designFile.txt -> 
+2. issueScript.sh -g configFile.conf designFile.txt - [raw designFile] ->
+  #TODO: output is really random at the moment.
+3.  
