@@ -129,7 +129,7 @@ then
   if [[ -f $2 ]]
   then
     source $2
-    touch TEMP_commit.txt
+    touch ../data/TEMP_commit.txt
     #TODO: create HISTORY tasks done chat history file for G_SCRIPT to use
     HISTORY_LINES=""
     if [[ -f $MESSAGE_HISTORY ]]
