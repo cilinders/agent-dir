@@ -148,7 +148,7 @@ then
       HISTORY_ARR+=( "${s%%"$delimiter"*}" );
       s=${s#*"$delimiter"}
     done;
-    printf "[" > data/temp_test.txt
+    printf "[" > ../data/temp_test.txt
     for ((i = 0; i < ${#HISTORY_ARR[@]}; ++i)); do
       delimiter='SOLUTION:'
       s=${HISTORY_ARR[$i]}$delimiter
