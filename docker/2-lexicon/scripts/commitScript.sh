@@ -80,7 +80,7 @@ then
     then
       IFS=$'\n' read -d '' -r -a LINE_ARRAY < $MESSAGE_HISTORY
       #HISTORY_FORMATTED_STRING=""
-      printf "[" > data/temp_test.txt
+      printf "[" > ../data/temp_test.txt
       for ((i = 1; i < ${#LINE_ARRAY[@]}; i+=2)); do
         #printf "%s\n" "$i"
         CONTENT_USER=$(printf "%s" "${LINE_ARRAY[$(($i-1))]}" | jq -sR .)
@@ -93,16 +93,16 @@ then
         then
           #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
           #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}'
-          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
-          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}' >> data/temp_test.txt
+          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> ../data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'}' >> ../data/temp_test.txt
         else
           #HISTORY_FORMATTED_STRING+='{"role":"user","content":'"$CONTENT_USER"'},'
           #HISTORY_FORMATTED_STRING+='{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},'
-          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> data/temp_test.txt
-          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},' >> data/temp_test.txt
+          printf '{"role":"user","content":'"$CONTENT_USER"'},' >> ../data/temp_test.txt
+          printf '{"role":"assistant","content":'"$CONTENT_ASSISTANT"'},' >> ../data/temp_test.txt
         fi
       done
-      printf ',{"role":"user","content":"Explain what we made and create a design doc for it."}]' >> data/temp_test.txt
+      printf ',{"role":"user","content":"Explain what we made and create a design doc for it."}]' >> ../data/temp_test.txt
       #printf "#!/bin/bash\n\n" > data/temp_test.txt
       #STRING_WITH="DATA_INSIDE_TEST='"
       #STRING_WITH+="$HISTORY_FORMATTED_STRING"
@@ -110,7 +110,7 @@ then
       #printf "%s\n" "$STRING_WITH" >> data/temp_test.txt
       printf "%s\n" "$(cat data/temp_test.txt | jq -sR .)"
       printf "ollo\n"
-      ./ollamaScript.sh -pvc conf/ollamaConfig_ollama3-1.conf model/conf/test.conf "Explain what we made and create a design doc for it."
+      ./ollamaScript.sh -pvc ../conf/ollamaConfig_ollama3-1.conf ../model/conf/test.conf "Explain what we made and create a design doc for it."
     else
       printf "History file not found.\n"
     fi
