@@ -41,12 +41,12 @@ then
     if [[ -f $PLAN_FILE ]]
     then
       printf "" > $TEMP_RESOLVED_FILE
-      printf "" > "../../output/1-recipe_program/docs/message_history.txt"
+      printf "" > $MESSAGE_HISTORY
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
       for LINE in "${LINES[@]}"; do
-        printf "TASK:\n %s\n" "$LINE" >> "../../output/1-recipe_program/docs/message_history.txt"
+        printf "TASK:\n %s\n" "$LINE" >> $MESSAGE_HISTORY
         RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$LINE")
-        printf "SOLUTION:\n %s\n" "$RESPONSE" >> "../../output/1-recipe_program/docs/message_history.txt" #$TEMP_RESOLVED_FILE
+        printf "SOLUTION:\n %s\n" "$RESPONSE" >> $MESSAGE_HISTORY #$TEMP_RESOLVED_FILE
       done
     else
       printf "Plan file not found.\n"
