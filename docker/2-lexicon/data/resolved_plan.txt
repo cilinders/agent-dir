@@ -1,0 +1,118 @@
+TASK:
+ Spoonful Counter Feature,Implement Spoonful Counter feature,Create a central hub for tracking the number of spoonfuls consumed in the MayoMeter app. and display it on the dashboard.,dependencies: Node.js, Express.js, MongoDB;
+SOLUTION:
+ **mayometer-server/server.js**
+```javascript
+const express = require('express');
+const mongoose = require('mongoose');
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/mayometer', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Define the Spoonful model
+const spoonfulSchema = new mongoose.Schema({
+  userId: String,
+  spoonfulsConsumed: Number
+});
+
+const Spoonful = mongoose.model('Spoonful', spoonfulSchema);
+
+// Create an Express app
+const app = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// API endpoint to increment the spoonful count for a user
+app.post('/increment-spoonfuls', async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const existingSpoonful = await Spoonful.findOne({ userId });
+    if (!existingSpoonful) {
+      existingSpoonful = new Spoonful({ userId, spoonfulsConsumed: 1 });
+    } else {
+      existingSpoonful.spoonfulsConsumed++;
+    }
+    await existingSpoonful.save();
+    res.json({ success: true, message: 'Spoonful count updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error updating spoonful count' });
+  }
+});
+
+// API endpoint to get the spoonful count for a user
+app.get('/get-spoonfuls', async (req, res) => {
+  const userId = req.query.userId;
+  try {
+    const spoonfulCount = await Spoonful.findOne({ userId }).select('spoonfulsConsumed');
+    if (!spoonfulCount) {
+      spoonfulCount = { spoonfulsConsumed: 0 };
+    }
+    res.json({ success: true, data: spoonfulCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Error fetching spoonful count' });
+  }
+});
+
+// Start the server
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+```
+
+**mayometer-server/model/spoonful.model.js**
+```javascript
+const mongoose = require('mongoose');
+
+const spoonfulSchema = new mongoose.Schema({
+  userId: String,
+  spoonfulsConsumed: Number
+});
+
+module.exports = mongoose.model('Spoonful', spoonfulSchema);
+```
+
+**client/app.js**
+```javascript
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function SpoonfulCounter() {
+  const [spoonfulCount, setSpoonfulCount] = useState(0);
+
+  useEffect(() => {
+    const fetchSpoonfulCount = async () => {
+      try {
+        const response = await axios.get('/get-spoonfuls?userId=currentUser');
+        const spoonfulCount = response.data.data;
+        setSpoonfulCount(spoonfulCount.spoonfulsConsumed);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSpoonfulCount();
+  }, []);
+
+  const incrementSpoonfulCount = async () => {
+    try {
+      await axios.post('/increment-spoonfuls', { userId: 'currentUser' });
+      setSpoonfulCount(spoonfulCount + 1);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Spoonful Counter</h2>
+      <p>Consumed Spoonfuls: {spoonfulCount}</p>
+      <button onClick={incrementSpoonfulCount}>Increment Spoonful Count</button>
+    </div>
+  );
+}
+
+export default SpoonfulCounter;
+```

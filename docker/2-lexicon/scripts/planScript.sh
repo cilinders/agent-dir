@@ -44,7 +44,7 @@ then
       printf "" > $MESSAGE_HISTORY
       IFS=$'\n' read -d '' -r -a LINES < $PLAN_FILE
       for LINE in "${LINES[@]}"; do
-        printf "TASK:\n %s\n" "$LINE" >> $MESSAGE_HISTORY
+        printf "TASK:\n %s\n" "$LINE" >> $TEMP_RESOLVED_FILE
         RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$LINE")
         printf "SOLUTION:\n %s\n" "$RESPONSE" >> $TEMP_RESOLVED_FILE
       done

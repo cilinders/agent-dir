@@ -1,0 +1,21 @@
+Title:
+Implement Spoonful Counter feature,Create a central hub for tracking the number of spoonfuls consumed in the MayoMeter app. and display it on the dashboard.,dependencies: Node.js, Express.js, MongoDB;
+
+Description:
+Implement Spoonful Counter feature, Create a central hub for tracking the number of spoonfuls consumed in the MayoMeter app and display it on the dashboard., dependencies: Node.js, Express.js, MongoDB;
+
+Structure:
+```
+.\ 
+├── mayometer-server
+│   ├── server.js
+│   └── model
+│       └── spoonful.model.js
+├── mayometer-client
+│   └── app.js
+└── package.json
+```
+
+. { mayometer-server { server.js model { spoonful.model.js } } mayometer-client { app.js } package.json }
+Message:
+feat: Implemented spoonful counter feature in MayoMeter app
