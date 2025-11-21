@@ -1,6 +1,9 @@
 1. designScript.sh -p | -f promptFile.txt
-2. issueScript.sh -g configFile.conf designFile.txt - [raw designFile] ->
+2. issueScript.sh -g issueConfig.conf designFile.txt - [raw designFile] ->
   #TODO: output is really random at the moment.
-3. issueScript.sh -fi configFile.conf rawIssues.txt
-4. issueScript.sh -fo configFile.conf openIssue.txt
-5. planScript.sh -p configFile.conf
+3. issueScript.sh -fi issueConfig.conf rawIssues.txt
+4. issueScript.sh -fo issueConfig.conf openIssue.txt
+5. planScript.sh -p planConfig.conf
+6. planScript.sh -tp testPlanConfig.conf
+7. commitScript.sh -gic commitCodeGivenConfig.conf
+8. commitScript.sh -ff commitFiles.conf -[raw printf]->
