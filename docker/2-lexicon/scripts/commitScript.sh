@@ -259,6 +259,8 @@ then
       # Uses wierd loop to keep empty lines intact
       #  IFS=$'\n' read -d '' -r -a LINE_ARRAY < $FILES_FILE
       #  FILE_PATH=${LINE_ARRAY[0]}
+      touch $ACTION_FILES_FILE
+      printf "" > $ACTION_FILES_FILE
       declare -a LINE_ARRAY=()
       INDEX=0
       IFS=''
@@ -281,8 +283,7 @@ then
           BEGIN=false
           FORMAT_LINE+="\n;"
           #printf "%s\n" "$COUNT"
-          printf "%s\n" "$FORMAT_LINE"
-          #TODO: concat this to file for actionScript
+          printf "%s\n" "$FORMAT_LINE" >> $ACTION_FILES_FILE
         elif ! [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == false ]]
         then
           FILE_PATH=$LINE
