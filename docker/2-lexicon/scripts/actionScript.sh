@@ -161,6 +161,10 @@ if [[ $# == 0 ]] || [[ $1 == "-h" ]]
 then
   printf "Usage: \n"
   printf "  actionScript.sh <actionFile> <configFile>  : Executes action in the action file.\n"
+elif [[ $1 == "-t" ]]
+then
+  source $2
+  printf "%s\n" "$PROJECT_DIR"
 elif [[ $# == 2 ]] && [[ -f $1 ]] && [[ -f $2 ]]
 then
   source $2
