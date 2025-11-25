@@ -285,7 +285,7 @@ then
           BEGIN=false
           FORMAT_LINE+="\n;"
           #printf "%s\n" "$COUNT"
-          printf "%s\n" "$FORMAT_LINE" >> $ACTION_FILES_FILE
+          printf "%s\n" "$FORMAT_LINE" >> $FILES_ACTION_FILE
         elif ! [[ ${LINE:0:3} == "\`\`\`" ]] && [[ "$BEGIN" == false ]]
         then
           FILE_PATH=$LINE
