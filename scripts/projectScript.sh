@@ -21,7 +21,7 @@ then
     while IFS='' read -e -r line; do
       DESIGN_TEXT+="$line\n"
     done < "$DESIGN_FILE"
-    PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"assistant","content":"$DESIGN_TEXT"},{"role":"user","content":"Return the project directory name as stated in the system prompt."}]'
+    PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"assistant","content":"$DESIGN_TEXT"},{"role":"user","content":"Return the project directory name as stated in the system prompt, without additional commentary."}]'
     RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
     printf "%s\n" "$RESPONSE"
   else
