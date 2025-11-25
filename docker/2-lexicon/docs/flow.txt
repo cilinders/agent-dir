@@ -7,5 +7,6 @@
 6. planScript.sh -p planConfig.conf
 7. planScript.sh -tp testPlanConfig.conf
 8. commitScript.sh -gic commitCodeGivenConfig.conf
-9. commitScript.sh -ff commitFiles.conf -[raw printf]->
-10. actionScript.sh 
+9. commitScript.sh -ff commitFiles.conf
+10. actionScript.sh action_files_file.txt actionConfig.conf - [no tag]
+  #TODO: Conf PROJECT_PATH,ProjectConfig PROJECT_PATH diff resolve
