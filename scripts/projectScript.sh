@@ -25,6 +25,7 @@ then
     #printf "%s\n" "$DESIGN_TEXT"
     PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"user","content":"$DESIGN_TEXT"},{"role":"user","content":"Create an appropriate name for the software product, return the name WITHOUT additional commentary."}]'
     RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
+    printf "%s\n" "$RESPONSE"
     RESPONSE=${RESPONSE//' '/'_'}
     RESPONSE=$(echo "$RESPONSE" | tr '[:upper:]' '[:lower:]')
     RESPOSNE=${RESPONSE//[^-a-z_]/''}
