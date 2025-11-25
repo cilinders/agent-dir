@@ -17,11 +17,13 @@ then
     while IFS='' read -e -r line; do
       DESIGN_PROMPT+="$line\n"
     done < "$DESIGN_PROMPT_FILE"
+    printf "%s\n" "$DESIGN_PROMPT"
     DESIGN_TEXT=""
     while IFS='' read -e -r line; do
       DESIGN_TEXT+="$line\n"
     done < "$DESIGN_FILE"
-    PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"assistant","content":"$DESIGN_TEXT"},{"role":"user","content":"Return the project directory name, without additional commentary."}]'
+    printf "%s\n" "$DESIGN_TEXT"
+    PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"assistant","content":"$DESIGN_TEXT"},{"role":"user","content":"Create an appropriate name for the software product, without additional commentary."}]'
     RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
     printf "%s\n" "$RESPONSE"
   else
