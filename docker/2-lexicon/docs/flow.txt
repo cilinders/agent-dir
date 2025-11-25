@@ -1,5 +1,5 @@
 1. designScript.sh -p designConfig.conf | -f designConfig.conf promptFile.txt
-2.  
+2. projectScript.sh -id projectScriptConfig.conf
 3. issueScript.sh -g issueConfig.conf designFile.txt - [raw designFile] ->
   #TODO: output is really random at the moment.
 4. issueScript.sh -fi issueConfig.conf rawIssues.txt
