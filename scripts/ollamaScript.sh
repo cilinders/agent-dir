@@ -190,4 +190,7 @@ then
 elif [[ $1 == "-stop" ]] || [[ $1 == "-st" ]]
 then
   sudo kill $(pgrep ollama)
+  sudo systemctl stop ollama.service
+  sudo systemctl disable ollama.service
+  sudo systemctl status ollama.service
 fi

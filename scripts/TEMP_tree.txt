@@ -1,3 +1,14 @@
 .\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n
 
 7 directories, 65 files
+
+.\n
+├── foo.bar\n
+├── baz\n
+│	└── qux.quux\n
+├── corge\n
+│	├── grault.garply\n
+│	├── waldo\n
+│	│	└── fred.plugh\n
+│	└── xyz.zy\n
+└── thud.foobar\n
