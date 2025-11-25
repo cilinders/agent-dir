@@ -36,6 +36,8 @@ then
     done
     printf 'PROJECT_DIR="%s/src"\n' "$RESPONSE"
     printf 'PROJECT_DIR="%s/src"\n' "$RESPONSE" >> $PROJECT_CONFIG
+    source $PROJECT_CONFIG
+    printf "%s\n" "$PROJECT_DIR"
   else
     printf "Config file not found.\n"
   fi
