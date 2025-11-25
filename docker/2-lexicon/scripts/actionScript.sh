@@ -76,6 +76,7 @@ CREATE_FILE() {
       #printf "%s\n" "$FORMATTED_DATA"
       if [[ "${#FILE_PATH}" == 0 ]]
       then
+        #TODO: change this to new projectConfig project path
         FILE_PATH+="$PROJECT_PATH"
         FILE_PATH+="${FORMATTED_DATA:1}"
         SLASH_INDEX=0
