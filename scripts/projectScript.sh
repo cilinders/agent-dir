@@ -26,6 +26,7 @@ then
     PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"user","content":"$DESIGN_TEXT"},{"role":"user","content":"Create an appropriate name for the software product, return the name WITHOUT additional commentary."}]'
     RESPONSE=""
     if [[ "${#RESPONSE}" -gt 25 ]] || [[ "${#RESPONSE}" == 0 ]]; then
+      printf "%s\n" "${#RESPONSE}"
       RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
       printf "%s\n" "$RESPONSE"
       RESPONSE=${RESPONSE//' '/'_'}
