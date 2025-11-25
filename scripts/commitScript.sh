@@ -253,6 +253,8 @@ then
   #           ...
   if [[ -f $2 ]]
   then
+    # FILES_FILE
+    # FILES_ACTION_FILE
     source $2
     if [[ -f $FILES_FILE ]]
     then
