@@ -16,6 +16,8 @@ then
       read -rp "Prompt: " PROMPT
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
+      touch $PROMPT_FILE
+      printf "%s\n" "$PROMPT" > $PROMPT_FILE
       printf "sending: %s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT") # > $DESIGN_FILE
       printf "%s\n" "$RESPONSE"
@@ -48,6 +50,8 @@ then
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
+      touch $PROMPT_FILE
+      printf "%s\n" "$PROMPT" > $PROMPT_FILE
       printf "sending: %s\n" "$PROMPT"
       $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT" > $DESIGN_FILE
     else
