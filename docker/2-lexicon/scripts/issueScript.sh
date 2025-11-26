@@ -41,13 +41,15 @@ then
   then
     source $2
     IFS=$'\n' read -d '' -r -a LINES < $3
+    ignore=true
     declare -a ISSUE_LINES=()
     for LINE in "${LINES[@]}"
     do
-      #if [[ "$LINE" =~ "*" ]]
-      #then
+      if [[ $ignore == false ]]#if [[ "$LINE" =~ "*" ]]
+      then
         ISSUE_LINES+=("$LINE")
-      #fi
+      fi
+      ignore=false
     done
     declare -a ISSUES=()
     ISSUE=""
