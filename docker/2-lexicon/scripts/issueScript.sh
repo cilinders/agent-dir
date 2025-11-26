@@ -44,10 +44,10 @@ then
     declare -a ISSUE_LINES=()
     for LINE in "${LINES[@]}"
     do
-      if [[ "$LINE" =~ "*" ]]
-      then
+      #if [[ "$LINE" =~ "*" ]]
+      #then
         ISSUE_LINES+=("$LINE")
-      fi
+      #fi
     done
     declare -a ISSUES=()
     ISSUE=""
