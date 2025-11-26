@@ -261,8 +261,8 @@ then
       # Uses wierd loop to keep empty lines intact
       #  IFS=$'\n' read -d '' -r -a LINE_ARRAY < $FILES_FILE
       #  FILE_PATH=${LINE_ARRAY[0]}
-      touch $ACTION_FILES_FILE
-      printf "" > $ACTION_FILES_FILE
+      touch $FILES_ACTION_FILE
+      printf "" > $FILES_ACTION_FILE
       declare -a LINE_ARRAY=()
       INDEX=0
       IFS=''
