@@ -45,7 +45,7 @@ then
     declare -a ISSUE_LINES=()
     for LINE in "${LINES[@]}"
     do
-      if [[ $ignore == false ]]#if [[ "$LINE" =~ "*" ]]
+      if [[ $ignore == false ]] #if [[ "$LINE" =~ "*" ]]
       then
         ISSUE_LINES+=("$LINE")
       fi
