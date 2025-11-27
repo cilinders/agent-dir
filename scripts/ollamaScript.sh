@@ -189,11 +189,12 @@ then
   OLLAMA_DEBUG=1 ollama serve
 elif [[ $1 == "-stop" ]] || [[ $1 == "-st" ]]
 then
-  sudo kill $(pgrep ollama)
-  sudo systemctl stop ollama.service
-  sudo systemctl stop ollama
   sudo systemctl disable ollama.service
   sudo systemctl disable ollama
-  sudo systemctl status ollama.service
-  sudo systemctl status ollama
+  sudo systemctl stop ollama.service
+  sudo systemctl stop ollama
+  sudo pkill ollama.service
+  sudo pkill ollama
+  printf "%s" "$(sudo systemctl status ollama.service -n 0)"
+  printf "%s" "$(sudo systemctl status ollama -n 0)"
 fi
