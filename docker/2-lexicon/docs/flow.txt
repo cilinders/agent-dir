@@ -1,7 +1,9 @@
 1. designScript.sh -p designConfig.conf | -f designConfig.conf promptFile.txt
 2. projectScript.sh -id projectScriptConfig.conf
+  #TODO: bad name set, corrected name skipped
 3. issueScript.sh -g issueConfig.conf designFile.txt - [raw designFile] ->
   #TODO: output is really random at the moment.
+    #TODO: look at model/conf/issueFormat.conf < SYSTEM is kinda wack
 4. issueScript.sh -fi issueConfig.conf rawIssues.txt
 5. issueScript.sh -fo issueConfig.conf openIssue.txt
 6. planScript.sh -p planConfig.conf
