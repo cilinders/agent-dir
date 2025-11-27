@@ -47,8 +47,7 @@ then
       while IFS=$'\n' read -e -r line; do
         PROMPT+="$line\n"
       done < "$3"
-      touch $PROMPT_FILE
-      printf "%s\n" "$PROMPT" > $PROMPT_FILE
+      cp $3 $PROMPT_FILE
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
