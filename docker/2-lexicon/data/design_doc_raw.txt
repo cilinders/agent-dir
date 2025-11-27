@@ -1,8 +1,8 @@
 Here's a potential design document for the "Mayonnaise Spoonfuls Eaten Tracker" app:
-**Product Name:** MayoMeter
+**Product Name:** MayoMeater
 **Tagline:** Track your mayo obsession with precision.
 **Overview:**
-MayoMeter is a simple, yet delightful mobile application designed to help users monitor and manage their mayonnaise consumption. Whether you're a condiment connoisseur or just someone who loves a good BLT, this app provides a fun and interactive way to keep track of your mayo spoonfuls.
+MayoMeater is a simple, yet delightful mobile application designed to help users monitor and manage their mayonnaise consumption. Whether you're a condiment connoisseur or just someone who loves a good BLT, this app provides a fun and interactive way to keep track of your mayo spoonfuls.
 **Key Features:**
 1. **Spoonful Counter:** A central hub for tracking the number of spoonfuls consumed.
 2. **Daily/Weekly/Monthly Totals:** Break down mayo consumption into customizable time periods for a more comprehensive view.
@@ -29,11 +29,11 @@ MayoMeter is a simple, yet delightful mobile application designed to help users 
 3. **Development Phase (Week 7-12):** Build the app's core features, integrating design elements and technical requirements.
 4. **Testing and Launch (Week 13-14):** Conduct thorough testing, gather feedback, and prepare for public release.
 **Deliverables:**
-1. **Design Document:** This document outlines the MayoMeter concept, including key features, design requirements, and technical specifications.
+1. **Design Document:** This document outlines the MayoMeater concept, including key features, design requirements, and technical specifications.
 2. **Functional Prototype:** A working prototype demonstrating the app's core functionality, used for user testing and feedback collection.
-3. **Production Code:** The final, polished codebase for the MayoMeter app.
+3. **Production Code:** The final, polished codebase for the MayoMeater app.
 **Risks and Mitigants:**
 1. **User Adoption:** Monitor user engagement metrics to identify potential issues and optimize the app accordingly.
 2. **Data Accuracy:** Implement data validation mechanisms to ensure users input accurate information (e.g., spoonful counts).
 3. **Device Compatibility:** Regularly test on a range of devices to catch any compatibility issues early on.
-This design document provides a solid foundation for the MayoMeter project, outlining key features, technical requirements, and project timelines. By following this roadmap, we can create an engaging, user-friendly app that helps people track their mayo consumption with ease.
+This design document provides a solid foundation for the MayoMeater project, outlining key features, technical requirements, and project timelines. By following this roadmap, we can create an engaging, user-friendly app that helps people track their mayo consumption with ease.
