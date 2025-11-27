@@ -22,7 +22,7 @@ then
     while IFS='' read -e -r line; do
       DESIGN_TEXT+="$line\n"
     done < "$DESIGN_FILE"
-    #printf "%s\n" "$DESIGN_TEXT"
+    printf "%s\n" "$DESIGN_TEXT"
     PROMPT='[{"role":"user","content":"$DESIGN_PROMPT"},{"role":"assistant","content":"$DESIGN_TEXT"},{"role":"user","content":"Create an appropriate name for the software product, return the name WITHOUT additional commentary."}]'
     RESPONSE=""
     while [[ "${#RESPONSE}" -gt 25 ]] || [[ "${#RESPONSE}" == 0 ]]; do
