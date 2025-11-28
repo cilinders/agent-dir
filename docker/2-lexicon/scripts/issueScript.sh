@@ -40,33 +40,42 @@ then
   if [[ -f $2 ]] || [[ -f $3 ]]
   then
     source $2
-    IFS=$'\n' read -d '' -r -a LINES < $3
-    ignore=true
     declare -a ISSUE_LINES=()
-    for LINE in "${LINES[@]}"
-    do
-      if [[ $ignore == false ]] #if [[ "$LINE" =~ "*" ]]
-      then
-        ISSUE_LINES+=("$LINE")
-      fi
-      ignore=false
-    done
-    declare -a ISSUES=()
+    INDEX=0
+    IFS=''
+    while read LINE; do
+      ISSUE_LINES[$INDEX]="$LINE"
+      ((++INDEX))
+    done < $3
+    #INDEX=0
+    #for LINE in "${ISSUE_LINES[@]}"; do
+    #  printf "%s: %s" "$INDEX" "$LINE"
+    #  if [[ "$LINE" == "" ]]; then
+    #    printf "yup"
+    #  else
+    #    printf "nope"
+    #  fi
+    #  printf "\n"
+    #  ((++INDEX))
+    #done
+    INDEX=0
+#    for LINE in "${ISSUE_LINES[@]}"; do
+#      ((++INDEX))
+#      if [[ "$LINE" == "" ]]; then
+#        break
+#      fi
+#    done
     ISSUE=""
     printf "" > $ISSUE_FILE
-    for ((i = 0; i < ${#ISSUE_LINES[@]}; ++i))
-    do
+    for ((i = $INDEX; i < ${#ISSUE_LINES[@]}; ++i)); do
       ISSUE_TEMP="${ISSUE_LINES[$i]}"
       ISSUE+="${ISSUE_TEMP//$'\n'/}"
-      i_TEMP=$(($i+1))
-      i_TEMP=$(($i_TEMP%4))
-      if [[ $i_TEMP == 0 ]]
-      then
+      if [[ "${ISSUE_LINES[$i]}" == "" ]]; then
         ISSUE+=";"
         printf "%s\n" "$ISSUE" >> $ISSUE_FILE
         ISSUE=""
       else
-        ISSUE+=","
+        ISSUE+="\n"
       fi
     done
   else
