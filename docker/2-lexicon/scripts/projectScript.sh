@@ -23,8 +23,10 @@ then
       DESIGN_TEXT+="$line\n"
     done < "$DESIGN_FILE"
     #printf "%s\n" "$DESIGN_TEXT"
-    DESIGN_PROMPT=${DESIGN_PROMPT//\/\\}
-    DESIGN_TEXT=${DESIGN_TEXT//\/\\}
+    DESIGN_PROMPT=${DESIGN_PROMPT//\\/\\\\}
+    DESIGN_TEXT=${DESIGN_TEXT//\\/\\\\}
+    DESIGN_PROMPT=${DESIGN_PROMPT//'"'/'\"'}
+    DESIGN_TEXT=${DESIGN_TEXT//'"'/'\"'}
     PROMPT='[{"role":"user","content":"'"$DESIGN_PROMPT"'"},{"role":"assistant","content":"'"$DESIGN_TEXT"'"},{"role":"user","content":"Create an appropriate name for the software product, return the name WITHOUT additional commentary."}]'
     #PROMPT=${PROMPT//'"'/'\"'}
     printf "%s\n" "$PROMPT"
