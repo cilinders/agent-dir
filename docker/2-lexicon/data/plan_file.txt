@@ -1,1 +1,1 @@
-Spoonful Counter Feature,Implement Spoonful Counter feature,Create a central hub for tracking the number of spoonfuls consumed in the MayoMeter app. and display it on the dashboard.,dependencies: Node.js, Express.js, MongoDB;
+Create schema for juice profiles,Design database tables to store user-submitted juice recipes, including fields for ingredients, measurements, and instructions., MySQL, Postgres;

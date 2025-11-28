@@ -1,72 +1,60 @@
 **Design Document: Garbage Bag Juice Taste Profile Tracker**
 
-**Product Name:** Juicetrack
+**Product Name:** Juicely
 
-**Tagline:** Connect, Share, and Savor the Flavor of Garage-Brewed Juice
+**Tagline:** "Taste the trash, share your thrill"
 
 **Overview:**
-Juicetrack is a mobile app that allows users to track and share their garbage bag juice taste profiles, connect with like-minded individuals, and discover new flavors. The app aims to create a community of "juice-heads," "juicers," and "garbo-jucie enjoyers" who can exchange recipes, tips, and reviews.
+Juicely is a mobile app designed for users to track and share their taste experiences with various garbage bag juice profiles. The app aims to connect like-minded individuals who enjoy the unique flavors obtained from discarded food packaging.
 
-**Key Features:**
+**Core Features:**
 
-1. **Taste Profile Tracking:**
-	* Users can record and save their garbage bag juice recipes, including ingredients, quantities, and brewing methods.
-	* The app will provide a flavor profile system, allowing users to assign taste notes (e.g., sweet, sour, bitter) and intensity levels to each recipe.
-2. **Social Network Features:**
-	* Users can create profiles, connect with friends, and join groups based on shared interests (e.g., fruit-based juices, spirit-infused juices).
-	* The app will feature a newsfeed showcasing user-submitted recipes, reviews, and ratings.
-3. **Recipe Discovery:**
-	* Users can browse and filter recipes by flavor profile, ingredient, or brewing method.
-	* A "Juice of the Month" feature will highlight a curated recipe, complete with step-by-step instructions and user reviews.
-4. **Community Forum:**
-	* A dedicated forum for discussing juice-related topics, sharing tips, and asking questions.
-	* Moderators will ensure that discussions remain respectful and on-topic.
-5. **Event Planning:**
-	* Users can create and join events (e.g., juice tastings, brewing sessions) to connect with other users in-person.
+1. **Garbage Bag Juice Library:** A comprehensive database of user-submitted juice profiles, including characteristics such as flavor, acidity, and texture.
+2. **Taste Profile Tracking:** Users can record their personal taste experiences by selecting pre-defined attributes (e.g., sweet, sour, bitter) or customizing their own.
+3. **Social Network:**
+	* User Profiles: Showcase individual's juicing history, favorite juices, and connection with other users.
+	* Friends List: Follow users to see their juice discoveries and share reactions.
+	* Forums: Engage in discussions about specific juices, share tips, or debate flavor profiles.
+4. **Discovery Features:**
+	* Juice Recommendations: Based on user preferences, Juicely suggests new juices to try.
+	* Top-rated Jugs: Display the most popular and highly-regarded juice profiles.
+5. **Gamification:**
+	* Reward System: Users earn badges for achieving milestones (e.g., trying 10 unique juices).
+	* Leaderboards: Rank users based on their taste experience, discoveries, or contributions to the community.
 
 **Design Requirements:**
 
-1. User Authentication and Authorization:
-	* Users must register for an account to access core features.
-	* Profiles will include basic information (username, email, profile picture).
-2. Recipe Management:
-	* Recipes will be stored in a database, allowing users to save, edit, and delete their creations.
-	* The app will provide a user-friendly interface for adding and editing recipe details.
+1. User Interface:
+	* Clean and intuitive design with a focus on color schemes inspired by juice packaging.
+	* Customizable profiles with user-uploaded images or avatars.
+2. Data Management:
+	* Juice profile database stored securely using a cloud-based service (e.g., Firebase).
+	* User data encrypted for protection, adhering to relevant regulations (e.g., GDPR).
 3. Social Network Integration:
-	* Users can follow friends, join groups, and participate in discussions.
-	* Notifications will alert users to new posts, comments, or mentions.
-
-**User Interface:**
-
-1. Home Screen:
-	* Displays user's saved recipes, recent activity, and a "Juice of the Month" feature.
-2. Recipe Page:
-	* Provides detailed recipe information, including flavor profile, ingredients, and brewing method.
-3. Community Forum:
-	* A dedicated section for discussing juice-related topics and sharing tips.
-
-**Database Schema:**
-
-1. Users Table:
-	* stores user account information (username, email, password)
-2. Recipes Table:
-	* stores recipe data (name, description, flavor profile, ingredients, brewing method)
-3. Flavor Profiles Table:
-	* stores predefined flavor profiles for easy selection
-4. User Recipes Association Table:
-	* links users to their saved recipes
+	* OAuth 2.0 authentication for seamless login with existing social media accounts.
+	* API integration for friend connections and real-time updates.
 
 **Technical Requirements:**
 
-1. Backend Framework:
-	* Choose a suitable framework (e.g., Node.js, Django) for building the API and database.
-2. Frontend Framework:
-	* Utilize a popular frontend framework (e.g., React, Angular) for building the user interface.
-3. Database Management System:
-	* Select a robust DBMS (e.g., PostgreSQL, MySQL) to manage recipe data.
+1. Front-end Framework: React Native or Angular for a cross-platform mobile app.
+2. Back-end Framework: Node.js, Express, or Django for handling user data and juice profile management.
+3. Database Management System: Relational database (e.g., PostgreSQL) for storing user and juice profile information.
 
-**Next Steps:**
+**Security Considerations:**
 
-1. Conduct market research and gather feedback from potential users to refine the product vision.
-2. Develop a prototype to validate key features and iterate on design decisions.
-3. Establish partnerships with relevant organizations (e.g., juice suppliers, brewing equipment manufacturers) to enhance user experience and revenue streams.
+1. User Authentication and Authorization:
+	* Verify user identities using OAuth 2.0 authentication.
+	* Implement role-based access control for administrators and moderators.
+2. Data Encryption:
+	* Store sensitive data, such as user passwords, securely using encryption algorithms (e.g., AES-256).
+3. Input Validation and Sanitization:
+	* Validate user input to prevent SQL injection or cross-site scripting (XSS) attacks.
+
+**Future Development:**
+
+1. Advanced Analytics:
+	* Integrate machine learning algorithms for predicting juice preferences based on user behavior.
+2. Customizable Badges and Emojis:
+	* Allow users to create custom badges, emojis, or symbols representing their juicing experiences.
+
+By following this design document, Juicely will become a go-to platform for like-minded individuals to explore the fascinating world of garbage bag juice taste profiles while fostering a supportive community.
