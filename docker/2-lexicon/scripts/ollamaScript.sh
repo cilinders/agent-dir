@@ -56,7 +56,7 @@ then
     PROMPT="$4"
     PROMPT=${PROMPT//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
-    RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
+    RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
                   -X POST http://localhost:11434/api/generate | jq -r '.response')
     printf "%s\n" "$RESPONSE"
   else
@@ -78,7 +78,8 @@ then
     if [[ "${PROMPT:0:2}" == "[{" ]]; then
       #PROMPT=${PROMPT//\\/\\\\}
       #PROMPT=${PROMPT//'"'/'\"'}
-      printf "%s\n" "${PROMPT@Q}" > testPROMPT.txt
+      # TODO: test print
+      #printf "%s\n" "${PROMPT@Q}" > testPROMPT.txt
       RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$PROMPT"'}' -X POST http://localhost:11434/api/chat | jq -r '.message.content')
       printf "%s\n" "$RESPONSE"
     else
@@ -111,7 +112,7 @@ then
       SYSTEM=${SYSTEM//\\/\\\\}
       SYSYEM=${SYSTEM//'"'/'\"'}
       printf 'sending %s\n' "${PROMPT@Q}"
-      RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
+      RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
                     -X POST http://localhost:11434/api/generate | jq -r '.response')
       printf '%s\n' "$RESPONSE"
     else
@@ -165,7 +166,7 @@ then
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
       printf 'sending %s\n' "${PROMPT@Q}"
-      RESPONSE=$(curl -sS -d '{"stream":false,"model":"'$2'","PROMPT":"'"$PROMPT"'"}' \
+      RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$2'","PROMPT":"'"$PROMPT"'"}' \
                     -X POST http://localhost:11434/api/generate | jq -r '.response')
       printf '%s\n' "$RESPONSE"
     else
