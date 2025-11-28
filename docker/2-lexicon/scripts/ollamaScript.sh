@@ -76,6 +76,7 @@ then
     #PROMPT=${PROMPT//\\/\\\\}
     #PROMPT=${PROMPT//'"'/'\"'}
     if [[ "${PROMPT:0:2}" == "[{" ]]; then
+      PROMPT=${PROMPT//\/\\}
       RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":'"$TEMPERATURE"',"system":"'"$SYSTEM"'","MESSAGES":'"$PROMPT"'}' -X POST http://localhost:11434/api/chat) # | jq -r '.message.content')
       printf "%s\n" "$RESPONSE"
     else
