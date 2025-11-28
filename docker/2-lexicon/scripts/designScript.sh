@@ -51,8 +51,8 @@ then
         cp $3 $PROMPT_FILE
       fi
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
-      PROMPT=${PROMPT//\\/\\\\}
-      PROMPT=${PROMPT//'"'/'\"'}
+      #PROMPT=${PROMPT//\\/\\\\}
+      #PROMPT=${PROMPT//'"'/'\"'}
       printf "sending: %s\n" "$PROMPT"
       $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT" > $DESIGN_FILE
     else
