@@ -23,6 +23,8 @@ then
       DESIGN_TEXT+="$line\n"
     done < "$DESIGN_FILE"
     #printf "%s\n" "$DESIGN_TEXT"
+    DESIGN_PROMPT=${DESIGN_PROMPT//'\t'/'  '}
+    DESIGN_TEXT=${DESIGN_TEXT//'\t'/'  '}
     DESIGN_PROMPT=${DESIGN_PROMPT//\\/\\\\}
     DESIGN_TEXT=${DESIGN_TEXT//\\/\\\\}
     DESIGN_PROMPT=${DESIGN_PROMPT//'"'/'\"'}
