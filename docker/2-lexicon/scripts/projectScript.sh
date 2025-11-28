@@ -36,7 +36,7 @@ then
       RESPONSE=${RESPONSE//' '/'_'}
       RESPONSE=$(echo "$RESPONSE" | tr '[:upper:]' '[:lower:]')
       RESPONSE=${RESPONSE//[^-a-z_]/''}
-      printf "%s\n" "$RESPONSE"
+      #printf "%s\n" "$RESPONSE"
       #if ! [[ "$RESPONSE" == "null" ]]; then
         sleep 5s
       #fi
