@@ -24,7 +24,7 @@ then
     done < "$DESIGN_FILE"
     #printf "%s\n" "$DESIGN_TEXT"
     PROMPT='[{"role":"user","content":"'"$DESIGN_PROMPT"'"},{"role":"assistant","content":"'"$DESIGN_TEXT"'"},{"role":"user","content":"Create an appropriate name for the software product, return the name WITHOUT additional commentary."}]'
-    PROMPT=${PROMPT//'"'/'\"'}
+    #PROMPT=${PROMPT//'"'/'\"'}
     printf "%s\n" "$PROMPT"
     RESPONSE=""
     while [[ "${#RESPONSE}" -gt 25 ]] || [[ "${#RESPONSE}" == 0 ]] || [[ "$RESPONSE" == "null" ]]; do
