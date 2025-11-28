@@ -47,7 +47,9 @@ then
       while IFS=$'\n' read -e -r line; do
         PROMPT+="$line\n"
       done < "$3"
-      cp $3 $PROMPT_FILE
+      if ! [[ "$3" == "$PROMPT_FILE" ]]; then
+        cp $3 $PROMPT_FILE
+      fi
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
       PROMPT=${PROMPT//\\/\\\\}
       PROMPT=${PROMPT//'"'/'\"'}
