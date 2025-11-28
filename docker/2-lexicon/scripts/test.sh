@@ -1,7 +1,7 @@
 #!/bin/bash
 
-printf "1. design\n"
-./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
+# printf "1. design\n"
+# ./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
 printf "2. dir setup\n"
 ./projectScript.sh -id ../conf/projectScriptConfig.conf
 #printf "3. issues\n"
