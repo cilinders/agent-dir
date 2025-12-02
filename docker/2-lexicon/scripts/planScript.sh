@@ -18,7 +18,7 @@ then
         PROMPT+="$LINE\n"
       done < $ISSUE_FILE
       printf "%s\n" "$PROMPT"
-      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT")
+      RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "Issue: $PROMPT\nReturn the coding tasks WITHOUT additional commentary.")
       printf "%s\n" "$RESPONSE"
       printf "" > $PLAN_FILE
       IFS=$'\n'
