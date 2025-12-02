@@ -4,14 +4,14 @@
 #./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
 #printf "2. dir setup\n"
 #./projectScript.sh -id ../conf/projectScriptConfig.conf
-printf "3. issues\n"
-./issueScript.sh -g ../conf/issueConfig.conf ../data/design_doc_raw.txt
-printf "4. format issues\n"
-./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
-printf "5. open issue -> TODO all issues\n"
+#printf "3. issues\n"
+#./issueScript.sh -g ../conf/issueConfig.conf ../data/design_doc_raw.txt
+#printf "4. format issues\n"
+#./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
+#printf "5. open issue -> TODO all issues\n"
 #./issueScript.sh -fo ../conf/issueConfig.conf ../data/open_issues.txt
-# printf "6. plan issue\n"
-# ./planScript.sh -p ../conf/planConfig.conf
+printf "6. plan issue\n"
+./planScript.sh -p ../conf/planConfig.conf
 #printf "7. writing code\n"
 #./planScript.sh -tp ../conf/testPlanConfig.conf
 #printf "8. commiting\n"
