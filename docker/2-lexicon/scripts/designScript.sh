@@ -9,7 +9,6 @@ elif [[ $1 == "-p" ]]
 then
   if [[ -f $2 ]]
   then
-    #TODO: print to file now loses it identation, look @ plannerScript for rightfull implementation
     source $2
     if [[ -f $DESIGN_FILE ]]
     then
