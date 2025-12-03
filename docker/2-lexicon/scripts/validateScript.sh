@@ -19,7 +19,7 @@ then
     then
       source $2
       touch TEMP_designDocument.txt
-      printf "Is the following document a valid design document for a software product?\n" > TEMP_designDocument.txt
+      printf "Is the following document a valid design document for a software product? No additional commentary.\n" > TEMP_designDocument.txt
       IFS=$'\n' read -d '' -r -a LINES < $3
       for LINE in "${LINES[@]}"; do
         printf "%s\n" "$LINE" >> TEMP_designDocument.txt
