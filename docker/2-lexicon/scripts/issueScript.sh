@@ -67,12 +67,17 @@ then
 #    done
     ISSUE=""
     printf "" > $ISSUE_FILE
+    COUNT=0
     for ((i = $INDEX; i < ${#ISSUE_LINES[@]}; ++i)); do
+      ((++COUNT))
       ISSUE_TEMP="${ISSUE_LINES[$i]}"
       ISSUE+="${ISSUE_TEMP//$'\n'/}"
       if [[ "${ISSUE_LINES[$i]}" == "" ]]; then
-        ISSUE+=";"
-        printf "%s\n" "$ISSUE" >> $ISSUE_FILE
+        if [[ "$COUNT" -gt 1 ]]; then
+          ISSUE+=";"
+          printf "%s\n" "$ISSUE" >> $ISSUE_FILE
+        fi
+        COUNT=0
         ISSUE=""
       else
         ISSUE+="\n"
