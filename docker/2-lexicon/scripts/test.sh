@@ -1,19 +1,19 @@
 #!/bin/bash
 
-#valid=false
-#while [[ "$valid" == "false" ]]; do
-#  printf "1. design\n"
-#  ./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
-#  printf "1.1 validate design\n"
+valid=false
+while [[ "$valid" == "false" ]]; do
+  printf "1. design\n"
+  ./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
+  printf "1.1 validate design\n"
   #printf "1.1 TODO: fails redo 1.\n"
-#  RESPONSE=$(./validateScript.sh -vdd ../conf/validate_designConfig.conf ../data/design_doc_raw.txt)
-#  printf "%s\n" "$RESPONSE"
-#  if [[ "$RESPONSE" =~ "True" ]]; then
-#    valid=true
-#  fi
-#done
-#printf "2. dir setup\n"
-#./projectScript.sh -id ../conf/projectScriptConfig.conf
+  RESPONSE=$(./validateScript.sh -vdd ../conf/validate_designConfig.conf ../data/design_doc_raw.txt)
+  printf "%s\n" "$RESPONSE"
+  if [[ "$RESPONSE" =~ "True" ]]; then
+    valid=true
+  fi
+done
+printf "2. dir setup\n"
+./projectScript.sh -id ../conf/projectScriptConfig.conf
 
 valid=false
 while [[ "$valid" == "false" ]]; do
@@ -27,12 +27,12 @@ while [[ "$valid" == "false" ]]; do
     valid=true
   fi
 done
-#printf "4. format issues\n"
-#./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
-#printf "5. open issue -> TODO all issues\n"
-#./issueScript.sh -fo ../conf/issueConfig.conf ../data/open_issues.txt
-#printf "6. plan issue\n"
-#./planScript.sh -p ../conf/planConfig.conf
+printf "4. format issues\n"
+./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
+printf "5. open issue -> TODO all issues\n"
+./issueScript.sh -fo ../conf/issueConfig.conf ../data/open_issues.txt
+printf "6. plan issue\n"
+./planScript.sh -p ../conf/planConfig.conf
 #printf "7. writing code\n"
 #printf "7.x TODO: validate inside testPlanConfig\n"
 #./planScript.sh -tp ../conf/testPlanConfig.conf
