@@ -73,7 +73,7 @@ then
       ISSUE_TEMP="${ISSUE_LINES[$i]}"
       ISSUE+="${ISSUE_TEMP//$'\n'/}"
       if [[ "${ISSUE_LINES[$i]}" == "" ]]; then
-        if [[ "$COUNT" -gt 1 ]]; then
+        if [[ "$COUNT" -gt 2 ]]; then
           ISSUE+=";"
           printf "%s\n" "$ISSUE" >> $ISSUE_FILE
         fi
