@@ -1,10 +1,16 @@
 #!/bin/bash
 
-printf "1. design\n"
-./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
-printf "1.1 validate design\n"
-#printf "1.1 TODO: fails redo 1.\n"
-./validateScript.sh -vdd ../conf/validate_designConfig.conf ../data/design_doc_raw.txt
+valid=false
+while [[ "$valid" == "false" ]]; do
+  printf "1. design\n"
+  ./designScript.sh -f ../conf/designConfig.conf ../data/idee.txt
+  printf "1.1 validate design\n"
+  #printf "1.1 TODO: fails redo 1.\n"
+  RESPONSE=$(./validateScript.sh -vdd ../conf/validate_designConfig.conf ../data/design_doc_raw.txt)
+  if [[ "$RESPONSE" ~= "True" ]]; then
+    valid=true
+  fi
+done
 #printf "2. dir setup\n"
 #./projectScript.sh -id ../conf/projectScriptConfig.conf
 #printf "3. issues\n"
