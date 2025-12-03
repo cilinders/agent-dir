@@ -7,7 +7,7 @@ while [[ "$valid" == "false" ]]; do
   printf "1.1 validate design\n"
   #printf "1.1 TODO: fails redo 1.\n"
   RESPONSE=$(./validateScript.sh -vdd ../conf/validate_designConfig.conf ../data/design_doc_raw.txt)
-  if [[ "$RESPONSE" ~= "True" ]]; then
+  if [[ "$RESPONSE" =~ "True" ]]; then
     valid=true
   fi
 done
