@@ -23,11 +23,11 @@ while [[ "$valid" == "false" ]]; do
   #printf "3.1 TODO: fails redo 3.\n"
   RESPONSE=$(./validateScript.sh -vi ../conf/validate_issuesConfig.conf ../data/raw_issues.txt)
   printf "%s\n" "$RESPONSE"
-  if [[ "$RESPONSE" =~ "True" ]]; then
+  if [[ "$RESPONSE" =~ "True" ]] || [[ "$RESPONSE" =~ "TRUE" ]] || [[ "$RESPONSE" =~ "true" ]]; then
     printf "4. format issues\n"
     ./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
     RESPONSE=$(./validateScript.sh -vi ../conf/validate_issuesConfig.conf ../data/issues.txt)
-    if [[ "$RESPONSE" =~ "True" ]]; then
+    if [[ "$RESPONSE" =~ "True" ]] || [[ "RESPONSE" =~ "TRUE" ]] || [[ "$RESPONSE" =~ "true" ]]; then
       valid=true
     fi
   fi
