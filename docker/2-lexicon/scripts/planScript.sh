@@ -20,11 +20,12 @@ then
       printf "%s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "Issue: $PROMPT\nReturn the coding tasks WITHOUT additional commentary.")
       printf "%s\n" "$RESPONSE"
-      printf "" > $PLAN_FILE
-      IFS=$'\n'
-      for LINE in ${RESPONSE[@]}; do
-        printf "%s\n" "$LINE" >> $PLAN_FILE
-      done
+      printf "%s\n" "$RESPONSE" > $PLAN_FILE
+      #printf "" > $PLAN_FILE
+      #IFS=$'\n'
+      #for LINE in ${RESPONSE[@]}; do
+      #  printf "%s\n" "$LINE" >> $PLAN_FILE
+      #done
     else
       printf "Issue file not found.\n"
     fi
