@@ -14,6 +14,7 @@ elif [[ $1 == "-r" ]]; then
     while read LINE; do
       LINE_ARRAY[$INDEX]="$LINE"
       ((++INDEX))
+      printf "%s\n" "$LINE"
     done < $RESOLVED_PLAN
     TASK=""
     for LINE in "$LINE_ARRAY[@]}"; do
