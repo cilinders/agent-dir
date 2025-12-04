@@ -21,7 +21,7 @@ elif [[ $1 == "-r" ]]; then
       if [[ "$LINE" =~ "TASK:" ]]; then
         if ! [[ "$TASK" == "" ]]; then
           #TODO: ask llm need action?
-          printf "sending: %s\n" "$TASK"
+          printf "sending: %s\n" "$TASK@Q"
           TASK=""
         fi
       else
