@@ -14,10 +14,11 @@ elif [[ $1 == "-r" ]]; then
     while read LINE; do
       LINE_ARRAY[$INDEX]="$LINE"
       ((++INDEX))
-      printf "%s\n" "$LINE"
+      #printf "%s\n" "$LINE"
     done < $RESOLVED_PLAN
     TASK=""
     for LINE in "$LINE_ARRAY[@]}"; do
+      printf "%s..." "${LINE:0:4}"
       if [[ "$LINE" =~ "TASK:" ]]; then
         if ! [[ "$TASK" == "" ]]; then
           #TODO: ask llm need action?
@@ -25,6 +26,7 @@ elif [[ $1 == "-r" ]]; then
           TASK=""
         fi
       else
+        printf "adding:\n"
         TASK+="$LINE"
       fi
     done
