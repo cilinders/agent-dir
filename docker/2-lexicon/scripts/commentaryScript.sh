@@ -4,10 +4,10 @@ if [[ $# == 0 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]; then
   printf "Usage:\n"
   printf "  commentaryScript -r <parseCommentaryConfig.conf> :  Generates new issues from commentary written in resolved coding tasks using llm.\n"
 elif [[ $1 == "-r" ]]; then
-  if [[ -f $1 ]]; then
+  if [[ -f $2 ]]; then
     #RESOLVED_PLAN
     #G_*
-    source $1
+    source $2
     declare -a LINE_ARRAY=()
     INDEX=0
     IFS=''
