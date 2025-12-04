@@ -10,14 +10,14 @@ elif [[ $1 == "-r" ]]; then
     source $2
     declare -a LINE_ARRAY=()
     INDEX=0
-    IFS='\n'
+    IFS=''
     while read LINE; do
       LINE_ARRAY[$INDEX]="$LINE"
       ((++INDEX))
       #printf "%s\n" "$LINE"
-    done < "$RESOLVED_PLAN"
+    done < $RESOLVED_PLAN
     TASK=""
-    for LINE in "$LINE_ARRAY[@]}"; do
+    for LINE in "${LINE_ARRAY[@]}"; do
       printf "%s..." "${LINE:0:4}"
       if [[ "$LINE" =~ "TASK:" ]]; then
         if ! [[ "$TASK" == "" ]]; then
