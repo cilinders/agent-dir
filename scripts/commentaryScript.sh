@@ -10,7 +10,7 @@ elif [[ $1 == "-r" ]]; then
     source $2
     declare -a LINE_ARRAY=()
     INDEX=0
-    IFS=''
+    IFS='\n'
     while read LINE; do
       LINE_ARRAY[$INDEX]="$LINE"
       ((++INDEX))
