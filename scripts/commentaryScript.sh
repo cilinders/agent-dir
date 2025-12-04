@@ -28,7 +28,7 @@ elif [[ $1 == "-r" ]]; then
           TASK=""
         fi
       else
-        TASK+="$LINE"
+        TASK+="$LINE\n"
       fi
     done
   else
