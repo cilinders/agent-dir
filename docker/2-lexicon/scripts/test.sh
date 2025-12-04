@@ -24,7 +24,12 @@ while [[ "$valid" == "false" ]]; do
   RESPONSE=$(./validateScript.sh -vi ../conf/validate_issuesConfig.conf ../data/raw_issues.txt)
   printf "%s\n" "$RESPONSE"
   if [[ "$RESPONSE" =~ "True" ]]; then
-    valid=true
+    printf "4. format issues\n"
+    ./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
+    RESPONSE=$(./validateScript.sh -vi ../conf/validate_issuesConfig.conf ../data/issues.txt)
+    if [[ "$RESPONSE" =~ "True" ]]; then
+      valid=true
+    fi
   fi
 done
 printf "4. format issues\n"
