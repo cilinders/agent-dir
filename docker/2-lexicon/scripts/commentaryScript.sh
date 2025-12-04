@@ -17,11 +17,14 @@ elif [[ $1 == "-r" ]]; then
       #printf "%s\n" "$LINE"
     done < $RESOLVED_PLAN
     TASK=""
+    touch ../data/test_commentary.txt
+    printf "" > ../data/test_commentary.txt
     for LINE in "${LINE_ARRAY[@]}"; do
       if [[ "$LINE" =~ "TASK:" ]]; then
         if ! [[ "$TASK" == "" ]]; then
           #TODO: ask llm need action?
-          printf "sending: %s\n" "$TASK@Q"
+          printf "%s\n\n" "$TASK"
+          printf "%s\n\n" "$TASK" >> ../data/test_commentary.txt
           TASK=""
         fi
       else
