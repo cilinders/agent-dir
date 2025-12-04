@@ -20,6 +20,7 @@ then
       printf "%s\n" "$PROMPT"
       RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF "Issue: $PROMPT\nReturn the coding tasks WITHOUT additional commentary.")
       printf "%s\n" "$RESPONSE"
+      RESPONSE=${RESPONSE//'\"'/''}
       printf "%s\n" "$RESPONSE" > $PLAN_FILE
       #printf "" > $PLAN_FILE
       #IFS=$'\n'
