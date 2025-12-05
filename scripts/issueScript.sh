@@ -4,6 +4,7 @@ if [[ $# == 0 ]] || [[ $# -gt 4 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]
 then
   printf "Usage: \n"
   printf "  issueScript -g <configFile.conf> <designFile.txt>:     Generates issues from a given designFile using llm.\n"
+  printf "  issueScript -gi <configFile.conf> <promptFile.txt>:    Generates issue from a given promptfile using llm.\n"
   printf "  issueScript -fo <configFile.conf> <openIssueFile.txt>: Isolates a issue from the issueFile for use with llm.\n"
   printf "  issueScript -fi <configFile.conf> <rawIssueFile.txt>:  Formats a raw issue file into a issueFile.\n"
 elif [[ $1 == "-g" ]]
@@ -21,6 +22,23 @@ then
     done
   else
     printf "ConfigFile or designFile not found.\n"
+  fi
+elif [[ $1 == "-gi" ]]; then
+  if [[ -f $2 ]] || [[ -f $3 ]]; then
+    source $2
+    RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3)
+    touch $TEMP_ISSUE_FILE
+    #printf "%s\n" "$RESPONSE"
+    printf "" > $TEMP_ISSUE_FILE
+    IFS=$'\n'
+    for LINE in ${RESPONSE[@]}; do
+      printf "%s\n" "$LINE"
+      printf "%s\n" "$LINE" >> $TEMP_ISSUE_FILE
+    done
+    #TODO: before remove format and cat the issue to the global issue list
+    #rm $TEMP_ISSUE_FILE
+  else
+    printf "Config or prompt file not found.\n"
   fi
 elif [[ $1 == "-fo" ]]
 then

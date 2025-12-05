@@ -17,14 +17,16 @@ elif [[ $1 == "-r" ]]; then
       #printf "%s\n" "$LINE"
     done < $RESOLVED_PLAN
     TASK=""
-    touch ../data/test_commentary.txt
-    printf "" > ../data/test_commentary.txt
+    #touch ../data/test_commentary.txt
+    #printf "" > ../data/test_commentary.txt
     for LINE in "${LINE_ARRAY[@]}"; do
       if [[ "$LINE" =~ "TASK:" ]]; then
         if ! [[ "$TASK" == "" ]]; then
           #TODO: ask llm need action?
-          printf "%s\n\n" "$TASK"
-          printf "%s\n\n" "$TASK" >> ../data/test_commentary.txt
+          #printf "%s\n\n" "$TASK"
+          #printf "%s\n\n" "$TASK" >> ../data/test_commentary.txt
+          RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_MODEL_CONF $)
+          #TODO: print llm issue generation to the issues file.
           TASK=""
         fi
       else
