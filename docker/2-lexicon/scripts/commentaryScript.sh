@@ -24,7 +24,7 @@ elif [[ $1 == "-r" ]]; then
         if ! [[ "$TASK" == "" ]]; then
           #TODO: ask llm need action?
           #printf "%s\n\n" "$TASK"
-          printf "%s\n\n" "$TASK@Q" >> ../data/test_commentary.txt
+          printf "%s\n\n" "${TASK@Q}" >> ../data/test_commentary.txt
           #RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_MODEL_CONF ../data/test_commentary.txt)
           #printf "%s\n" "$RESPONSE"
           #TODO: print llm issue generation to the issues file.
