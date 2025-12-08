@@ -3,14 +3,15 @@
 if [[ $# == 0 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]
 then
   printf "Usage:\n"
-  printf "  validateScript -vdd <configFile.conf> <designDocument.txt> : validates design document using llm.\n"
-  printf "  validateScript -vi <configFile.conf> <issueFile.txt>       : validates issuefiles using llm.\n"
-  printf "  validateScript -vc <configFile.conf> <commitFile.txt>      : validates commitfiles using llm.\n"
-  printf "  validateScript -vct <configFile.conf> <commitFile.txt>     : validates trees from commitfiles using llm.\n"
-  printf "  validateScript -vfs <formatFile.txt>                       : validates file structure string.\n"
-  printf "  validateScript -vfp <formatFile.txt>                       : validates file paths in structure string.\n"
-  printf "  validateScript -vfc <formatFile.txt>                       : validates codeblocks in create string.\n"
-  printf "  validateScript -vfic <commitFile.txt> <filepath>           : validates files codeblock exists in commit.\n"
+  printf "  validateScript -vdd <configFile.conf> <designDocument.txt>   : validates design document using llm.\n"
+  printf "  validateScript -vi <configFile.conf> <issueFile.txt>         : validates issuefiles using llm.\n"
+  printf "  validateScript -vc <configFile.conf> <commitFile.txt>        : validates commitfiles using llm.\n"
+  printf "  validateScript -vct <configFile.conf> <commitFile.txt>       : validates trees from commitfiles using llm.\n"
+  printf "  validateScript -vfs <formatFile.txt>                         : validates file structure string.\n"
+  printf "  validateScript -vfp <formatFile.txt>                         : validates file paths in structure string.\n"
+  printf "  validateScript -vfc <formatFile.txt>                         : validates codeblocks in create string.\n"
+  printf "  validateScript -vfic <commitFile.txt> <filepath>             : validates files codeblock exists in commit.\n"
+  printf "  validateScript -vcc <configFile.conf> <taskSolutionFile.txt> : validates commentary exists in solution using llm.\n"
 elif [[ $1 == "-vdd" ]]
 then
   if [[ -f $2 ]]
@@ -286,5 +287,22 @@ then
     rm TEMP_prompt.txt
   else
     printf "Config or commit file not found.\n"
+  fi
+elif [[ $1 == "-vcc" ]]
+then
+  if [[ -f $2 ]] || [[ -f $3 ]]; then
+    #G_SCRIPT
+    #G_TAG
+    #G_LLM_CONF
+    #G_MODEL_CONF
+    source $2
+    RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF $3)
+    if [[ "$RESPONSE" =~ "true" ]] || [[ "$RESPONSE" =~ "True" ]] || [[ "$RESPONSE" =~ "TRUE" ]]; then
+      printf "true\n"
+    else
+      printf "false\n"
+    fi
+  else
+    printf "Config or solution file not found.\n"
   fi
 fi
