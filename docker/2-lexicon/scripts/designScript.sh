@@ -52,6 +52,7 @@ then
       PROMPT=$(echo "$PROMPT" | tr -d '\r')
       #PROMPT=${PROMPT//\\/\\\\}
       #PROMPT=${PROMPT//'"'/'\"'}
+      #TODO: use feedback from validator.
       printf "sending: %s\n" "$PROMPT"
       $G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF "$PROMPT" > $DESIGN_FILE
     else
