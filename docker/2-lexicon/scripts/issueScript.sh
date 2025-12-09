@@ -71,20 +71,20 @@ then
     #    ISSUE_LINES+=("$LINE")
     #  fi
     #done
-    #COUNT=0
+    START=false
     for LINE in "${LINES[@]}"; do
       #printf "LINE: %s\n" "$LINE"
       ISSUE_LINES+=("$LINE")
-      if [[ "$COUNT" -eq 1 ]] && [[ "$LINE" =~ "*1" ]]; then
-        printf "YES\n"
+      if [[ "$LINE" =~ "*1" ]] && [[ "$START" == "false" ]]; then
+        START=true
         ISSUE_LINES=()
       fi
+      ISSUE_LINES+=("$LINE")
       #printf "ISSUE_LINES: "
       #for LINE1 in "${ISSUE_LINES[@]}"; do
       #  printf "%s -> " "$LINE1"
       #done
       #printf "\n"
-      ((++COUNT))
     done
     declare -a ISSUES=()
     ISSUE=""
