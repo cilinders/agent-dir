@@ -62,14 +62,29 @@ then
   if [[ -f $2 ]] || [[ -f $3 ]]
   then
     source $2
+    #TODO: make it make sense for wierd input that is ambigiuosly formatted
     IFS=$'\n' read -d '' -r -a LINES < $3
     declare -a ISSUE_LINES=()
-    for LINE in "${LINES[@]}"
-    do
-      if [[ "$LINE" =~ "*" ]]
-      then
-        ISSUE_LINES+=("$LINE")
+    #for LINE in "${LINES[@]}"
+    #do
+    #  if [[ "$LINE" =~ "*" ]]
+    #  then
+    #    ISSUE_LINES+=("$LINE")
+    #  fi
+    #done
+    COUNT=0
+    for LINE in "${LINES[@]}"; do
+      printf "LINE: %s\n" "$LINE"
+      ISSUE_LINES+=("$LINE")
+      if [[ "$COUNT" -eq 1 ]] || [[ "$LINE" == "" ]]; then
+        ISSUE_LINES=()
       fi
+      printf "ISSUE_LINES: "
+      for LINE1 in "${ISSUE_LINES[@]}"; do
+        printf "%s -> " "$LINE1"
+      done
+      printf "\n"
+      ((++COUNT))
     done
     declare -a ISSUES=()
     ISSUE=""
