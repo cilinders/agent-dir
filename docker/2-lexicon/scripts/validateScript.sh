@@ -297,6 +297,7 @@ then
     #G_MODEL_CONF
     source $2
     RESPONSE=$($G_SCRIPT $G_TAG $G_LLM_CONF $G_MODEL_CONF $3)
+    printf "%s\n" "$RESPONSE"
     if [[ "$RESPONSE" =~ "true" ]] || [[ "$RESPONSE" =~ "True" ]] || [[ "$RESPONSE" =~ "TRUE" ]]; then
       printf "true\n"
     else
