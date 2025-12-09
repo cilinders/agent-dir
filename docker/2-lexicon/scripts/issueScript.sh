@@ -84,7 +84,7 @@ then
       #  printf "%s -> " "$LINE1"
       #done
       #printf "\n"
-      #((++COUNT))
+      ((++COUNT))
     done
     declare -a ISSUES=()
     ISSUE=""
