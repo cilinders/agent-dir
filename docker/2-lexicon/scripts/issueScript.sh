@@ -74,7 +74,7 @@ then
     START=false
     for LINE in "${LINES[@]}"; do
       #printf "LINE: %s\n" "$LINE"
-      ISSUE_LINES+=("$LINE")
+      #ISSUE_LINES+=("$LINE")
       if [[ "$LINE" =~ "*1" ]] && [[ "$START" == "false" ]]; then
         START=true
         ISSUE_LINES=()
