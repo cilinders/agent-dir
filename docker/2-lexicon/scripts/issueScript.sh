@@ -14,7 +14,7 @@ then
     #TODO: printf to file loses identation, look @ ?plannerScript? for implementation
     source $2
     RESPONSE=$($G_SCRIPT $G_SCRIPT_TAG $G_LLM_CONF $G_MODEL_CONF $3) # > $RAW_ISSUE_FILE
-    printf "%s\n" "$RESPONSE"
+    printf "%s\n" "${RESPONSE@Q}"
     printf "" > $RAW_ISSUE_FILE
     IFS=$'\n'
     for LINE in ${RESPONSE[@]}; do
