@@ -57,7 +57,7 @@ then
     PROMPT=${PROMPT//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
     RESPONSE=$(curl -sS -d '{"keep_alive":0,"stream":false,"model":"'$OLLAMA_MODEL'","temperature":"'"$TEMPERATURE"'","system":"'"$SYSTEM"'","PROMPT":"'"$PROMPT"'"}' \
-                  -X POST http://localhost:11434/api/generate) # | jq -r '.response')
+                  -X POST http://localhost:11434/api/generate | jq -r '.response')
     printf "%s\n" "$RESPONSE"
   else
     printf "ConfigFile or modelConfigFile not found.\n"
