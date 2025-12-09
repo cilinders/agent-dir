@@ -72,18 +72,23 @@ then
     #  fi
     #done
     START=false
-    for LINE in "${LINES[@]}"; do
-      #printf "LINE: %s\n" "$LINE"
-      #ISSUE_LINES+=("$LINE")
+    INDEX=0
+    #for LINE in "${LINES[@]}"; do
+    #  if [[ "$LINE" =~ "*1" ]] && [[ "$START" == "false" ]]; then
+    #    START=true
+    #    ISSUE_LINES=()
+    #  fi
+    #  ISSUE_LINES+=("$LINE")
+    #done
+    while read LINE; do
       if [[ "$LINE" =~ "*1" ]] && [[ "$START" == "false" ]]; then
         START=true
         ISSUE_LINES=()
+        INDEX=0
       fi
-      ISSUE_LINES+=("$LINE")
-    done
-    #for LINE in "${ISSUE_LINES[@]}"; do
-    #  printf "%s\n" "$LINE"
-    #done
+      ISSUE_LINES[$INDEX]="$LINE"
+      ((++INDEX))
+    done < $3
     declare -a ISSUES=()
     ISSUE=""
     printf "" > $ISSUE_FILE
