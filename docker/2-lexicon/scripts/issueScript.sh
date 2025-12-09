@@ -81,9 +81,9 @@ then
       fi
       ISSUE_LINES+=("$LINE")
     done
-    for LINE in "${ISSUE_LINES[@]}"; do
-      printf "%s\n" "$LINE"
-    done
+    #for LINE in "${ISSUE_LINES[@]}"; do
+    #  printf "%s\n" "$LINE"
+    #done
     declare -a ISSUES=()
     ISSUE=""
     printf "" > $ISSUE_FILE
