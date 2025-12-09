@@ -75,7 +75,7 @@ then
     for LINE in "${LINES[@]}"; do
       #printf "LINE: %s\n" "$LINE"
       ISSUE_LINES+=("$LINE")
-      if [[ "$COUNT" -eq 1 ]] || [[ "$LINE" == "" ]]; then
+      if [[ "$COUNT" -eq 1 ]] && [[ "$LINE" == "" ]]; then
         printf "YES\n"
         ISSUE_LINES=()
       fi
