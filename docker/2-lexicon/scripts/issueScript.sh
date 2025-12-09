@@ -96,9 +96,10 @@ then
     do
       ISSUE_TEMP="${ISSUE_LINES[$i]}"
       ISSUE+="${ISSUE_TEMP//$'\n'/}"
-      i_TEMP=$(($i+1))
-      i_TEMP=$(($i_TEMP%4))
-      if [[ $i_TEMP == 0 ]]
+      #i_TEMP=$(($i+1))
+      #i_TEMP=$(($i_TEMP%4))
+      #if [[ $i_TEMP == 0 ]]
+      if [[ "${ISSUE_LINES[$i]}" == "" ]]
       then
         ISSUE+=";"
         printf "%s\n" "$ISSUE" >> $ISSUE_FILE
