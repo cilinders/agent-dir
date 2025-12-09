@@ -81,7 +81,7 @@ then
     #  ISSUE_LINES+=("$LINE")
     #done
     while read LINE; do
-      if [[ "$LINE" =~ "*1" ]] && [[ "$START" == "false" ]]; then
+      if [[ "$LINE" =~ "1" ]] && [[ "$START" == "false" ]]; then
         START=true
         ISSUE_LINES=()
         INDEX=0
