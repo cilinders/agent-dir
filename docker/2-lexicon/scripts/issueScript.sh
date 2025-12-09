@@ -80,11 +80,9 @@ then
         ISSUE_LINES=()
       fi
       ISSUE_LINES+=("$LINE")
-      #printf "ISSUE_LINES: "
-      #for LINE1 in "${ISSUE_LINES[@]}"; do
-      #  printf "%s -> " "$LINE1"
-      #done
-      #printf "\n"
+    done
+    for LINE in "${ISSUE_LINES[@]}"; do
+      printf "%s\n" "$LINE"
     done
     declare -a ISSUES=()
     ISSUE=""
