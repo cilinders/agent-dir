@@ -108,6 +108,9 @@ then
         ISSUE+=","
       fi
     done
+    #HACKY: add last issue which gets cut off now
+    ISSUE+=";"
+    printf "%s\n" "$ISSUE" >> $ISSUE_FILE
   else
     printf "Configfile or rawIssueFile not found.\n"
   fi
