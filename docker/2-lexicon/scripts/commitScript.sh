@@ -181,23 +181,27 @@ then
     ./ollamaScript.sh -pvc ../conf/ollamaConfig_ollama3-1.conf ../model/conf/test.conf "Respond with the git issue Description from out message thread, make it oneline, no additional commentary." >> ../data/TEMP_commit.txt
     printf "\n" >> ../data/TEMP_commit.txt
     #TODO: G_SCRIPT DESCRIPTION with HISTORY > print to file
-    printf "Structure:\n" >> ../data/TEMP_commit.txt
-    ./ollamaScript.sh -pvc ../conf/ollamaConfig_ollama3-1.conf ../model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> ../data/TEMP_commit.txt
-    printf "\n" >> ../data/TEMP_commit.txt
-    #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
-      #TODO: needs extra testing sometimes goes well, sometimes not so well :/
     VALID=false
+    cp ../data/TEMP_commit.txt ../data/TEMP_commit_copy.txt
     while [[ "$VALID" == "false" ]]; do
-      TREE_STRING="$(./ollamaScript.sh -pf ../conf/ollamaConfig_ollama3-1.conf ../model/conf/structureFormat.conf ../data/TEMP_commit.txt)"
-      TREE_STRING=${TREE_STRING//'`'/''}
-      TREE_STRING=${TREE_STRING//'/'/''}
-      TREE_STRING=${TREE_STRING//$'\n'/''}
+      printf "Structure:\n" >> ../data/TEMP_commit.txt
+      ./ollamaScript.sh -pvc ../conf/ollamaConfig_ollama3-1.conf ../model/conf/test.conf "Generate a single Project-Tree which includes all filepaths from our message thread, no additional commentary. Example of such a tree:\n\`\`\`\n.\n├── foo.bar\n├── baz\n│   └── qux.quux\n├── corge\n│   ├── grault.garply\n│   ├── waldo\n│   │    └── fred.plugh\n│   └── xyz.zy\n└── thud.foobar\n\`\`\`" >> ../data/TEMP_commit.txt
       RESPONSE=$(./validateScript.sh -vct ../conf/validate_commit_treeConfig.conf ../data/TEMP_commit.txt)
       printf "%s\n" "$RESPONSE"
       if [[ "$RESPONSE" =~ "True" ]] || [[ "$RESPONSE" =~ "true" ]] || [[ "$RESPONSE" =~ "TRUE" ]]; then
         VALID=TRUE
+        rm ../data/TEMP_commit_copy.txt
+      else
+        cp ../data/TEMP_commit_copy.txt ../data/TEMP_commit.txt
       fi
     done
+    printf "\n" >> ../data/TEMP_commit.txt
+    #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
+      #TODO: needs extra testing sometimes goes well, sometimes not so well :/
+    TREE_STRING="$(./ollamaScript.sh -pf ../conf/ollamaConfig_ollama3-1.conf ../model/conf/structureFormat.conf ../data/TEMP_commit.txt)"
+    TREE_STRING=${TREE_STRING//'`'/''}
+    TREE_STRING=${TREE_STRING//'/'/''}
+    TREE_STRING=${TREE_STRING//$'\n'/''}
     printf "%s\n" "$TREE_STRING" >> ../data/TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
