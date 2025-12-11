@@ -186,10 +186,18 @@ then
     printf "\n" >> ../data/TEMP_commit.txt
     #TODO: G_SCRIPT STRUCTURE with HISTORY > print to file
       #TODO: needs extra testing sometimes goes well, sometimes not so well :/
-    TREE_STRING="$(./ollamaScript.sh -pf ../conf/ollamaConfig_ollama3-1.conf ../model/conf/structureFormat.conf ../data/TEMP_commit.txt)"
-    TREE_STRING=${TREE_STRING//'`'/''}
-    TREE_STRING=${TREE_STRING//'/'/''}
-    TREE_STRING=${TREE_STRING//$'\n'/''}
+    VALID=false
+    while [[ "$VALID" == "false" ]]; do
+      TREE_STRING="$(./ollamaScript.sh -pf ../conf/ollamaConfig_ollama3-1.conf ../model/conf/structureFormat.conf ../data/TEMP_commit.txt)"
+      TREE_STRING=${TREE_STRING//'`'/''}
+      TREE_STRING=${TREE_STRING//'/'/''}
+      TREE_STRING=${TREE_STRING//$'\n'/''}
+      RESPONSE=$(./validateScript.sh -vct ../conf/validate_commit_treeConfig.conf ../data/TEMP_commit.txt)
+      printf "%s\n" "$RESPONSE"
+      if [[ "$RESPONSE" =~ "True" ]] || [[ "$RESPONSE" =~ "true" ]] || [[ "$RESPONSE" =~ "TRUE" ]]; then
+        VALID=TRUE
+      fi
+    done
     printf "%s\n" "$TREE_STRING" >> ../data/TEMP_commit.txt
     #TODO: split tree into files function
     FILES_STRING=$(CREATE_STRUCTURE "$TREE_STRING")
