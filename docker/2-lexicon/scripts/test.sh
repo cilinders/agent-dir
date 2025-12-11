@@ -39,12 +39,12 @@ printf "5. open issue -> TODO all issues\n"
 printf "6. plan issue\n"
 ./planScript.sh -p ../conf/planConfig.conf
 
-#printf "7. writing code\n"
-#printf "7.x TODO: validate inside testPlanConfig\n"
-#./planScript.sh -tp ../conf/testPlanConfig.conf
+printf "7. writing code\n"
+printf "7.x TODO: validate inside testPlanConfig\n"
+./planScript.sh -tp ../conf/testPlanConfig.conf
 
-#printf "8. commiting\n"
-#./commitScript.sh -gic ../conf/commitCodeGivenConfig.conf
+printf "8. commiting\n"
+./commitScript.sh -gic ../conf/commitCodeGivenConfig.conf
 
 #printf "8.1 TODO: validate\n"
 #printf "9. stripping codeblocks\n"
