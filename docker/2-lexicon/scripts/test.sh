@@ -26,7 +26,7 @@ while [[ "$valid" == "false" ]]; do
   if [[ "$RESPONSE" =~ "True" ]] || [[ "$RESPONSE" =~ "TRUE" ]] || [[ "$RESPONSE" =~ "true" ]]; then
     printf "4. format issues\n"
     ./issueScript.sh -fi ../conf/issueConfig.conf ../data/raw_issues.txt
-    RESPONSE=$(./validateScript.sh -vi ../conf/validate_issuesConfig.conf ../data/issues.txt)
+    RESPONSE=$(./validateScript.sh -vis ../conf/validate_issuesConfig.conf ../data/issues.txt)
     if [[ "$RESPONSE" =~ "True" ]] || [[ "RESPONSE" =~ "TRUE" ]] || [[ "$RESPONSE" =~ "true" ]]; then
       valid=true
     fi
@@ -46,9 +46,9 @@ printf "7.x TODO: validate inside testPlanConfig\n"
 printf "8. commiting\n"
 ./commitScript.sh -gic ../conf/commitCodeGivenConfig.conf
 
-#printf "8.1 TODO: validate\n"
-#printf "9. stripping codeblocks\n"
-#./commitScript.sh -ff ../conf/commitFiles.conf
+printf "8.1 TODO: validate\n"
+printf "9. stripping codeblocks\n"
+./commitScript.sh -ff ../conf/commitFiles.conf
 
 #printf "10. creating files"
 #./actionScript.sh ../data/action_files_file.txt ../conf/actionConfig.conf

@@ -58,6 +58,20 @@ then
   else
     printf "ConfigFile not found.\n"
   fi
+elif [[ $1 == "-vis" ]]; then
+  if [[ -f $2 ]] || [[ -f $3 ]]; then
+    source $2
+    touch TEMP_issueFile.txt
+    printf "Is the following document a valid issue for a software product?\n" > TEMP_issueFile.txt
+    IFS=$'\n' read -d '' -r -a LINES < $3
+    printf "%s\n" "${LINES[0]}" >> TEMP_issueFile.txt
+    #./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/validateIssueFile.conf TEMP_issueFile.txt
+    RESPONSE=$($G_VALIDATE_SCRIPT $G_TAGS $G_VALIDATE_CONF $G_MODEL_CONF TEMP_issueFile.txt)
+    printf "%s\n" "$RESPONSE"
+    rm TEMP_issueFile.txt
+  else
+    printf "Config or Issue file not found.\n"
+  fi
 elif [[ $1 == "-vc" ]]
 then
   if [[ -f $2 ]]
