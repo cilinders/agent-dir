@@ -90,10 +90,12 @@ then
       ((++INDEX))
     done < $3
     declare -a ISSUES=()
+    COUNT=0
     ISSUE=""
     printf "" > $ISSUE_FILE
     for ((i = 0; i < ${#ISSUE_LINES[@]}; ++i))
     do
+      ((++COUNT))
       ISSUE_TEMP="${ISSUE_LINES[$i]}"
       ISSUE+="${ISSUE_TEMP//$'\n'/}"
       #i_TEMP=$(($i+1))
@@ -101,6 +103,7 @@ then
       #if [[ $i_TEMP == 0 ]]
       if [[ "${ISSUE_LINES[$i]}" == "" ]]
       then
+        COUNT=0
         ISSUE+=";"
         printf "%s\n" "$ISSUE" >> $ISSUE_FILE
         ISSUE=""
@@ -109,8 +112,10 @@ then
       fi
     done
     #HACKY: add last issue which gets cut off now
-    ISSUE+=";"
-    printf "%s\n" "$ISSUE" >> $ISSUE_FILE
+    if ! [[ $COUNT -lt 2 ]]; then
+      ISSUE+=";"
+      printf "%s\n" "$ISSUE" >> $ISSUE_FILE
+    fi
   else
     printf "Configfile or rawIssueFile not found.\n"
   fi
