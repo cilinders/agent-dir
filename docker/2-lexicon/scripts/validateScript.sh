@@ -66,7 +66,8 @@ elif [[ $1 == "-vis" ]]; then
     IFS=$'\n' read -d '' -r -a LINES < $3
     printf "%s\n" "${LINES[0]}" >> TEMP_issueFile.txt
     #./ollamaScript.sh -pf conf/ollamaConfig_ollama3-1.conf model/conf/validateIssueFile.conf TEMP_issueFile.txt
-    RESPONSE=$($G_VALIDATE_SCRIPT $G_TAGS $G_VALIDATE_CONF $G_MODEL_CONF TEMP_issueFile.txt)
+    #TODO: hardcoded G_MODEL_CONF
+    RESPONSE=$($G_VALIDATE_SCRIPT $G_TAGS $G_VALIDATE_CONF ../model/conf/validateSingleIssue.conf TEMP_issueFile.txt)
     printf "%s\n" "$RESPONSE"
     rm TEMP_issueFile.txt
   else
