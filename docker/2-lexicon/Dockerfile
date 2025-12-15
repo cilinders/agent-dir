@@ -31,4 +31,4 @@ COPY /empty.file data/resolved_plan.txt
 COPY /empty.file data/temp_test.txt
 COPY /empty.file data/temp_test_message.txt
 
-CMD ./scripts/test.sh
+RUN ls -la
