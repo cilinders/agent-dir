@@ -13,7 +13,7 @@ COPY /conf/ /agent-dir/conf/
 COPY /model/conf/ /agent-dir/model/conf/
 COPY /scripts/ /agent-dir/scripts/
 
-# permissions
+# permissions ?
 RUN chmod +x /scripts/*
 
 # naive copying all data files
