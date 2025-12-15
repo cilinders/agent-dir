@@ -17,8 +17,8 @@ COPY /scripts/* /scripts/*
 RUN chmod +x /scripts/*
 
 # naive touching all data files
-RUN touch data/TEMP_commit.txt data/TEMP_file.txt data/action_files_file.txt data/design_doc_raw.txt data/idee.txt
-RUN touch data/issues.txt data/message_history.txt data/open_issues.txt data/plan_file.txt data/raw_issues.txt
-RUN touch data/resolved_plan.txt data/temp_test.txt data/temp_test_message.txt
+RUN [ "touch", "data/TEMP_commit.txt", "data/TEMP_file.txt", "data/action_files_file.txt", "data/design_doc_raw.txt", "data/idee.txt" ]
+RUN [ "touch", "data/issues.txt", "data/message_history.txt", "data/open_issues.txt", "data/plan_file.txt", "data/raw_issues.txt' ]
+RUN [ "touch", "data/resolved_plan.txt", "data/temp_test.txt", "data/temp_test_message.txt" ]
 
 CMD ./scripts/test.sh
