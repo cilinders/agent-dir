@@ -7,7 +7,7 @@ RUN apk add --no-cache bash
 # workdir
 WORKDIR /agent-dir
 
-MKDIR /conf /data /model /model/conf /scripts
+RUN mkdir /conf /data /model /model/conf /scripts
 
 CP /conf/* /conf/*
 CP /model/conf/* /model/conf/*
