@@ -51,9 +51,9 @@ then
       touch empty.file
     fi
     docker buildx build --build-arg BUILD_TIME=$(date +'%Y-%m-%d--%H-%M-%S') -t $DOCKER_IMAGE_NAME .
-#    if [[ $2 == "-i" ]]; then
-#      rm empty.file
-#    fi
+    if [[ $2 == "-i" ]]; then
+      rm empty.file
+    fi
     cd ../../$SCRIPT_PATH/
     echo "build complete."
   else
