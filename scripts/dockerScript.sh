@@ -7,14 +7,14 @@ source conf/dockerConfig.conf
 if [ $# == 0 ] || [ $1 == "-help" ] || [ $1 == "-h" ]
 then
   echo "Usage: "
-  echo "  dockerScript -start|-s   : Starts Docker engine."
-  echo "  dockerScript -stop|-st   : Stops Docker engine."
-  echo "  dockerScript -build|-b   : Builds Docker image."
-  echo "  dockerScript -destroy|-d : Destroys Docker container."
-  echo "  dockerScript -clean|-c   : Clean destroys container and image."
-  echo "  dockerScript -run|-r     : Runs Docker container."
-  echo "  dockerScript -login|-L   : Login to running Docker container."
-  echo "  dockerScript -log|-l     : Dumps logfile from container."
+  echo "  dockerScript -start|-s        : Starts Docker engine."
+  echo "  dockerScript -stop|-st        : Stops Docker engine."
+  echo "  dockerScript -build|-b [-i]   : Builds Docker image, optional -i empty file."
+  echo "  dockerScript -destroy|-d      : Destroys Docker container."
+  echo "  dockerScript -clean|-c        : Clean destroys container and image."
+  echo "  dockerScript -run|-r          : Runs Docker container."
+  echo "  dockerScript -login|-L        : Login to running Docker container."
+  echo "  dockerScript -log|-l          : Dumps logfile from container."
 elif [ $1 == "-test" ] || [ $1 == "-t" ]
 then
   echo "TEST"
@@ -47,7 +47,13 @@ then
   then
     echo "building docker image"
     cd ../$DOCKER_PATH/$DOCKER_IMAGE_NAME/
+    if [[ $2 == "-i" ]]; then
+      touch empty.file
+    fi
     docker buildx build --build-arg BUILD_TIME=$(date +'%Y-%m-%d--%H-%M-%S') -t $DOCKER_IMAGE_NAME .
+    if [[ $2 == "-i" ]]; then
+      rm empty.file
+    fi
     cd ../../$SCRIPT_PATH/
     echo "build complete."
   else
