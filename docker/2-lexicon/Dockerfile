@@ -8,11 +8,10 @@ RUN apk add --no-cache bash
 WORKDIR /agent-dir
 
 #RUN mkdir /conf /data /model /model/conf /scripts
-RUN mkdir /data
 
-COPY /conf/ /conf/
-COPY /model/conf/ /model/conf/
-COPY /scripts/ /scripts/
+COPY /conf/ /agent-dir/conf/
+COPY /model/conf/ /agent-dir/model/conf/
+COPY /scripts/ /agent-dir/scripts/
 
 # permissions
 RUN chmod +x /scripts/*
