@@ -14,7 +14,7 @@ COPY /model/conf/ /agent-dir/model/conf/
 COPY /scripts/ /agent-dir/scripts/
 
 # permissions ?
-RUN chmod +x /scripts/*
+RUN chmod +x /agent-dir/scripts/*
 
 # naive copying all data files
 COPY /empty.file data/TEMP_commit.txt
