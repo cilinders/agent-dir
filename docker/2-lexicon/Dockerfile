@@ -9,9 +9,9 @@ WORKDIR /agent-dir
 
 RUN mkdir /conf /data /model /model/conf /scripts
 
-COPY /conf/* /conf/*
-COPY /model/conf/* /model/conf/*
-COPY /scripts/* /scripts/*
+COPY /conf/ /conf/
+COPY /model/conf/ /model/conf/
+COPY /scripts/ /scripts/
 
 # permissions
 RUN chmod +x /scripts/*
