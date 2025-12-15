@@ -1,5 +1,5 @@
-# Base image alpine latest(current 3.22.1)
-FROM alpine:3.22.1
+# Base image alpine/ollama latest(current 0.12.10)
+FROM alpine/ollama:0.12.10
 
 # dependencies
 RUN apk add --no-cache bash
@@ -9,8 +9,6 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # workdir
 WORKDIR /agent-dir
-
-#RUN mkdir /conf /data /model /model/conf /scripts
 
 COPY /conf/ /agent-dir/conf/
 COPY /model/conf/ /agent-dir/model/conf/
