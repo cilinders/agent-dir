@@ -201,5 +201,5 @@ elif [[ $1 == "-dockerPull" ]] || [[ $1 == "-dP" ]]; then
     ollama serve &
   fi
   ollama list
-  ollama create $3 $4
+  ollama create $3 -f $4
 fi
