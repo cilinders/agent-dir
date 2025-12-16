@@ -37,4 +37,4 @@ COPY /empty.file data/temp_test.txt
 COPY /empty.file data/temp_test_message.txt
 
 # ollama serve
-RUN ls -la
+RUN ollama serve &
