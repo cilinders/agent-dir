@@ -14,9 +14,11 @@ COPY /conf/ /agent-dir/conf/
 COPY /model/conf/ /agent-dir/model/conf/
 COPY /scripts/ /agent-dir/scripts/
 
-# permissions ?
+# permissions
 RUN chmod +x /agent-dir/scripts/*
 
+# pull model
+RUN ollama serve
 RUN ollama pull llama3.1:latest
 
 # naive copying all data files
