@@ -5,7 +5,6 @@ FROM alpine/ollama:0.12.10
 RUN apk add --no-cache bash
 RUN apk add --no-cache curl
 RUN apk add --no-cache jq
-RUN apk add --no-cache systemd
 #RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # workdir
@@ -19,7 +18,7 @@ COPY /scripts/ /agent-dir/scripts/
 RUN chmod +x /agent-dir/scripts/*
 
 # pull model
-RUN systemctl start ollama
+RUN ollama serve &
 RUN ollama pull llama3.1:latest
 
 # naive copying all data files
