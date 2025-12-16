@@ -19,6 +19,9 @@ COPY /scripts/ /agent-dir/scripts/
 # permissions
 RUN chmod +x /agent-dir/scripts/*
 
+# environment variables
+ENV OLLAMA_NUM_PARALLEL=1
+
 # pull model
 RUN ./scripts/ollamaScript.sh -dP -l llama3.1 model/Modelfile
 
