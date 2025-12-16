@@ -195,11 +195,11 @@ elif [[ $1 == "-stop" ]] || [[ $1 == "-st" ]]
 then
   sudo kill $(pgrep ollama)
 elif [[ $1 == "-dockerPull" ]] || [[ $1 == "-dP" ]]; then
-  if [[ $3 == "-l" ]]; then
+  if [[ $2 == "-l" ]]; then
     OLLAMA_CONTEXT_LENGTH=32768 ollama serve &
   else
     ollama serve &
   fi
   ollama list
-  ollama pull $2
+  ollama create $3 $4
 fi

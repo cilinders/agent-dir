@@ -11,6 +11,7 @@ RUN apk add --no-cache jq
 WORKDIR /agent-dir
 
 COPY /conf/ /agent-dir/conf/
+COPY /model/ /agent-dir/model/
 COPY /model/conf/ /agent-dir/model/conf/
 COPY /scripts/ /agent-dir/scripts/
 
@@ -18,7 +19,7 @@ COPY /scripts/ /agent-dir/scripts/
 RUN chmod +x /agent-dir/scripts/*
 
 # pull model
-RUN ./scripts/ollamaScript.sh -dP llama3.1:latest -l
+RUN ./scripts/ollamaScript.sh -dP llama3.1 /model/Modelfile
 
 # naive copying all data files
 COPY /empty.file data/TEMP_commit.txt
@@ -36,4 +37,4 @@ COPY /empty.file data/temp_test.txt
 COPY /empty.file data/temp_test_message.txt
 
 # ollama serve
-CMD ./scripts/ollamaScript.sh -se -l 
+RUN ls -la
