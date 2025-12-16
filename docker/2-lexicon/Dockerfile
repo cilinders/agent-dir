@@ -19,7 +19,7 @@ COPY /scripts/ /agent-dir/scripts/
 RUN chmod +x /agent-dir/scripts/*
 
 # pull model
-RUN ./scripts/ollamaScript.sh -dP llama3.1 /model/Modelfile
+RUN ./scripts/ollamaScript.sh -dP llama3.1 ../model/Modelfile
 
 # naive copying all data files
 COPY /empty.file data/TEMP_commit.txt
