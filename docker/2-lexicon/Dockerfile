@@ -5,7 +5,8 @@ FROM alpine/ollama:0.12.10
 RUN apk add --no-cache bash
 RUN apk add --no-cache curl
 RUN apk add --no-cache jq
-#RUN curl -fsSL https://ollama.com/install.sh | sh
+# debug dependencies
+RUN apk add --no-cache nano
 
 # workdir
 WORKDIR /agent-dir
