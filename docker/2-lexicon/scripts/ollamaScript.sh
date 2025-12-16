@@ -15,6 +15,7 @@ then
   printf "  ollamaScript -serve|-se:                                           Starts ollama service with info in current shell.\n"
   printf "  ollamaScript -serveVerbose|-seb:                                   Starts ollama servive with verbose info in current shell.\n"
   printf "  ollamaScript -stop|-st:                                            Stops ollama service.\n"
+  printf "  ollamaScript -dockerPull|-dP <modelName>:                          Pulls model for Docker container.\n"
 elif [ $1 == "-promptFile" ] || [ $1 == "-pf" ]
 then
   RUNNING=$(pgrep ollama)
@@ -193,4 +194,8 @@ then
 elif [[ $1 == "-stop" ]] || [[ $1 == "-st" ]]
 then
   sudo kill $(pgrep ollama)
+elif [[ $1 == "-dockerPull" ]] || [[ $1 == "-dP" ]]; then
+  ollama serve &
+  ollama list
+  ollama pull $2
 fi
