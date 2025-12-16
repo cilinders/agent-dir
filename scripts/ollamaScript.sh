@@ -199,7 +199,11 @@ then
   printf "%s" "$(sudo systemctl status ollama.service -n 0)"
   printf "%s" "$(sudo systemctl status ollama -n 0)"
 elif [[ $1 == "-dockerPull" ]] || [[ $1 == "-dP" ]]; then
-  ollama serve &
+  if [[ $3 == "-l" ]]; then
+    OLLAMA_CONTEXT_LENGTH=32768 ollama serve &
+  else
+    ollama serve &
+  fi
   ollama list
   ollama pull $2
 fi
