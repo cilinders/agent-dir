@@ -17,6 +17,8 @@ COPY /scripts/ /agent-dir/scripts/
 # permissions ?
 RUN chmod +x /agent-dir/scripts/*
 
+RUN ollama pull llama3.1:latest
+
 # naive copying all data files
 COPY /empty.file data/TEMP_commit.txt
 COPY /empty.file data/TEMP_file.txt
@@ -32,4 +34,5 @@ COPY /empty.file data/resolved_plan.txt
 COPY /empty.file data/temp_test.txt
 COPY /empty.file data/temp_test_message.txt
 
+# ollama serve
 RUN ls -la
