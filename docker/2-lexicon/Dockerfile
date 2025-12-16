@@ -36,4 +36,4 @@ COPY /empty.file data/temp_test.txt
 COPY /empty.file data/temp_test_message.txt
 
 # ollama serve
-RUN ./scripts/ollamaScript.sh -se -l 
+ENTRYPOINT ./scripts/ollamaScript.sh -se -l 
