@@ -196,8 +196,8 @@ then
   sudo systemctl stop ollama
   sudo pkill ollama.service
   sudo pkill ollama
-  printf "%s" "$(sudo systemctl status ollama.service -n 0)"
-  printf "%s" "$(sudo systemctl status ollama -n 0)"
+  printf "%s\n" "$(sudo systemctl status ollama.service -n 0)"
+  printf "%s\n" "$(sudo systemctl status ollama -n 0)"
 elif [[ $1 == "-dockerPull" ]] || [[ $1 == "-dP" ]]; then
   if [[ $2 == "-l" ]]; then
     OLLAMA_CONTEXT_LENGTH=32768 ollama serve &
