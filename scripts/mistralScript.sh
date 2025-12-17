@@ -5,7 +5,7 @@ if [[ $# == 0 ]] || [[ $1 == "-h" ]] || [[ $1 == "-help" ]]; then
   printf "  mistralScript -p <config.conf> <modelConfig.conf>   : Prompt mistral llm.\n"
   printf "  mistralScript -se [-l num_ntx]                      : Serves mistral llm using ollama.\n"
 elif [[ $1 == "-p" ]]; then
-  if [[ -f $2 ]] && [[ -f $3 ]]; then
+  if [[ -f $2 ]]; then # && [[ -f $3 ]]; then
     source $2
     read -e -rp "Prompt: " PROMPT
     PROMPT=${PROMPT//\\/\\\\}
@@ -14,7 +14,7 @@ elif [[ $1 == "-p" ]]; then
     RESPONSE=$(curl http://localhost:11434/v1/chat/completions \
                        -X POST \
                        #-H 'Authorization: Bearer YOUR_APIKEY_HERE' \
-                       -d '{"messages":[{"content":"ipsum eiusmod"}],"model":"mistral-large-latest"}' \
+                       -d '{"messages":[{"content":"ipsum eiusmod"}],"model":"'"$MODEL"'"}' \
               )
     printf "%s\n" "$RESPONSE"
   else
