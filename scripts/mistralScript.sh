@@ -14,7 +14,7 @@ elif [[ $1 == "-p" ]]; then
     RESPONSE=$(curl http://localhost:11434/v1/chat/completions \
                        -X POST \
                        #-H 'Authorization: Bearer YOUR_APIKEY_HERE' \
-                       -d '{"messages":[{"content":"ipsum eiusmod"}],"model":"'"$MODEL"'"}' \
+                       -d '{"messages":[{"role":"user","content":"'"$PROMPT"'"}],"model":"'"$MODEL"'"}' \
               )
     printf "%s\n" "$RESPONSE"
   else
