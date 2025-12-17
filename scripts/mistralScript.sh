@@ -13,7 +13,6 @@ elif [[ $1 == "-p" ]]; then
     printf "sending %s\n" "${PROMPT@Q}"
     RESPONSE=$(curl http://localhost:11434/v1/chat/completions \
                        -X POST \
-                       #-H 'Authorization: Bearer YOUR_APIKEY_HERE' \
                        -d '{"messages":[{"role":"user","content":"'"$PROMPT"'"}],"model":"'"$MODEL"'"}' \
               )
     printf "%s\n" "$RESPONSE"
