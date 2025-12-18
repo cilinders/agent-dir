@@ -13,7 +13,7 @@ elif [[ $1 == "-p" ]]; then
     printf "sending %s\n" "${PROMPT@Q}"
     RESPONSE=$(curl -sS http://localhost:11434/v1/chat/completions \
                        -X POST \
-                       -d '{"prompt_mode":"reasoning","messages":[{"role":"user","content":"'"$PROMPT"'"}],"model":"'"$MODEL"'"}' \
+                       -d '{"keep_alive":0,"prompt_mode":"reasoning","messages":[{"role":"user","content":"'"$PROMPT"'"}],"model":"'"$MODEL"'"}' \
               )
     printf "%s\n" "$RESPONSE"
   else
