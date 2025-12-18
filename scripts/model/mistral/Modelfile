@@ -1,5 +1,5 @@
-#FROM ministral-3:8b
-FROM ministral-3:3b
+FROM ministral-3:8b
+#FROM ministral-3:3b
 
 #PARAMETER num_ctx 32768
 #PARAMETER num_ctx 16384
