@@ -11,7 +11,7 @@ elif [[ $1 == "-p" ]]; then
     PROMPT=${PROMPT//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
     printf "sending %s\n" "${PROMPT@Q}"
-    RESPONSE=$(curl http://localhost:11434/v1/chat/completions \
+    RESPONSE=$(curl -sS http://localhost:11434/v1/chat/completions \
                        -X POST \
                        -d '{"prompt_mode":"reasoning","messages":[{"role":"user","content":"'"$PROMPT"'"}],"model":"'"$MODEL"'"}' \
               )
