@@ -39,11 +39,13 @@ elif [[ $1 == "-pr" ]]; then
 elif [[ $1 == "-se" ]] || [[ $1 == "-serve" ]]; then
   if [[ $2 == "-l" ]]; then
     if [[ $# == 3 ]]; then
+      OLLAMA_CONTEXT_LENGTH=$3
+      printf "%s\n" "$OLLAMA_CONTEXT_LENGTH"
       OLLAMA_CONTEXT_LENGTH=$3 ollama serve
-      printf "%s\n" "$OLLAMA_CONTEXT_LENGTH"
     else
-      OLLAMA_CONTEXT_LENGTH=32768 ollama serve
+      OLLAMA_CONTEXT_LENGTH=32768
       printf "%s\n" "$OLLAMA_CONTEXT_LENGTH"
+      OLLAMA_CONTEXT_LENGTH=32768 ollama serve
     fi
   else
     ollama serve
