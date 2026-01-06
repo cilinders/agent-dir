@@ -36,6 +36,21 @@ elif [[ $1 == "-pr" ]]; then
   else
     printf "Config or model file not found.\n"
   fi
+elif [[ $1 == "-pv" ]]; then
+  if [[ -f $2 ]] && [[ -f $3 ]]; then
+    source $2
+    PROMPT=${4//\\/\\\\}
+    PROMPT=${PROMPT//'"'/'\"'}
+    printf "sending %s\n" "${PROMPT@Q}"
+    RESPONSE=$(curl -sS http://localhost:11434/v1/chat/completions \
+                -X POST \
+                -H "Content-Type: application/json" \
+                -H "Accept: application/json" \
+                -d '{"messages":[{"role":"system","content":"'"$SYSTEM"'"},{"role":"user","content":"'"$PROMPT"'"}]}' | jq -r '.choices[0] .message .content')
+   printf "%s\n" "$RESPONSE"
+  else
+    printf "Config or model file not found.\n"
+  fi
 elif [[ $1 == "-se" ]] || [[ $1 == "-serve" ]]; then
   if [[ $2 == "-l" ]]; then
     if [[ $# == 3 ]]; then
