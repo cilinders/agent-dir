@@ -42,7 +42,7 @@ elif [[ $1 == "-pv" ]]; then
     PROMPT=${4//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
     SYSTEM=$3
-    printf "sending %s %s\n" "${PROMPT@Q}" "${PROMPT@Q}"
+    printf "sending %s %s\n" "${3@Q}" "${PROMPT@Q}"
     RESPONSE=$(curl -sS http://localhost:11434/v1/chat/completions \
                 -X POST \
                 -H "Content-Type: application/json" \
