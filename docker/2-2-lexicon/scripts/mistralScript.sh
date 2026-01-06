@@ -37,11 +37,12 @@ elif [[ $1 == "-pr" ]]; then
     printf "Config or model file not found.\n"
   fi
 elif [[ $1 == "-pv" ]]; then
-  if [[ -f $2 ]] && [[ -f $3 ]]; then
+  if [[ -f $2 ]]; then # && [[ -f $3 ]]; then
     source $2
     PROMPT=${4//\\/\\\\}
     PROMPT=${PROMPT//'"'/'\"'}
-    printf "sending %s\n" "${PROMPT@Q}"
+    SYSTEM=$3
+    printf "sending %s %s\n" "${PROMPT@Q}" "${PROMPT@Q}"
     RESPONSE=$(curl -sS http://localhost:11434/v1/chat/completions \
                 -X POST \
                 -H "Content-Type: application/json" \
