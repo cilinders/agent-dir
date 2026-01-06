@@ -47,7 +47,7 @@ elif [[ $1 == "-pv" ]]; then
                 -X POST \
                 -H "Content-Type: application/json" \
                 -H "Accept: application/json" \
-                -d '{"messages":[{"role":"system","content":"'"$SYSTEM"'"},{"role":"user","content":"'"$PROMPT"'"}]}' | jq -r '.choices[0] .message .content')
+                -d '{"messages":[{"role":"system","content":"'"$SYSTEM"'"},{"role":"user","content":"'"$PROMPT"'"}]}') # | jq -r '.choices[0] .message .content')
    printf "%s\n" "$RESPONSE"
   else
     printf "Config or model file not found.\n"
